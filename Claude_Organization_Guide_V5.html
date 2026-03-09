@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organizing Claude 🌿 — Your Friendly Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #fdf8f0;
+  --white: #fffcf7;
+  --sage: #6b9e78;
+  --sage-mid: #a8c9b0;
+  --sage-pale: #e8f3eb;
+  --terra: #c4724e;
+  --terra-mid: #e8ab92;
+  --terra-pale: #fceee7;
+  --sky: #5b8cb8;
+  --sky-pale: #e4eef7;
+  --gold: #c9903c;
+  --gold-pale: #fdf3dc;
+  --text: #2c2c2c;
+  --mid: #666;
+  --soft: #999;
+  --border: rgba(0,0,0,0.08);
+  --shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--text); line-height: 1.7; }
+
+/* ── NAV (trimmed to 6 meaningful items) ── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(253,248,240,0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex; align-items: center; gap: 10px;
+  overflow-x: auto;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-brand { font-weight: 900; font-size: 15px; color: var(--sage); white-space: nowrap; margin-right: 6px; }
+.nav-pill {
+  display: inline-block; background: var(--white);
+  border: 1.5px solid var(--border); border-radius: 20px;
+  padding: 5px 14px; font-size: 12px; font-weight: 700;
+  color: var(--mid); white-space: nowrap;
+  text-decoration: none; transition: all 0.2s; cursor: pointer;
+}
+.nav-pill:hover { background: var(--sage-pale); color: var(--sage); border-color: var(--sage-mid); }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, #e8f3eb 0%, #fdf3dc 55%, #fceee7 100%);
+  padding: 64px 24px 52px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.hero::before, .hero::after {
+  content: ''; position: absolute; border-radius: 50%; pointer-events: none;
+}
+.hero::before {
+  width: 340px; height: 340px; top: -130px; right: -90px;
+  background: radial-gradient(circle, rgba(107,158,120,0.15) 0%, transparent 70%);
+}
+.hero::after {
+  width: 280px; height: 280px; bottom: -90px; left: -70px;
+  background: radial-gradient(circle, rgba(196,114,78,0.12) 0%, transparent 70%);
+}
+.hero-eyebrow {
+  display: inline-block; background: var(--white);
+  color: var(--sage); font-weight: 800; font-size: 11px;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  padding: 6px 18px; border-radius: 20px;
+  border: 1.5px solid var(--sage-mid);
+  margin-bottom: 22px; position: relative; z-index: 1;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 50px); font-weight: 700;
+  color: var(--text); line-height: 1.2;
+  margin-bottom: 18px; position: relative; z-index: 1;
+}
+.hero h1 em { color: var(--sage); font-style: italic; }
+.hero-sub {
+  font-size: 16px; color: var(--mid);
+  max-width: 560px; margin: 0 auto 30px;
+  line-height: 1.85; position: relative; z-index: 1;
+}
+.hero-chips {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center; position: relative; z-index: 1;
+}
+.chip {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 24px; padding: 8px 18px;
+  font-size: 13px; font-weight: 700; color: var(--mid);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* ── BREATHE BOX ── */
+.breathe {
+  background: linear-gradient(135deg, var(--sage-pale), #f0f7f2);
+  border-left: 4px solid var(--sage); border-radius: 14px;
+  padding: 24px 30px; margin: 36px auto; max-width: 680px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 16px;
+  color: var(--text); line-height: 1.85; text-align: center;
+}
+.breathe strong { font-style: normal; color: var(--sage); }
+
+/* ── WHERE TO START MAP ── */
+/* FIX: Added colored border-top accent to each card, matching section colors */
+.start-map {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin: 18px 0;
+}
+@media (max-width: 540px) { .start-map { grid-template-columns: 1fr; } }
+.smap-card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 16px; padding: 20px 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s; text-decoration: none; display: block;
+}
+.smap-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.09); }
+.smap-card.ac-terra { border-top: 3px solid var(--terra); }
+.smap-card.ac-sage  { border-top: 3px solid var(--sage); }
+.smap-card.ac-sky   { border-top: 3px solid var(--sky); }
+.smap-card.ac-gold  { border-top: 3px solid var(--gold); }
+.smap-title { font-size: 15px; font-weight: 900; margin-bottom: 6px; }
+.smap-title.sg { color: var(--sage); }
+.smap-title.tr { color: var(--terra); }
+.smap-title.sk { color: var(--sky); }
+.smap-title.go { color: var(--gold); }
+.smap-desc { font-size: 13px; color: var(--mid); line-height: 1.65; }
+.smap-action { font-size: 13px; font-weight: 800; color: var(--text); margin-top: 8px; }
+
+/* ── LAYOUT ── */
+.wrap { max-width: 760px; margin: 0 auto; padding: 8px 20px 64px; }
+.sec-label {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 11px; font-weight: 800; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--soft); margin: 52px 0 18px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── ACCORDION CARDS ── */
+.card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 20px; margin-bottom: 14px;
+  box-shadow: var(--shadow); overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.10); }
+.card-top { height: 4px; width: 100%; }
+.t-sage { background: linear-gradient(90deg, var(--sage), var(--sage-mid)); }
+.t-terra { background: linear-gradient(90deg, var(--terra), var(--terra-mid)); }
+.t-sky  { background: linear-gradient(90deg, var(--sky), #8ab4d8); }
+.t-gold { background: linear-gradient(90deg, var(--gold), #e4b96a); }
+
+.card-trigger {
+  display: flex; align-items: center; gap: 16px;
+  padding: 22px 24px; cursor: pointer; user-select: none;
+}
+.cicon {
+  width: 50px; height: 50px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.i-sage  { background: var(--sage-pale); }
+.i-terra { background: var(--terra-pale); }
+.i-sky   { background: var(--sky-pale); }
+.i-gold  { background: var(--gold-pale); }
+.ctitle { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+.csub   { font-size: 12px; font-weight: 700; color: var(--soft); }
+.carrow {
+  margin-left: auto; font-size: 22px; color: var(--soft);
+  flex-shrink: 0; transition: transform 0.3s ease; line-height: 1;
+}
+.card.open .carrow { transform: rotate(45deg); }
+.card-body {
+  display: none; padding: 0 24px 26px;
+  border-top: 1px solid var(--border);
+  animation: slideIn 0.25s ease;
+}
+.card.open .card-body { display: block; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── TL;DR STRIP (FIX: left-align for readability) ── */
+.tldr {
+  background: var(--sage-pale); border-left: 4px solid var(--sage);
+  border-radius: 10px; padding: 14px 18px; margin: 16px 0 18px;
+  font-size: 14px; color: var(--mid); line-height: 1.7;
+  text-align: left;
+}
+.tldr strong {
+  color: var(--sage); font-weight: 800; font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  display: block; margin-bottom: 4px;
+}
+
+/* ── BODY TEXT ── */
+.prose { font-size: 15px; color: var(--mid); line-height: 1.85; margin: 14px 0 12px; }
+.prose strong { color: var(--text); font-weight: 800; }
+.mini-head {
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--soft); margin: 20px 0 10px;
+}
+
+/* ── ITEMS ── */
+.items { display: flex; flex-direction: column; gap: 9px; }
+.item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 12px; padding: 13px 16px;
+}
+.item-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.item-title { font-weight: 800; font-size: 14px; color: var(--text); display: block; margin-bottom: 2px; }
+.item-desc  { font-size: 13px; color: var(--mid); line-height: 1.6; }
+
+/* ── STEPS ── */
+.steps { display: flex; flex-direction: column; gap: 12px; margin: 14px 0; }
+.step { display: flex; gap: 14px; align-items: flex-start; }
+.step-n {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 13px; color: white;
+  flex-shrink: 0; margin-top: 2px;
+}
+.sn-sage { background: var(--sage); }
+.sn-terra { background: var(--terra); }
+.sn-sky  { background: var(--sky); }
+.sn-gold { background: var(--gold); }
+.step-t { font-weight: 800; font-size: 14px; color: var(--text); display: block; margin-bottom: 2px; }
+.step-d { font-size: 13px; color: var(--mid); line-height: 1.6; }
+
+/* ── PROMPT BOXES ── */
+.prompt { border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; border: 1.5px solid transparent; }
+.p-sage  { background: var(--sage-pale);  border-color: var(--sage-mid); }
+.p-terra { background: var(--terra-pale); border-color: var(--terra-mid); }
+.p-sky   { background: var(--sky-pale);   border-color: #a8c8e8; }
+.p-gold  { background: var(--gold-pale);  border-color: #e0c070; }
+.prompt-tag { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; display: block; }
+.pt-sage  { color: var(--sage); }
+.pt-terra { color: var(--terra); }
+.pt-sky   { color: var(--sky); }
+.pt-gold  { color: var(--gold); }
+/* FIX: added user-select: text so prompt text is copyable */
+.prompt-copy {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 14px; color: var(--text); line-height: 1.75;
+  user-select: text;
+}
+.copy-btn {
+  display: inline-block; margin-top: 8px;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 8px; padding: 4px 10px;
+  font-size: 11px; font-weight: 700; color: var(--mid);
+  cursor: pointer; transition: all 0.15s; font-family: 'Nunito', sans-serif;
+}
+.copy-btn:hover { background: var(--sage-pale); color: var(--sage); }
+.copy-btn.copied { color: var(--sage); }
+
+/* ── CALLOUTS ── */
+.callout {
+  border-radius: 14px; padding: 20px 22px; margin: 16px 0;
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 15px; color: var(--text); line-height: 1.8; text-align: center;
+}
+.callout strong { font-style: normal; font-weight: 700; }
+.co-gold  { background: var(--gold-pale);  border: 1.5px solid #e0c070; }
+.co-sage  { background: var(--sage-pale);  border: 1.5px solid var(--sage-mid); }
+.co-terra { background: var(--terra-pale); border: 1.5px solid var(--terra-mid); }
+.co-sky   { background: var(--sky-pale);   border: 1.5px solid #a8c8e8; }
+
+/* ── SKIP BOX ── */
+.skip-box {
+  background: #f8f5ff; border: 1.5px dashed #c4b8e8;
+  border-radius: 14px; padding: 16px 20px; margin: 16px 0;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.skip-icon { font-size: 20px; flex-shrink: 0; }
+.skip-label { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #8b72c8; margin-bottom: 4px; }
+.skip-text { font-size: 13px; color: var(--mid); line-height: 1.65; }
+/* FIX: "find it when ready" link inside skip box */
+.skip-link { font-size: 12px; font-weight: 800; color: #8b72c8; text-decoration: none; margin-top: 6px; display: inline-block; }
+.skip-link:hover { text-decoration: underline; }
+
+/* ── COMPARE GRID ── */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+@media (max-width: 520px) { .compare-grid { grid-template-columns: 1fr; } }
+.compare-col {
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 14px; padding: 18px 16px;
+}
+.compare-head { font-weight: 900; font-size: 14px; margin-bottom: 12px; }
+.compare-col ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.compare-col li { font-size: 13px; color: var(--mid); line-height: 1.55; display: flex; gap: 8px; }
+.compare-col li::before { content: '•'; color: var(--soft); flex-shrink: 0; }
+
+/* ── DEFINITION TABLE ── */
+.def-wrap { background: var(--white); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin: 14px 0; }
+.def-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.def-table th {
+  background: var(--sage-pale); color: var(--sage);
+  font-weight: 800; font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; padding: 10px 14px; text-align: left;
+}
+.def-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.def-table tr:last-child td { border-bottom: none; }
+.def-table tr:nth-child(even) td { background: rgba(253,248,240,0.7); }
+.def-table td:first-child { font-weight: 800; color: var(--text); white-space: nowrap; }
+.def-table td:last-child { color: var(--mid); line-height: 1.65; }
+
+/* ── TAGS ── */
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.tag { display: inline-block; border-radius: 16px; padding: 5px 14px; font-size: 12px; font-weight: 700; line-height: 1.5; }
+.tg-sage  { background: var(--sage-pale);  color: var(--sage);  border: 1px solid var(--sage-mid); }
+.tg-terra { background: var(--terra-pale); color: var(--terra); border: 1px solid var(--terra-mid); }
+.tg-sky   { background: var(--sky-pale);   color: var(--sky);   border: 1px solid #a8c8e8; }
+.tg-gold  { background: var(--gold-pale);  color: var(--gold);  border: 1px solid #e0c070; }
+
+/* ── SCENARIO BLOCKS (inside accordion, no change to .scenario itself) ── */
+.scenario { border-radius: 16px; padding: 22px 24px; margin-bottom: 14px; border: 1.5px solid transparent; }
+.sc-sage  { background: var(--sage-pale);  border-color: var(--sage-mid); }
+.sc-terra { background: var(--terra-pale); border-color: var(--terra-mid); }
+.sc-head { font-weight: 900; font-size: 15px; color: var(--text); margin-bottom: 12px; }
+.sc-steps { display: flex; flex-direction: column; gap: 8px; }
+.sc-step { font-size: 13px; color: var(--mid); line-height: 1.65; display: flex; gap: 10px; }
+.sc-step-n { font-weight: 900; color: var(--sage); flex-shrink: 0; }
+.sc-terra .sc-step-n { color: var(--terra); }
+
+/* ── REFERENCE TABLE ── */
+.ref-wrap { background: var(--white); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin: 0; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.ref-table th {
+  background: var(--sky); color: white;
+  font-weight: 800; font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; padding: 10px 14px; text-align: left;
+}
+.ref-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--mid); line-height: 1.65; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table tr:nth-child(even) td { background: rgba(228,238,247,0.35); }
+.ref-table td:first-child { font-weight: 800; color: var(--text); }
+
+/* ── PERMISSION ITEMS (inside permission slip card) ── */
+.permit-items { display: flex; flex-direction: column; gap: 9px; margin-top: 16px; }
+.permit-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--gold-pale); border: 1px solid #e8d090;
+  border-radius: 12px; padding: 13px 16px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--sage-pale); border-top: 1.5px solid var(--sage-mid);
+  padding: 48px 24px; text-align: center;
+}
+footer .big {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; color: var(--sage);
+  font-style: italic; margin-bottom: 12px;
+}
+footer p { font-size: 14px; color: var(--mid); line-height: 1.9; }
+footer .back-top {
+  display: inline-block; margin-top: 20px;
+  background: var(--white); border: 1.5px solid var(--sage-mid);
+  border-radius: 20px; padding: 6px 18px;
+  font-size: 12px; font-weight: 700; color: var(--sage);
+  text-decoration: none; transition: all 0.2s;
+}
+footer .back-top:hover { background: var(--sage); color: var(--white); }
+</style>
+</head>
+<body>
+<a id="top"></a>
+
+<!-- ── NAV: trimmed to 6 semantic groups ── -->
+<nav class="nav">
+  <span class="nav-brand">🌿 Organizing Claude</span>
+  <a class="nav-pill" href="#start">Where to Start</a>
+  <a class="nav-pill" href="#basics">The Basics</a>
+  <a class="nav-pill" href="#advanced">Advanced</a>
+  <a class="nav-pill" href="#dailyuse">Daily Use</a>
+  <a class="nav-pill" href="#scenarios">Scenarios</a>
+  <a class="nav-pill" href="#quickref">Quick Ref</a>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">✨ Your personal reference guide</div>
+  <h1>Organizing Claude —<br><em>gently, at your own pace.</em></h1>
+  <p class="hero-sub">Everything you need to know about Projects, documents, and style guides. It's a lot — so this guide lets you read one small piece at a time and skip everything else.</p>
+  <div class="hero-chips">
+    <div class="chip">🧠 ADHD-Friendly</div>
+    <div class="chip">📁 Projects &amp; Docs</div>
+    <div class="chip">🎨 Style Guides</div>
+    <div class="chip">💚 No Pressure</div>
+    <div class="chip">⏭️ Skip-Friendly</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="breathe">
+    <strong>"You don't need to set everything up today."</strong><br>
+    Open one card. Try one thing. Come back when you need the rest.
+  </div>
+
+  <!-- ── WHERE TO START ── -->
+  <div class="sec-label" id="start">🗺️ Where to start — pick the one that matches right now</div>
+
+  <!-- FIX: Each card now has a colored border-top accent matching its section color -->
+  <div class="start-map">
+    <div class="smap-card ac-terra">
+      <div class="smap-title tr">😤 "I feel overwhelmed"</div>
+      <div class="smap-desc">That's okay. Read only the first two sections below.</div>
+      <div class="smap-action">→ Make one project. Upload one doc. Done.</div>
+    </div>
+    <div class="smap-card ac-sage">
+      <div class="smap-title sg">🎯 "I want to get organized"</div>
+      <div class="smap-desc">You're ready. Work through The Basics (sections 1–5).</div>
+      <div class="smap-action">→ Set up your projects and add your first style guide.</div>
+    </div>
+    <div class="smap-card ac-sky">
+      <div class="smap-title sk">🔀 "I need cross-project stuff"</div>
+      <div class="smap-desc">You already have the basics down.</div>
+      <div class="smap-action">→ Jump straight to Advanced in the nav above.</div>
+    </div>
+    <div class="smap-card ac-gold">
+      <div class="smap-title go">📋 "Just show me the cheat sheet"</div>
+      <div class="smap-desc">No problem at all.</div>
+      <div class="smap-action">→ Click Quick Ref in the nav above.</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- THE BASICS (sections 1–5) -->
+  <!-- Semantic colors: sage = foundational, sky = setup/steps, gold = behavioral, terra = organizational -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="basics">🌱 The basics — sections 1 to 5</div>
+
+  <!-- §1 Five Pieces — SAGE (foundational knowledge) -->
+  <div class="card" id="c1">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c1')">
+      <div class="cicon i-sage">💡</div>
+      <div>
+        <div class="ctitle">§1 — The Five Pieces of Claude</div>
+        <div class="csub">You only need two to get started</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Projects keep everything in one place so you never have to re-explain yourself. That's the main thing worth knowing right now.</div>
+      <div class="def-wrap">
+        <table class="def-table">
+          <tr><th>Thing</th><th>What it actually is</th></tr>
+          <tr><td>💬 Chats</td><td>Individual conversations. Each one is its own thread — like a separate text message conversation.</td></tr>
+          <tr><td>📁 Projects</td><td>Folders that keep related chats together, with shared memory and documents.</td></tr>
+          <tr><td>📚 Knowledge Base</td><td>The files you upload to a project. Claude reads them in every chat automatically — no re-uploading.</td></tr>
+          <tr><td>⚙️ Custom Instructions</td><td>Rules you write once per project: "be concise", "use formal tone", etc. Always applied.</td></tr>
+          <tr><td>🧠 Memories</td><td>Lightweight facts Claude remembers across all your chats globally, like your name and preferences.</td></tr>
+        </table>
+      </div>
+      <div class="callout co-sage">
+        <strong>The key insight:</strong> Without projects, every chat is a cold start — you re-upload the same files and re-explain the same context. Projects fix this. Every chat inside a project already knows your context. You just talk.
+      </div>
+    </div>
+  </div>
+
+  <!-- §2 First Project — SKY (setup/steps) -->
+  <div class="card" id="c2">
+    <div class="card-top t-sky"></div>
+    <div class="card-trigger" onclick="toggle('c2')">
+      <div class="cicon i-sky">🗂️</div>
+      <div>
+        <div class="ctitle">§2 — Making Your First Project</div>
+        <div class="csub">Three steps and you're done</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Click Projects in the sidebar → New Project → give it a name. That's the whole thing. Add documents and instructions when you're ready — not right now if you don't want to.</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-n sn-sky">1</div>
+          <div><span class="step-t">Open the sidebar</span><span class="step-d">In Claude, look at the left sidebar and click Projects — or hover the left edge if the sidebar is hidden.</span></div>
+        </div>
+        <div class="step">
+          <div class="step-n sn-sky">2</div>
+          <div><span class="step-t">Click + New Project</span><span class="step-d">It's in the upper right corner. Give it a name. Something obvious like "Work: Proposals" or "Hobby: Game Dev".</span></div>
+        </div>
+        <div class="step">
+          <div class="step-n sn-sky">3</div>
+          <div><span class="step-t">Hit create. You're done.</span><span class="step-d">The project exists and is already useful. Add documents and instructions when you're ready — not right now if you don't want to.</span></div>
+        </div>
+      </div>
+      <div class="mini-head" style="margin-top: 22px;">How to name your projects</div>
+      <p class="prose">Use a prefix so they sort cleanly and you can scan them quickly:</p>
+      <div class="compare-grid">
+        <div class="compare-col" style="border-top: 3px solid var(--sage);">
+          <div class="compare-head" style="color: var(--sage);">⚙️ WORK: prefix</div>
+          <ul>
+            <li>WORK: Client Name</li>
+            <li>WORK: Proposals</li>
+            <li>WORK: Engineering</li>
+          </ul>
+        </div>
+        <div class="compare-col" style="border-top: 3px solid var(--terra);">
+          <div class="compare-head" style="color: var(--terra);">🎨 HOBBY: prefix</div>
+          <ul>
+            <li>HOBBY: Game Dev</li>
+            <li>HOBBY: Writing</li>
+            <li>HOBBY: Music</li>
+          </ul>
+        </div>
+      </div>
+      <p class="prose" style="margin-top: 10px;">Also create one called <strong>META: Shared Resources</strong> — your central library for templates and style guides you'll use across everything. More in §6.</p>
+      <div class="callout co-sky" style="margin-top: 18px;">
+        <strong>Free accounts:</strong> 5 projects. <strong>Pro/Team ($20+/month):</strong> unlimited projects, plus smarter document retrieval that works roughly 10× better with large files.
+      </div>
+    </div>
+  </div>
+
+  <!-- §3 Knowledge Base — SKY (setup/technical) -->
+  <div class="card" id="c3">
+    <div class="card-top t-sky"></div>
+    <div class="card-trigger" onclick="toggle('c3')">
+      <div class="cicon i-sky">📄</div>
+      <div>
+        <div class="ctitle">§3 — Adding Your Documents</div>
+        <div class="csub">Upload once, available in every chat forever</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Drag a file into your project. Claude reads it automatically in every chat from now on. No re-uploading. No re-explaining. It's just there.</div>
+      <div class="mini-head">Good things to upload</div>
+      <div class="items">
+        <div class="item"><span class="item-icon">🎨</span><div><span class="item-title">Style guides and tone documents</span><span class="item-desc">Tell Claude once how you like things written. It remembers in every chat.</span></div></div>
+        <div class="item"><span class="item-icon">📋</span><div><span class="item-title">Templates you want Claude to match</span><span class="item-desc">Upload an example output you love. Claude will use it as a model for what "good" looks like.</span></div></div>
+        <div class="item"><span class="item-icon">📁</span><div><span class="item-title">Background briefs and reference material</span><span class="item-desc">Client context, project background, technical docs — anything Claude needs to know about your world.</span></div></div>
+        <div class="item"><span class="item-icon">✅</span><div><span class="item-title">Past approved outputs as examples</span><span class="item-desc">Your best past work gives Claude a concrete target to aim for.</span></div></div>
+      </div>
+      <div class="mini-head" style="margin-top: 22px;">Four rules that keep it working well</div>
+      <div class="steps">
+        <div class="step"><div class="step-n sn-sky">1</div><div><span class="step-t">Name files clearly</span><span class="step-d">"Brand Voice Guide.pdf" is infinitely better than "doc1.pdf". Claude uses filenames to understand context.</span></div></div>
+        <div class="step"><div class="step-n sn-sky">2</div><div><span class="step-t">One topic per file</span><span class="step-d">Focused files retrieve more accurately than one giant catch-all document.</span></div></div>
+        <div class="step"><div class="step-n sn-sky">3</div><div><span class="step-t">Test it works</span><span class="step-d">After uploading, ask Claude: "What does my style guide say about tone?" — this confirms it can find the content.</span></div></div>
+        <div class="step"><div class="step-n sn-sky">4</div><div><span class="step-t">Don't overload it</span><span class="step-d">Only upload what's actually relevant. More isn't always better — irrelevant files reduce retrieval accuracy.</span></div></div>
+      </div>
+      <div class="callout co-sky" style="margin-top: 18px;">
+        Accepted formats: PDF, DOCX, TXT, CSV, HTML, and most text-based files. Total capacity is roughly <strong>150,000 words</strong> — paid plans expand this significantly via smarter retrieval.
+      </div>
+    </div>
+  </div>
+
+  <!-- §4 Custom Instructions — GOLD (personal/behavioral) -->
+  <div class="card" id="c4">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c4')">
+      <div class="cicon i-gold">✍️</div>
+      <div>
+        <div class="ctitle">§4 — Custom Instructions</div>
+        <div class="csub">Write once, applied to every single chat</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Write a few sentences about how you want Claude to behave in this project. It follows them every time, without you repeating them. Treat it like onboarding a new team member.</div>
+      <div class="mini-head">What to include</div>
+      <div class="items">
+        <div class="item"><span class="item-icon">👤</span><div><span class="item-title">Who you are</span><span class="item-desc">"You're helping a freelance designer who works with small business clients..." — give Claude your context.</span></div></div>
+        <div class="item"><span class="item-icon">🎙️</span><div><span class="item-title">Tone</span><span class="item-desc">Formal, casual, warm, concise, detailed. Be specific — "warm but professional" beats just "friendly".</span></div></div>
+        <div class="item"><span class="item-icon">📐</span><div><span class="item-title">Format defaults</span><span class="item-desc">"Always use headers. Keep bullet lists short. Never use filler phrases."</span></div></div>
+        <div class="item"><span class="item-icon">🚫</span><div><span class="item-title">Constraints</span><span class="item-desc">"Don't suggest tools outside our approved stack." What you don't want matters as much as what you do.</span></div></div>
+        <div class="item"><span class="item-icon">📄</span><div><span class="item-title">Defaults for common words</span><span class="item-desc">"When I say document I mean a .docx file at US Letter size." Saves back-and-forth every time.</span></div></div>
+      </div>
+      <div class="prompt p-gold" style="margin-top: 20px;">
+        <span class="prompt-tag pt-gold">✏️ Writing tip that actually helps</span>
+        <div class="prompt-copy">Negatives are often more useful than positives. Instead of "be clear" try "never use jargon without explaining it". Instead of "be helpful" try "don't add advice I didn't ask for". Test with a few prompts and adjust — instructions rarely nail it first try, and that's completely normal.</div>
+      </div>
+      <div class="mini-head" style="margin-top: 22px;">Memories vs. Project Instructions — the easy rule</div>
+      <div class="compare-grid">
+        <div class="compare-col" style="border-top: 3px solid var(--sage);">
+          <div class="compare-head" style="color: var(--sage);">🧠 Memories (global)</div>
+          <ul>
+            <li>Your name</li>
+            <li>Universal tone preferences</li>
+            <li>Formatting habits you want everywhere</li>
+          </ul>
+        </div>
+        <div class="compare-col" style="border-top: 3px solid var(--gold);">
+          <div class="compare-head" style="color: var(--gold);">⚙️ Project Instructions</div>
+          <ul>
+            <li>Domain-specific rules</li>
+            <li>Role context for this project</li>
+            <li>Project-specific constraints</li>
+          </ul>
+        </div>
+      </div>
+      <p class="prose">Don't put the same thing in both places. Global preferences → Memories. Project-specific rules → Custom Instructions.</p>
+    </div>
+  </div>
+
+  <!-- §5 Work vs Hobby — TERRA (organizational/structural) -->
+  <div class="card" id="c5">
+    <div class="card-top t-terra"></div>
+    <div class="card-trigger" onclick="toggle('c5')">
+      <div class="cicon i-terra">🔀</div>
+      <div>
+        <div class="ctitle">§5 — Work Projects vs Hobby Projects</div>
+        <div class="csub">They don't bleed into each other — that's the whole system</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>One project per domain. Work projects get formal documents and instructions. Hobby projects get personal ones. They don't influence each other unless you deliberately connect them (see §6 and §7).</div>
+      <div class="compare-grid" style="margin-top: 16px;">
+        <div class="compare-col" style="border-top: 3px solid var(--sage);">
+          <div class="compare-head" style="color: var(--sage);">⚙️ Work projects</div>
+          <ul>
+            <li>Client briefs and background docs</li>
+            <li>Brand and style guides</li>
+            <li>Process documentation</li>
+            <li>Past approved outputs</li>
+            <li>Formal, precise tone</li>
+            <li>Role context in instructions</li>
+          </ul>
+        </div>
+        <div class="compare-col" style="border-top: 3px solid var(--terra);">
+          <div class="compare-head" style="color: var(--terra);">🎨 Hobby projects</div>
+          <ul>
+            <li>Reference material, inspiration</li>
+            <li>Personal style notes</li>
+            <li>Example outputs you like</li>
+            <li>Creative or world-building docs</li>
+            <li>Casual, exploratory tone</li>
+            <li>Open-ended mode encouraged</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout co-sage" style="margin-top: 18px;">
+        Keep sensitive client information in work-only projects. Data you share in a project is <strong>not used to train Claude's models</strong> without your explicit consent.
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- ADVANCED (sections 6–7) -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="advanced">📸 Advanced — sections 6 and 7</div>
+
+  <!-- §6 Snapshots — SKY (technical workflow) -->
+  <div class="card" id="c6">
+    <div class="card-top t-sky"></div>
+    <div class="card-trigger" onclick="toggle('c6')">
+      <div class="cicon i-sky">📸</div>
+      <div>
+        <div class="ctitle">§6 — Snapshotting Designs &amp; Templates</div>
+        <div class="csub">When you make something great, save it so you can reuse it</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>When you produce something great, ask Claude to turn it into a reusable template. Name it with a version number. Upload it to META: Shared Resources.</div>
+      <div class="skip-box">
+        <div class="skip-icon">⏭️</div>
+        <div>
+          <div class="skip-label">Safe to skip for now</div>
+          <div class="skip-text">This is about saving and reusing your best outputs across projects. You don't need it until you've created something worth reusing.</div>
+          <a class="skip-link" href="#top">↑ Back to top when you're ready to come back</a>
+        </div>
+      </div>
+      <div class="mini-head">First: The META Project</div>
+      <p class="prose">Create one project called <strong>META: Shared Resources</strong>. This isn't for chatting — it's your central library. Upload here:</p>
+      <div class="items">
+        <div class="item"><span class="item-icon">🎨</span><div><span class="item-title">Your master style guide</span><span class="item-desc">The definitive document for how your writing should look and sound.</span></div></div>
+        <div class="item"><span class="item-icon">📋</span><div><span class="item-title">Document templates</span><span class="item-desc">Cover page layouts, memo structures, proposal frameworks.</span></div></div>
+        <div class="item"><span class="item-icon">✅</span><div><span class="item-title">Approved example outputs</span><span class="item-desc">Your best past work that you want future work to match.</span></div></div>
+      </div>
+      <div class="mini-head" style="margin-top: 22px;">The snapshotting workflow</div>
+      <div class="steps">
+        <div class="step"><div class="step-n sn-sky">1</div><div><span class="step-t">Generate something you love</span><span class="step-d">Produce the document or design you're happy with in any project.</span></div></div>
+        <div class="step"><div class="step-n sn-sky">2</div><div><span class="step-t">Extract the template</span><span class="step-d">Ask Claude: "Turn this into a reusable template with placeholder text for project-specific content."</span></div></div>
+        <div class="step"><div class="step-n sn-sky">3</div><div><span class="step-t">Name it with a version</span><span class="step-d">"Proposal Template v1 — Mar 2026.docx" — date and version number, every time.</span></div></div>
+        <div class="step"><div class="step-n sn-sky">4</div><div><span class="step-t">Upload to META</span><span class="step-d">Now it's available to attach in any future chat in any project.</span></div></div>
+        <div class="step"><div class="step-n sn-sky">5</div><div><span class="step-t">Never overwrite old versions</span><span class="step-d">Keep old files. You may want to go back. Storage is cheap; regret is not.</span></div></div>
+      </div>
+      <div class="mini-head" style="margin-top: 22px;">Snapshotting your style guide — the most useful one</div>
+      <div class="prompt p-sky">
+        <span class="prompt-tag pt-sky">🎨 Try this prompt when you're ready</span>
+        <div class="prompt-copy">"Summarize the writing style, formatting preferences, and tone rules we've been using in this project into a reusable style guide document I can save and apply to other projects."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <p class="prose">Review the output, adjust it, save as "Style Guide — [Project Name] — v1.md", and upload to META: Shared Resources.</p>
+    </div>
+  </div>
+
+  <!-- §7 Cross-Project — TERRA (cross-boundary workflow) -->
+  <div class="card" id="c7">
+    <div class="card-top t-terra"></div>
+    <div class="card-trigger" onclick="toggle('c7')">
+      <div class="cicon i-terra">🔗</div>
+      <div>
+        <div class="ctitle">§7 — Cross-Project References</div>
+        <div class="csub">How to use a style guide from one project in another</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Claude can't automatically see documents from Project A while you're in Project B. But you can bring any document into a chat by attaching it. Three ways to do this below.</div>
+      <div class="skip-box">
+        <div class="skip-icon">⏭️</div>
+        <div>
+          <div class="skip-label">Safe to skip for now</div>
+          <div class="skip-text">Only relevant when you want to apply a style guide from one project while working in a different one.</div>
+          <a class="skip-link" href="#top">↑ Back to top when you're ready to come back</a>
+        </div>
+      </div>
+      <div class="callout co-terra">
+        Claude can only see what's in the current chat's context window. If a document is in Project A and you're in Project B, Claude can't see it. <strong>You have to bring the document in.</strong>
+      </div>
+      <div class="mini-head" style="margin-top: 20px;">Option A — Project Knowledge Base</div>
+      <div class="item" style="margin-bottom: 12px;"><span class="item-icon">⭐</span><div><span class="item-title">Best for documents you need all the time</span><span class="item-desc">Upload to that project's knowledge base. Available in every chat automatically. Right choice for your style guide, templates, and regular reference docs.</span></div></div>
+      <div class="mini-head">Option B — Attach in Chat</div>
+      <div class="item" style="margin-bottom: 12px;"><span class="item-icon">📎</span><div><span class="item-title">Best for one-off uses</span><span class="item-desc">Upload the file directly into a specific chat message. Available for that session only — doesn't clutter the knowledge base permanently.</span></div></div>
+      <div class="mini-head">Option C — The Cross-Project Prompt</div>
+      <p class="prose">When you want to use a style from another project, this is the prompt pattern to use:</p>
+      <div class="prompt p-terra">
+        <span class="prompt-tag pt-terra">📋 The template prompt</span>
+        <div class="prompt-copy">"Create a document about [[[subject and description]]] and use the style guide from the project called [[[project name]]]."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="prompt p-terra">
+        <span class="prompt-tag pt-terra">💬 Real example</span>
+        <div class="prompt-copy">"Create a document about our Q2 product roadmap (focus: mobile features, three phases) and use the style guide from the project called WORK: Brand Standards."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <p class="prose">For this to work, the style guide must also be present in the current chat. Your three options:</p>
+      <div class="tags" style="margin-top: 8px;">
+        <span class="tag tg-terra">Upload it to this project's knowledge base</span>
+        <span class="tag tg-terra">Attach it directly in this chat message</span>
+        <span class="tag tg-terra">Paste a summary into the project's custom instructions</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- DAILY USE (sections 8–9) -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="dailyuse">💬 Daily use — sections 8 and 9</div>
+
+  <!-- §8 Chat Habits — GOLD (daily personal habits) -->
+  <div class="card" id="c8">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c8')">
+      <div class="cicon i-gold">💬</div>
+      <div>
+        <div class="ctitle">§8 — Everyday Chat Habits</div>
+        <div class="csub">Small habits that save a lot of friction later</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Start a new chat when switching tasks. Write a descriptive first message. Archive anything important by asking Claude to summarize it.</div>
+      <div class="callout co-gold">
+        <strong>Think of it this way:</strong> A project is a room. A chat is a meeting that happens in it. Many chats can live in one project — they each inherit the project's context but don't interfere with each other.
+      </div>
+      <div class="mini-head" style="margin-top: 20px;">When to start a new chat</div>
+      <div class="items">
+        <div class="item"><span class="item-icon">🔄</span><div><span class="item-title">When switching to a different sub-task</span><span class="item-desc">Different tasks deserve their own thread. It keeps context clean and focused.</span></div></div>
+        <div class="item"><span class="item-icon">📏</span><div><span class="item-title">When a chat has gotten very long</span><span class="item-desc">Very long threads can get muddled. A fresh chat with the key context pasted in is often cleaner.</span></div></div>
+        <div class="item"><span class="item-icon">🌱</span><div><span class="item-title">When you want a fresh start</span><span class="item-desc">Sometimes you want Claude to approach something without the weight of the prior conversation.</span></div></div>
+      </div>
+      <div class="mini-head" style="margin-top: 22px;">Descriptive first messages matter</div>
+      <p class="prose">Your first message in a chat becomes its title in the sidebar. Make it descriptive and you'll find it again easily.</p>
+      <!-- FIX: Removed extra nested div that was here in V4 -->
+      <div class="compare-grid">
+        <div class="compare-col">
+          <div class="compare-head" style="color: var(--terra);">😬 Hard to find later</div>
+          <ul>
+            <li>"hey"</li>
+            <li>"help me"</li>
+            <li>"continue from before"</li>
+          </ul>
+        </div>
+        <div class="compare-col">
+          <div class="compare-head" style="color: var(--sage);">✅ Easy to find later</div>
+          <ul>
+            <li>"Draft Q3 roadmap email to stakeholders"</li>
+            <li>"Revise chapter 3 opening — more tension"</li>
+            <li>"Proposal for Acme website refresh"</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mini-head" style="margin-top: 22px;">Saving a valuable chat</div>
+      <div class="prompt p-gold">
+        <span class="prompt-tag pt-gold">🗂️ Archive a chat's key outputs</span>
+        <div class="prompt-copy">"Summarize the key outputs and decisions from this conversation into a structured document I can save and reference later."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <p class="prose">Save or export the result, then upload to your project knowledge base so future chats can reference it.</p>
+    </div>
+  </div>
+
+  <!-- §9 Good to Know — SAGE (grounding tips) -->
+  <!-- FIX: Now has its own sec-label context, no orphaned placement, no inline margin hack -->
+  <div class="card" id="c9">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c9')">
+      <div class="cicon i-sage">🌿</div>
+      <div>
+        <div class="ctitle">§9 — A Few More Things Worth Knowing</div>
+        <div class="csub">When you've got the basics down</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="mini-head">Version your documents</div>
+      <p class="prose">Claude regenerates things slightly differently each time. If an output matters, save it immediately. Use: <strong>DocumentName — vN — YYYY-MM.ext</strong>. Upload approved versions to your project knowledge base so you can reference them explicitly in future chats.</p>
+      <div class="mini-head" style="margin-top: 20px;">Iterate your custom instructions</div>
+      <p class="prose">Your instructions will get better over time. After a few sessions, note what Claude got wrong and adjust. Keep a "v1", "v2" archive so you can roll back if a change makes things worse.</p>
+      <div class="mini-head" style="margin-top: 20px;">When NOT to use a project</div>
+      <div class="items">
+        <div class="item"><span class="item-icon">✨</span><div><span class="item-title">Use a regular chat for...</span><span class="item-desc">One-off questions, quick experiments, tasks where you'll never need the context again. Projects add value when you need persistence and consistency. For everything else, a regular chat is faster and simpler.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- SCENARIOS — now inside an accordion card -->
+  <!-- FIX: wrapped in card so they're collapsed by default, consistent with the rest of the guide -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="scenarios">📌 Real-life scenarios</div>
+
+  <div class="card" id="c10">
+    <div class="card-top t-terra"></div>
+    <div class="card-trigger" onclick="toggle('c10')">
+      <div class="cicon i-terra">📌</div>
+      <div>
+        <div class="ctitle">Two Scenarios, Start to Finish</div>
+        <div class="csub">See how all the pieces work together in practice</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="scenario sc-sage">
+        <div class="sc-head">📌 Scenario 1 — Writing a work proposal</div>
+        <div class="sc-steps">
+          <div class="sc-step"><div class="sc-step-n">1.</div><div>Open <strong>WORK: [Client Name]</strong> project.</div></div>
+          <div class="sc-step"><div class="sc-step-n">2.</div><div>Claude already has your brief, brand standards, past proposals, and tone guide — no re-uploading.</div></div>
+          <div class="sc-step"><div class="sc-step-n">3.</div><div>Start a new chat: <em>"Draft a proposal for the Q3 website refresh project."</em></div></div>
+          <div class="sc-step"><div class="sc-step-n">4.</div><div>Iterate. When happy, ask Claude to extract a reusable Proposal Template.</div></div>
+          <div class="sc-step"><div class="sc-step-n">5.</div><div>Save as "Proposal Template v2 — Mar 2026.docx". Upload to META: Shared Resources.</div></div>
+          <div class="sc-step"><div class="sc-step-n">6.</div><div>Next proposal: open a new chat in the same project. Everything is still there.</div></div>
+        </div>
+      </div>
+      <div class="scenario sc-terra">
+        <div class="sc-head">📌 Scenario 2 — Hobby project using a work style guide</div>
+        <div class="sc-steps">
+          <div class="sc-step sc-terra"><div class="sc-step-n">1.</div><div>Open your <strong>HOBBY: [Project]</strong> chat.</div></div>
+          <div class="sc-step sc-terra"><div class="sc-step-n">2.</div><div>Attach your work style guide file directly in the chat message.</div></div>
+          <div class="sc-step sc-terra"><div class="sc-step-n">3.</div><div>Prompt: <em>"Create a document about [subject] using this style guide."</em></div></div>
+          <div class="sc-step sc-terra"><div class="sc-step-n">4.</div><div>Claude reads the attached file as part of this conversation.</div></div>
+          <div class="sc-step sc-terra"><div class="sc-step-n">5.</div><div>If you use that style guide often in this project, upload it to the hobby project's knowledge base — then you won't need to attach it each time.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- QUICK REFERENCE — now inside an accordion card, starts open -->
+  <!-- FIX: wrapped in card for consistency; starts open since it's the "cheat sheet" destination -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="quickref">📋 Quick reference</div>
+
+  <div class="card open" id="c11">
+    <div class="card-top t-sky"></div>
+    <div class="card-trigger" onclick="toggle('c11')">
+      <div class="cicon i-sky">📋</div>
+      <div>
+        <div class="ctitle">The Cheat Sheet</div>
+        <div class="csub">Everything in one place — tap any row to remind yourself how</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="ref-wrap">
+        <table class="ref-table">
+          <tr><th>I want to...</th><th>Here's how</th></tr>
+          <tr><td>Add a style guide to a project</td><td>Upload to project knowledge base → available in all chats automatically</td></tr>
+          <tr><td>Use a style guide from another project</td><td>Attach the file in the current chat, or copy it to this project's knowledge base</td></tr>
+          <tr><td>Snapshot a template</td><td>Ask Claude to extract it → download → upload to META project with version name</td></tr>
+          <tr><td>Apply styles across projects</td><td>Attach that project's style guide file directly in your current chat message</td></tr>
+          <tr><td>Keep chats organized</td><td>Write a descriptive first message — it becomes the searchable chat title</td></tr>
+          <tr><td>Save an important chat</td><td>Ask Claude to summarize outputs → save → upload to project knowledge base</td></tr>
+          <tr><td>Improve Claude's behavior</td><td>Edit Custom Instructions in Project settings; keep a version archive</td></tr>
+          <tr><td>Separate work and hobby</td><td>Separate projects with prefix naming: WORK:, HOBBY:, META:</td></tr>
+          <tr><td>Use one doc in many projects</td><td>Put it in META: Shared Resources and attach it in chats as needed</td></tr>
+          <tr><td>Stop re-explaining everything</td><td>Put your context in a project. That's literally the whole trick.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- PERMISSION SLIP — now a full card, not a bare callout -->
+  <!-- FIX: given its own card with gold color bar, icon, title — matches the source guide's treatment -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="card" id="c12" style="margin-top: 24px;">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c12')">
+      <div class="cicon i-gold">💛</div>
+      <div>
+        <div class="ctitle">Your Permission Slip</div>
+        <div class="csub">Read this one whenever you need it</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="callout co-gold">
+        You are allowed to use this <strong>imperfectly.</strong><br>
+        You're allowed to set up one thing and ignore the rest for a week.<br>
+        You're allowed to come back to sections only when you actually need them.<br>
+        You're allowed to start with a single project and see how it goes.<br><br>
+        <strong>There is no wrong way to get organized.</strong>
+      </div>
+      <div class="permit-items">
+        <div class="permit-item"><span class="item-icon">✅</span><div><span class="item-title">You don't need Cowork or advanced features to benefit from Claude</span><span class="item-desc">A single project with one uploaded document is a complete, useful setup. Start there.</span></div></div>
+        <div class="permit-item"><span class="item-icon">✅</span><div><span class="item-title">You don't need perfect prompts</span><span class="item-desc">Half-finished sentences and messy instructions still work. Claude figures out what you mean.</span></div></div>
+        <div class="permit-item"><span class="item-icon">✅</span><div><span class="item-title">You can say "that's not quite right, try again"</span><span class="item-desc">Claude is happy to try differently. It doesn't take it personally. There's no awkwardness.</span></div></div>
+        <div class="permit-item"><span class="item-icon">✅</span><div><span class="item-title">You can take this as slow as you need to</span><span class="item-desc">One new thing per week is a great pace. Seriously — there's no rush and no grade.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <p class="big">You've got this. 🌿</p>
+  <p>Chats, projects, style guides — one piece at a time.<br>
+  Everything in this guide will still be here when you need it.<br>
+  No deadline. No test. Just you and a patient assistant.</p>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</footer>
+
+<script>
+function toggle(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('open');
+}
+function copyPrompt(btn) {
+  const text = btn.previousElementSibling.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FPLE Teaching Tools — Setup Guide · Release 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:       #fdf8f2;
+  --white:       #fffdf9;
+  --sage:        #5e9180;
+  --sage-mid:    #a8ccbf;
+  --sage-pale:   #eaf3f0;
+  --sage-dark:   #3d6b5a;
+  --terra:       #c8714a;
+  --terra-mid:   #e8ab92;
+  --terra-pale:  #fdf0e8;
+  --gold:        #c49520;
+  --gold-mid:    #e0c070;
+  --gold-pale:   #fdf5dc;
+  --amber:       #b87820;
+  --amber-pale:  #fdf3dc;
+  --amber-mid:   #e0c88a;
+  --success:     #4a8f6a;
+  --success-pale:#edf7f1;
+  --success-mid: #c4e8d4;
+  --ink-soft:    #6b6b6b;
+  --text:        #2d2d2d;
+  --mid:         #5a5a5a;
+  --soft:        #8a8a8a;
+  --border:      rgba(0,0,0,0.08);
+  --shadow:      0 4px 24px rgba(0,0,0,0.07);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--text); line-height: 1.7; }
+
+/* ── NAV ── */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(253,248,242,0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { background:none; border:none; cursor:pointer; padding:0; font-family:'Nunito',sans-serif;
+  font-weight: 900; font-size: 16px; color: var(--sage-dark);
+  text-decoration: none; display: flex; align-items: center; gap: 7px;
+  letter-spacing: -0.3px; flex-shrink: 0;
+}
+.nav-brand span { color: var(--sage); }
+
+/* Desktop links */
+.nav-links {
+  display: flex; align-items: center; gap: 4px;
+  list-style: none;
+}
+.nav-links a, .nav-links button {
+  display: block; padding: 6px 11px;
+  font-size: 12px; font-weight: 700; color: var(--mid);
+  text-decoration: none; border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.nav-links a:hover, .nav-links button:hover { background: var(--sage-pale); color: var(--sage-dark); }
+.nav-links a.nl-gold, .nav-links button.nl-gold {
+  background: var(--gold-pale); color: var(--gold);
+  border: 1px solid var(--gold-mid); font-weight: 900;
+}
+.nav-links a.nl-gold:hover, .nav-links button.nl-gold:hover { background: var(--gold); color: white; }
+.nav-links a.nl-dim, .nav-links button.nl-dim { color: var(--soft); }
+
+/* Hamburger button — mobile only */
+.nav-burger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer;
+  padding: 8px; border-radius: 8px;
+  transition: background 0.15s;
+}
+.nav-burger:hover { background: var(--sage-pale); }
+.nav-burger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: all 0.25s ease;
+}
+.nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Drawer — mobile */
+.nav-drawer {
+  display: none;
+  position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+  z-index: 199;
+  background: rgba(253,248,242,0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 16px 20px 32px;
+  overflow-y: auto;
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.nav-drawer.open {
+  display: block;
+  opacity: 1; transform: translateY(0);
+  pointer-events: all;
+}
+.nav-drawer-section {
+  font-size: 10px; font-weight: 800; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--soft);
+  padding: 16px 0 8px; display: block;
+}
+.nav-drawer-section:first-child { padding-top: 4px; }
+.nav-drawer a, .nav-drawer button {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 14px; margin-bottom: 4px;
+  font-size: 15px; font-weight: 700; color: var(--text);
+  text-decoration: none; border-radius: 12px;
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+.nav-drawer a:hover, .nav-drawer button:hover { background: var(--sage-pale); border-color: var(--sage-mid); color: var(--sage-dark); }
+.nav-drawer a .nd-icon, .nav-drawer button .nd-icon { font-size: 18px; width: 28px; text-align: center; }
+.nav-drawer a.nd-gold, .nav-drawer button.nd-gold {
+  background: var(--gold-pale); border-color: var(--gold-mid);
+  color: var(--gold); font-weight: 900;
+}
+.nav-drawer a.nd-gold:hover, .nav-drawer button.nd-gold:hover { background: var(--gold); color: white; border-color: var(--gold); }
+.nav-drawer a.nd-dim, .nav-drawer button.nd-dim { color: var(--soft); }
+.nav-drawer-divider { height: 1px; background: var(--border); margin: 8px 0; }
+
+@media (max-width: 780px) {
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+}
+@media (min-width: 781px) {
+  .nav-drawer { display: none !important; }
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, #eaf3f0 0%, #fdf5dc 55%, #fdf0e8 100%);
+  padding: 64px 24px 52px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.hero::before, .hero::after {
+  content: ''; position: absolute; border-radius: 50%; pointer-events: none;
+}
+.hero::before {
+  width: 340px; height: 340px; top: -130px; right: -90px;
+  background: radial-gradient(circle, rgba(94,145,128,0.15) 0%, transparent 70%);
+}
+.hero::after {
+  width: 280px; height: 280px; bottom: -90px; left: -70px;
+  background: radial-gradient(circle, rgba(200,113,74,0.12) 0%, transparent 70%);
+}
+.hero-eyebrow {
+  display: inline-block; background: var(--white);
+  color: var(--sage); font-weight: 800; font-size: 11px;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  padding: 6px 18px; border-radius: 20px;
+  border: 1.5px solid var(--sage-mid);
+  margin-bottom: 22px; position: relative; z-index: 1;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 48px); font-weight: 700;
+  color: var(--text); line-height: 1.2;
+  margin-bottom: 18px; position: relative; z-index: 1;
+}
+.hero h1 em { color: var(--sage); font-style: italic; }
+.hero-sub {
+  font-size: 16px; color: var(--mid);
+  max-width: 560px; margin: 0 auto 30px;
+  line-height: 1.85; position: relative; z-index: 1;
+}
+.hero-chips {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center; position: relative; z-index: 1;
+}
+.chip {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 24px; padding: 8px 18px;
+  font-size: 13px; font-weight: 700; color: var(--mid);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* ── BREATHE BOX ── */
+.breathe {
+  background: linear-gradient(135deg, var(--sage-pale), #f5f9f7);
+  border-left: 4px solid var(--sage); border-radius: 14px;
+  padding: 24px 30px; margin: 36px auto;
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 16px;
+  color: var(--text); line-height: 1.85; text-align: center;
+}
+.breathe strong { font-style: normal; color: var(--sage); }
+
+/* ── WHERE-TO-START MAP ── */
+.start-map {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin: 18px 0;
+}
+@media (max-width: 540px) { .start-map { grid-template-columns: 1fr; } }
+.smap-card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 16px; padding: 20px 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s; text-decoration: none; display: block; cursor: pointer;
+}
+.smap-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.09); }
+.smap-card.ac-terra  { border-top: 3px solid var(--terra); }
+.smap-card.ac-sage   { border-top: 3px solid var(--sage); }
+.smap-card.ac-gold   { border-top: 3px solid var(--gold); }
+.smap-card.ac-amber  { border-top: 3px solid var(--amber); }
+.smap-title { font-size: 15px; font-weight: 900; margin-bottom: 6px; }
+.smap-title.sg { color: var(--sage); }
+.smap-title.tr { color: var(--terra); }
+.smap-title.go { color: var(--gold); }
+.smap-title.am { color: var(--amber); }
+.smap-desc { font-size: 13px; color: var(--mid); line-height: 1.65; }
+.smap-action { font-size: 13px; font-weight: 800; color: var(--text); margin-top: 8px; }
+
+/* ── LAYOUT ── */
+.wrap { max-width: 760px; margin: 0 auto; padding: 8px 20px 64px; }
+.sec-label {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 11px; font-weight: 800; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--soft); margin: 52px 0 18px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.sec-label-sub {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--soft); margin: 28px 0 14px;
+}
+.sec-label-sub::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── ACCORDION CARDS ── */
+.card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 20px; margin-bottom: 14px;
+  box-shadow: var(--shadow); overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.10); }
+.card-top { height: 4px; width: 100%; }
+.t-sage    { background: linear-gradient(90deg, var(--sage),    var(--sage-mid)); }
+.t-terra   { background: linear-gradient(90deg, var(--terra),   var(--terra-mid)); }
+.t-gold    { background: linear-gradient(90deg, var(--gold),    var(--gold-mid)); }
+.t-amber   { background: linear-gradient(90deg, var(--amber),   var(--amber-mid)); }
+.t-success { background: linear-gradient(90deg, var(--success), var(--success-mid)); }
+
+/* ── sub-card (indented, nested doc builders) ── */
+.sub-card {
+  background: var(--cream); border: 1.5px solid var(--border);
+  border-left: 3px solid var(--sage);
+  border-radius: 14px; margin: 0 0 12px 0;
+  overflow: hidden;
+}
+.sub-card.sc-terra { border-left-color: var(--terra); }
+.sub-card.sc-gold  { border-left-color: var(--gold); }
+.sub-card-trigger {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 18px; cursor: pointer; user-select: none;
+}
+.sub-card-trigger:hover { background: rgba(0,0,0,0.02); }
+.sub-ctitle { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 1px; }
+.sub-csub   { font-size: 11px; font-weight: 700; color: var(--soft); }
+.sub-carrow { margin-left: auto; font-size: 18px; color: var(--soft); flex-shrink: 0; transition: transform 0.3s ease; }
+.sub-card.open .sub-carrow { transform: rotate(45deg); }
+.sub-card-body {
+  display: none; padding: 0 18px 18px;
+  border-top: 1px solid var(--border);
+  animation: slideIn 0.2s ease;
+}
+.sub-card.open .sub-card-body { display: block; }
+
+.card-trigger {
+  display: flex; align-items: center; gap: 16px;
+  padding: 22px 24px; cursor: pointer; user-select: none;
+}
+.cicon {
+  width: 50px; height: 50px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.i-sage    { background: var(--sage-pale); }
+.i-terra   { background: var(--terra-pale); }
+.i-gold    { background: var(--gold-pale); }
+.i-amber   { background: var(--amber-pale); }
+.i-success { background: var(--success-pale); }
+.ctitle { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+.csub   { font-size: 12px; font-weight: 700; color: var(--soft); }
+.carrow {
+  margin-left: auto; font-size: 22px; color: var(--soft);
+  flex-shrink: 0; transition: transform 0.3s ease; line-height: 1;
+}
+.card.open .carrow { transform: rotate(45deg); }
+.card-body {
+  display: none; padding: 0 24px 26px;
+  border-top: 1px solid var(--border);
+  animation: slideIn 0.25s ease;
+}
+.card.open .card-body { display: block; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── TL;DR STRIP ── */
+.tldr {
+  background: var(--sage-pale); border-left: 4px solid var(--sage);
+  border-radius: 10px; padding: 14px 18px; margin: 16px 0 18px;
+  font-size: 14px; color: var(--mid); line-height: 1.7; text-align: left;
+}
+.tldr strong {
+  color: var(--sage); font-weight: 800; font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  display: block; margin-bottom: 4px;
+}
+
+/* ── BODY TEXT ── */
+.prose { font-size: 15px; color: var(--mid); line-height: 1.85; margin: 14px 0 12px; }
+.prose strong { color: var(--text); font-weight: 800; }
+.mini-head {
+  font-size: 11px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--soft); margin: 24px 0 12px;
+}
+
+/* ── PATH BREADCRUMB ── */
+.path {
+  display: inline-flex; align-items: center; flex-wrap: wrap; gap: 2px;
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 8px; padding: 5px 10px; margin: 6px 0;
+  font-size: 12px; font-weight: 700; color: var(--mid);
+}
+.path span { color: var(--sage-dark); }
+.path .sep { color: var(--soft); margin: 0 2px; }
+
+/* ── STEPS ── */
+.steps { display: flex; flex-direction: column; gap: 14px; margin: 14px 0; }
+.step { display: flex; gap: 14px; align-items: flex-start; }
+.step-n {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 13px; color: white;
+  flex-shrink: 0; margin-top: 2px;
+}
+.sn-sage  { background: var(--sage); }
+.sn-terra { background: var(--terra); }
+.sn-gold  { background: var(--gold); }
+.step-t { font-weight: 800; font-size: 14px; color: var(--text); display: block; margin-bottom: 4px; }
+.step-d { font-size: 13px; color: var(--mid); line-height: 1.7; }
+.step-note {
+  font-size: 12px; color: var(--soft); font-style: italic;
+  margin-top: 6px; display: block;
+  border-left: 2px solid var(--border); padding-left: 10px;
+}
+
+/* ── MINI STEPS (inside sub-steps) ── */
+.mini-steps { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 4px; }
+.mini-step {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 13px; color: var(--mid); line-height: 1.6;
+}
+.mini-step-n {
+  min-width: 20px; height: 20px; border-radius: 50%;
+  background: var(--border); color: var(--mid);
+  font-size: 10px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+
+/* ── DONE WHEN ── */
+.done-box {
+  background: var(--success-pale); border: 1.5px solid var(--success-mid);
+  border-radius: 12px; padding: 14px 18px; margin: 20px 0 4px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.done-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.done-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--success); margin-bottom: 3px; display: block; }
+.done-text { font-size: 13px; color: var(--mid); line-height: 1.65; }
+
+/* ── SKIP BOX ── */
+.skip-box {
+  background: #f8f5ff; border: 1.5px dashed #c4b8e8;
+  border-radius: 14px; padding: 16px 20px; margin: 16px 0;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.skip-icon { font-size: 20px; flex-shrink: 0; }
+.skip-label { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #8b72c8; margin-bottom: 4px; display: block; }
+.skip-text { font-size: 13px; color: var(--mid); line-height: 1.65; }
+
+/* ── CALLOUTS ── */
+.callout {
+  border-radius: 14px; padding: 18px 22px; margin: 16px 0;
+  font-size: 14px; color: var(--text); line-height: 1.8;
+}
+.callout strong { font-weight: 800; }
+.co-sage   { background: var(--sage-pale);  border: 1.5px solid var(--sage-mid); }
+.co-terra  { background: var(--terra-pale); border: 1.5px solid var(--terra-mid); }
+.co-gold   { background: var(--gold-pale);  border: 1.5px solid var(--gold-mid); }
+.co-amber  { background: var(--amber-pale); border: 1.5px solid var(--amber-mid); }
+
+/* ── TEMPLATE BLOCK ── */
+.template-block {
+  background: var(--cream); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 16px 18px; margin: 12px 0;
+  font-size: 13px; color: var(--mid); line-height: 1.8;
+}
+.template-block .t-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--sage-dark); margin-bottom: 8px; display: block;
+}
+.template-block .t-field {
+  display: flex; gap: 8px; align-items: baseline;
+  padding: 5px 0; border-bottom: 1px solid var(--border);
+}
+.template-block .t-field:last-child { border-bottom: none; }
+.template-block .t-field-name {
+  font-weight: 800; color: var(--text); min-width: 140px; font-size: 13px;
+}
+.template-block .t-field-val { color: var(--soft); font-style: italic; font-size: 12px; }
+
+/* ── SEAM BOX ── */
+.seam-box {
+  background: var(--amber-pale); border: 1.5px solid var(--amber-mid);
+  border-left: 4px solid var(--amber);
+  border-radius: 12px; padding: 16px 20px; margin: 16px 0;
+}
+.seam-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 6px; display: block;
+}
+.seam-title { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.seam-text { font-size: 13px; color: var(--mid); line-height: 1.7; }
+.seam-fix {
+  font-size: 13px; color: var(--text);
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid var(--amber-mid);
+  line-height: 1.75;
+}
+
+/* ── STACK TABLE ── */
+.stack-table-wrap { border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; margin: 16px 0; }
+.stack-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.stack-table th {
+  background: var(--sage-dark); color: white;
+  font-weight: 800; font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; padding: 11px 14px; text-align: left;
+}
+.stack-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.stack-table tr:last-child td { border-bottom: none; background: var(--sage-pale); }
+.stack-table tr:nth-child(even) td { background: rgba(234,243,240,0.5); }
+.stack-table td:first-child { font-weight: 800; color: var(--sage-dark); }
+.stack-table td:last-child { font-weight: 800; color: var(--terra); text-align: right; white-space: nowrap; }
+.stack-table td:nth-child(2) { color: var(--mid); line-height: 1.55; }
+.stack-total td { font-weight: 900 !important; color: white !important; background: var(--sage-dark) !important; }
+
+/* ── WEEK PLAN ── */
+.week-block { margin-bottom: 24px; }
+.week-label {
+  font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--sage-dark); margin-bottom: 12px; display: block;
+  padding-bottom: 6px; border-bottom: 2px solid var(--sage-pale);
+}
+.week-items { display: flex; flex-direction: column; gap: 8px; }
+.week-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 15px;
+}
+.week-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--sage); color: white;
+  font-size: 11px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.week-num.terra { background: var(--terra); }
+.week-num.gold  { background: var(--gold); }
+.week-text { font-size: 13px; color: var(--mid); line-height: 1.6; }
+.week-text strong { color: var(--text); font-weight: 800; }
+
+/* ── LESSON TYPE TABS ── */
+.ltype-tabs {
+  display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0;
+}
+.ltype-tab {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 6px 14px;
+  font-size: 12px; font-weight: 800; color: var(--mid);
+  cursor: pointer; transition: all 0.18s; user-select: none;
+}
+.ltype-tab:hover { background: var(--sage-pale); color: var(--sage); border-color: var(--sage-mid); }
+.ltype-tab.active { background: var(--sage-dark); color: white; border-color: var(--sage-dark); }
+.ltype-panel { display: none; margin-top: 12px; animation: slideIn 0.2s ease; }
+.ltype-panel.active { display: block; }
+.template-block .t-group {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--sage-dark);
+  padding: 10px 0 4px; display: block;
+  border-bottom: 1px solid var(--border); margin-bottom: 2px;
+}
+.phase-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  margin-bottom: 16px;
+}
+.phase-n {
+  min-width: 26px; height: 26px; border-radius: 50%;
+  background: var(--sage-pale); border: 1.5px solid var(--sage-mid);
+  color: var(--sage-dark); font-size: 11px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  margin-top: 2px;
+}
+.phase-t { font-size: 14px; font-weight: 800; color: var(--text); display: block; margin-bottom: 3px; }
+.phase-d { font-size: 13px; color: var(--mid); line-height: 1.7; }
+.prompt-box {
+  background: #f3f0fa; border: 1.5px solid #d4cce8;
+  border-left: 3px solid #9b8dc8;
+  border-radius: 10px; padding: 12px 16px; margin: 8px 0;
+  font-size: 13px; font-style: italic; color: var(--text); line-height: 1.75;
+}
+.prompt-box strong { font-style: normal; font-size: 10px; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase; color: #9b8dc8; display: block; margin-bottom: 4px; }
+
+/* ── INLINE LINKS ── */
+a.ilink {
+  color: var(--sage-dark); font-weight: 800;
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--sage-mid);
+  transition: color 0.15s, border-color 0.15s;
+}
+a.ilink:hover { color: var(--sage); border-bottom-color: var(--sage); }
+a.ilink-terra {
+  color: var(--terra); font-weight: 800;
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--terra-mid);
+  transition: color 0.15s, border-color 0.15s;
+}
+a.ilink-terra:hover { color: var(--terra); opacity: 0.8; }
+
+/* ── ORG RULES ── */
+.org-rule {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 14px; border-radius: 10px; margin-bottom: 7px;
+  background: var(--white); border: 1px solid var(--border);
+  font-size: 13px; color: var(--mid); line-height: 1.65;
+}
+.org-rule-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.org-rule strong { color: var(--text); font-weight: 800; display: block; margin-bottom: 1px; }
+.org-rule.or-never { background: #fff5f3; border-color: #f5c6bc; }
+.org-rule.or-never strong { color: var(--terra); }
+.org-rule.or-always { background: var(--sage-pale); border-color: var(--sage-mid); }
+.org-rule.or-always strong { color: var(--sage-dark); }
+.tree {
+  font-family: 'Courier New', monospace; font-size: 13px;
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px;
+  line-height: 2; color: var(--text); margin: 12px 0;
+}
+.tree .t-folder { color: var(--sage-dark); font-weight: 800; }
+.tree .t-file   { color: var(--mid); }
+.tree .t-note   { color: var(--soft); font-style: italic; font-size: 11px; }
+
+/* ── LEVEL UP SECTION ── */
+.lu-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin: 14px 0;
+}
+@media (max-width: 560px) { .lu-grid { grid-template-columns: 1fr; } }
+.lu-card {
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 18px;
+}
+.lu-card-head {
+  font-size: 13px; font-weight: 900; color: var(--text);
+  margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+}
+.lu-card-body { font-size: 13px; color: var(--mid); line-height: 1.7; }
+.prompt-group { margin: 14px 0; }
+.prompt-group-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--soft);
+  margin-bottom: 8px; display: block;
+}
+.prompt-box-stack { display: flex; flex-direction: column; gap: 8px; }
+.risk-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--amber-pale); border: 1px solid var(--amber-mid);
+  border-left: 3px solid var(--amber);
+  border-radius: 10px; padding: 13px 15px; margin-bottom: 8px;
+}
+.risk-fix {
+  background: var(--success-pale); border: 1px solid var(--success-mid);
+  border-left: 3px solid var(--success);
+  border-radius: 10px; padding: 13px 15px; margin-bottom: 8px;
+  font-size: 13px; color: var(--mid); line-height: 1.7;
+}
+.risk-fix strong { color: var(--success); font-weight: 800; }
+.risk-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.risk-label { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 3px; display: block; }
+.risk-text { font-size: 13px; color: var(--mid); line-height: 1.65; }
+.tag {
+  display: inline-block; border-radius: 6px; padding: 2px 8px;
+  font-size: 10px; font-weight: 800; letter-spacing: 1px;
+  text-transform: uppercase; margin-left: 6px; vertical-align: middle;
+}
+.tag-chrome { background: #e8f4fb; color: #2b6fa6; border: 1px solid #b8d8ef; }
+.tag-claude { background: var(--sage-pale); color: var(--sage-dark); border: 1px solid var(--sage-mid); }
+
+/* ── RESOURCE GRID ── */
+.res-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin: 16px 0;
+}
+@media (max-width: 520px) { .res-grid { grid-template-columns: 1fr; } }
+.res-item {
+  display: flex; flex-direction: column; gap: 3px;
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 12px; padding: 13px 16px;
+  text-decoration: none; transition: box-shadow 0.18s;
+}
+.res-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
+.res-item-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--soft); margin-bottom: 2px;
+}
+.res-item-name { font-size: 14px; font-weight: 800; color: var(--text); }
+.res-item-url  { font-size: 12px; color: var(--sage-dark); }
+
+/* ── DOC LINK BUTTON ── */
+.doc-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--white); border: 1.5px solid var(--sage-mid);
+  border-radius: 8px; padding: 6px 12px; margin: 4px 4px 4px 0;
+  font-size: 12px; font-weight: 800; color: var(--sage-dark);
+  cursor: pointer; text-decoration: none; transition: all 0.18s;
+}
+.doc-link:hover { background: var(--sage-pale); border-color: var(--sage); }
+
+/* ── PERMISSION ITEMS ── */
+.permit-items { display: flex; flex-direction: column; gap: 9px; margin-top: 16px; }
+.permit-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--gold-pale); border: 1px solid #e8d090;
+  border-radius: 12px; padding: 13px 16px;
+}
+.item-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.item-title { font-weight: 800; font-size: 14px; color: var(--text); display: block; margin-bottom: 2px; }
+.item-desc  { font-size: 13px; color: var(--mid); line-height: 1.6; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--sage-pale); border-top: 1.5px solid var(--sage-mid);
+  padding: 48px 24px; text-align: center;
+}
+footer .big {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; color: var(--sage);
+  font-style: italic; margin-bottom: 12px;
+}
+footer p { font-size: 14px; color: var(--mid); line-height: 1.9; }
+footer .back-top { background:none; border:1.5px solid var(--sage-mid); cursor:pointer; font-family:'Nunito',sans-serif;
+  display: inline-block; margin-top: 20px;
+  background: var(--white); border: 1.5px solid var(--sage-mid);
+  border-radius: 20px; padding: 6px 18px;
+  font-size: 12px; font-weight: 700; color: var(--sage);
+  text-decoration: none; transition: all 0.2s;
+}
+footer .back-top:hover { background: var(--sage); color: var(--white); }
+
+/* ── PROGRESS BAR (global sticky) ── */
+.progress-bar-wrap {
+  position: sticky; top: 56px; z-index: 190;
+  background: rgba(253,248,242,0.97);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px; height: 38px;
+  display: flex; align-items: center; gap: 14px;
+}
+.pb-label { font-size: 11px; font-weight: 800; color: var(--sage-dark); letter-spacing: 0.3px; white-space: nowrap; min-width: 130px; }
+.pb-track  { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.pb-fill   { height: 100%; width: 0%; background: linear-gradient(90deg, var(--sage), var(--gold)); border-radius: 99px; transition: width 0.55s cubic-bezier(0.4,0,0.2,1); }
+.pb-count  { font-size: 11px; font-weight: 900; color: var(--sage-dark); min-width: 32px; text-align: right; }
+
+/* ── SCROLL OFFSET (nav 56px + bar 38px) ── */
+html { scroll-padding-top: 94px; }
+
+/* ── COMPLETED CARD ── */
+.card.completed .card-top { background: linear-gradient(90deg, var(--success), var(--success-mid)) !important; }
+.card.completed .card-trigger { background: linear-gradient(135deg, var(--success-pale) 0%, rgba(237,247,241,0.35) 100%); }
+.card.completed .cicon { background: var(--success-pale) !important; }
+.card.completed .ctitle { color: var(--success); }
+.card-trigger { position: relative; }
+
+/* ── STAMP BADGE ── */
+.stamp-badge {
+  display: none;
+  position: absolute; top: 50%; right: 60px;
+  transform: translateY(-50%) rotate(-3deg) scale(0);
+  background: var(--success); color: white;
+  font-size: 10px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 5px 13px; border-radius: 20px;
+  box-shadow: 0 3px 14px rgba(74,143,106,0.45);
+  transform-origin: center;
+  pointer-events: none; white-space: nowrap;
+}
+.card.completed .stamp-badge {
+  display: block;
+  animation: stampIn 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+@keyframes stampIn {
+  0%   { transform: translateY(-50%) rotate(-3deg) scale(0); opacity:0; }
+  65%  { transform: translateY(-50%) rotate(-3deg) scale(1.18); opacity:1; }
+  100% { transform: translateY(-50%) rotate(-3deg) scale(1);    opacity:1; }
+}
+
+/* ── NAV DONE STATE ── */
+.nav-links a.nl-done, .nav-links button.nl-done { color: var(--success) !important; background: var(--success-pale) !important; }
+.nav-links a.nl-done .nl-check { display: inline; }
+.nl-check { display: none; }
+
+/* ── STEP CHECKBOX ── */
+.step-check {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 2px solid var(--border); background: var(--white);
+  cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: transparent;
+  transition: all 0.18s ease; margin-top: 4px;
+  -webkit-tap-highlight-color: transparent; line-height: 1;
+}
+.step-check:hover { border-color: var(--sage-mid); background: var(--sage-pale); }
+.step-check.checked { background: var(--success); border-color: var(--success); color: white; font-size: 13px; }
+.step.step-done .step-t { text-decoration: line-through; color: var(--soft); }
+.step.step-done .step-d, .step.step-done .step-note { opacity: 0.55; }
+.step.step-done .step-n { opacity: 0.4; }
+
+/* ── CARD MINI PROGRESS BAR ── */
+.card-mini-prog {
+  display: flex; align-items: center; gap: 10px;
+  margin: 14px 0 4px; padding: 9px 14px;
+  background: var(--cream); border-radius: 10px; border: 1px solid var(--border);
+}
+.cmp-lbl   { font-size: 11px; font-weight: 800; color: var(--soft); white-space: nowrap; min-width: 62px; }
+.cmp-track { flex: 1; height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.cmp-bar   { height: 100%; width: 0%; background: var(--success); border-radius: 99px; transition: width 0.38s ease; }
+
+/* ── MARK DONE BUTTON ── */
+.mark-done-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--white); border: 2px solid var(--success-mid);
+  color: var(--success); font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 800;
+  padding: 11px 22px; border-radius: 99px;
+  cursor: pointer; margin-top: 14px; transition: all 0.2s;
+}
+.mark-done-btn:hover { background: var(--success); color: white; border-color: var(--success); transform: translateY(-2px); box-shadow: 0 5px 18px rgba(74,143,106,0.28); }
+.mark-done-btn.is-done { background: var(--success-pale); color: var(--success); font-size: 12px; }
+.mark-done-btn.is-done:hover { background: #fef2f2; color: #c44; border-color: #f5a5a5; box-shadow: none; transform: none; }
+
+/* ── DEPENDENCY NOTICE ── */
+.dep-notice {
+  border-radius: 12px; padding: 12px 16px; margin: 14px 0 18px;
+  font-size: 13px; line-height: 1.65;
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--amber-pale); border: 1.5px solid var(--amber-mid); color: var(--text);
+}
+.dep-notice.dep-met { background: var(--success-pale); border-color: var(--success-mid); }
+.dep-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── CELEBRATION OVERLAY ── */
+#fple-celebration {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(253,248,242,0.97);
+  align-items: center; justify-content: center;
+  flex-direction: column; text-align: center; padding: 40px;
+}
+#fple-celebration.show { display: flex; animation: celFade 0.4s ease; }
+@keyframes celFade { from { opacity:0; transform: scale(0.96); } to { opacity:1; transform: scale(1); } }
+.cel-emoji { font-size: 80px; margin-bottom: 14px; }
+.cel-title { font-family: 'Playfair Display', serif; font-size: 34px; color: var(--sage-dark); font-weight: 700; margin-bottom: 12px; line-height: 1.3; }
+.cel-sub   { font-size: 16px; color: var(--mid); line-height: 1.9; max-width: 460px; margin-bottom: 30px; }
+.cel-close { background: var(--sage); color: white; border: none; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; padding: 14px 38px; border-radius: 99px; cursor: pointer; transition: all 0.2s; }
+.cel-close:hover { background: var(--sage-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(61,107,90,0.3); }
+
+</style>
+</head>
+<body>
+<a id="top"></a>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <button class="nav-brand" onclick="window.scrollTo({top:0,behavior:'smooth'})">🌿 <span>FPLE</span> Teaching Tools <span style="font-size:10px;font-weight:700;color:var(--soft);letter-spacing:1px;margin-left:2px;">R1</span></button>
+
+  <!-- Desktop links -->
+  <ul class="nav-links">
+    <li><button onclick="document.getElementById('start').scrollIntoView({behavior:'smooth'})">Start Here</button></li>
+    <li><button onclick="document.getElementById('learncube').scrollIntoView({behavior:'smooth'})">LearnCube</button></li>
+    <li><button onclick="document.getElementById('acuity').scrollIntoView({behavior:'smooth'})">Acuity</button></li>
+    <li><button onclick="document.getElementById('claude').scrollIntoView({behavior:'smooth'})">Claude</button></li>
+    <li><button onclick="document.getElementById('docs').scrollIntoView({behavior:'smooth'})">Templates</button></li>
+    <li><button onclick="document.getElementById('google').scrollIntoView({behavior:'smooth'})">Google</button></li>
+    <li><button onclick="document.getElementById('seams').scrollIntoView({behavior:'smooth'})">Connections</button></li>
+    <li><button onclick="document.getElementById('launch').scrollIntoView({behavior:'smooth'})">30-Day Plan</button></li>
+    <li><button class="nl-gold" onclick="document.getElementById('levelup').scrollIntoView({behavior:'smooth'})">⚡ Level Up</button></li>
+    <li><button class="nl-dim" onclick="document.getElementById('resources').scrollIntoView({behavior:'smooth'})">Resources</button></li>
+  </ul>
+
+  <!-- Hamburger -->
+  <button class="nav-burger" id="nav-burger" aria-label="Open menu" onclick="toggleDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── GLOBAL PROGRESS BAR ── -->
+<div class="progress-bar-wrap" id="fple-pb">
+  <span class="pb-label" id="pb-label">Setup progress</span>
+  <div class="pb-track"><div class="pb-fill" id="pb-fill"></div></div>
+  <span class="pb-count" id="pb-count">0/6</span>
+</div>
+
+<!-- ── CELEBRATION OVERLAY ── -->
+<div id="fple-celebration">
+  <div class="cel-emoji">🎉</div>
+  <div class="cel-title">You built this.</div>
+  <div class="cel-sub">Every tool is set up. Every section is complete.<br><strong>Now go teach.</strong> Your students are waiting.</div>
+  <button class="cel-close" onclick="closeCelebration()">✓ Let's go →</button>
+</div>
+
+<!-- Mobile drawer -->
+<div class="nav-drawer" id="nav-drawer">
+  <span class="nav-drawer-section">Setup</span>
+  <button onclick="document.getElementById('start').scrollIntoView({behavior:'smooth'}); closeDrawer()"><span class="nd-icon">🗺️</span>Start Here</button>
+  <button onclick="document.getElementById('learncube').scrollIntoView({behavior:'smooth'}); closeDrawer()"><span class="nd-icon">🎓</span>LearnCube</button>
+  <button onclick="document.getElementById('acuity').scrollIntoView({behavior:'smooth'}); closeDrawer()"><span class="nd-icon">📅</span>Acuity Scheduling</button>
+  <button onclick="document.getElementById('claude').scrollIntoView({behavior:'smooth'}); closeDrawer()"><span class="nd-icon">🤖</span>Claude Setup</button>
+  <button onclick="document.getElementById('docs').scrollIntoView({behavior:'smooth'}); closeDrawer()"><span class="nd-icon">📄</span>Lesson Templates</button>
+  <button onclick="document.getElementById('google').scrollIntoView({behavior:'smooth'}); closeDrawer()"><span class="nd-icon">📁</span>Google</button>
+  <div class="nav-drawer-divider"></div>
+  <span class="nav-drawer-section">Launch</span>
+  <button onclick="document.getElementById('seams').scrollIntoView({behavior:'smooth'}); closeDrawer()"><span class="nd-icon">🔗</span>Connections</button>
+  <button onclick="document.getElementById('launch').scrollIntoView({behavior:'smooth'}); closeDrawer()"><span class="nd-icon">🚀</span>30-Day Plan</button>
+  <div class="nav-drawer-divider"></div>
+  <span class="nav-drawer-section">Grow</span>
+  <button class="nd-gold" onclick="document.getElementById('levelup').scrollIntoView({behavior:'smooth'}); closeDrawer()"><span class="nd-icon">⚡</span>Level Up</button>
+  <button onclick="document.getElementById(\'levelup\').scrollIntoView({behavior:\'smooth\'}); closeDrawer()" style="padding-left: 52px; font-size: 13px; color: var(--mid);"><span class="nd-icon" style="font-size:14px;">🗂️</span>Organization System</button>
+  <button class="nd-dim" onclick="document.getElementById('resources').scrollIntoView({behavior:'smooth'}); closeDrawer()"><span class="nd-icon">🔗</span>Resources</button>
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">🌿 For People Learning English</div>
+  <h1>Your Teaching Tools —<br><em>set up, one step at a time.</em></h1>
+  <p class="hero-sub">Four tools. ~$67/month. This guide walks you through each one with exact click-paths — no vague instructions, no guessing. Open what you need. Skip what you don't.</p>
+  <div class="hero-chips">
+    <div class="chip">🧠 ADHD-Friendly</div>
+    <div class="chip">📋 4 Tools · ~$67/mo</div>
+    <div class="chip">🖱️ Exact Click-Paths</div>
+    <div class="chip">✅ Done-When Checkpoints</div>
+    <div class="chip" style="background:var(--gold-pale);border-color:var(--gold-mid);color:var(--gold);font-weight:900;">🏷️ Release 1</div>
+    <div class="chip">⏭️ Skip-Friendly</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="breathe">
+    <strong>"You don't have to do this all today."</strong><br>
+    Set up one tool. Hit the Done When checkpoint. Stop there.<br>
+    Every section tells you exactly where to click and when you're finished.
+  </div>
+
+  <!-- ── WHERE TO START ── -->
+  <div class="sec-label" id="start">🗺️ Where are you right now?</div>
+
+  <div class="start-map">
+    <div class="smap-card ac-terra" onclick="openCard('c-learncube'); document.getElementById('learncube').scrollIntoView({behavior:'smooth'})">
+      <div class="smap-title tr">🆕 "I'm starting fresh"</div>
+      <div class="smap-desc">Nothing is set up yet.</div>
+      <div class="smap-action">→ Start with LearnCube below.</div>
+    </div>
+    <div class="smap-card ac-sage" onclick="openCard('c-acuity'); document.getElementById('acuity').scrollIntoView({behavior:'smooth'})">
+      <div class="smap-title sg">📅 "LearnCube is done"</div>
+      <div class="smap-desc">Classroom is ready — now add booking.</div>
+      <div class="smap-action">→ Jump to Acuity.</div>
+    </div>
+    <div class="smap-card ac-amber" onclick="openCard('c-seams'); document.getElementById('seams').scrollIntoView({behavior:'smooth'})">
+      <div class="smap-title am">🔗 "Tools are set up, now what?"</div>
+      <div class="smap-desc">Connect everything with two quick fixes.</div>
+      <div class="smap-action">→ Jump to Connections.</div>
+    </div>
+    <div class="smap-card ac-gold" onclick="openCard('c-launch'); document.getElementById('launch').scrollIntoView({behavior:'smooth'})">
+      <div class="smap-title go">📋 "Just show me the launch plan"</div>
+      <div class="smap-desc">You know the tools, you want the order.</div>
+      <div class="smap-action">→ Jump to 30-Day Plan.</div>
+    </div>
+  </div>
+
+  <!-- ── STACK OVERVIEW ── -->
+  <div class="sec-label">📦 The full stack at a glance</div>
+
+  <div class="card open" id="c-stack">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c-stack')">
+      <div class="cicon i-sage">📦</div>
+      <div>
+        <div class="ctitle">Your Four Tools — Overview</div>
+        <div class="csub">Everything you're setting up and why</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Four tools, one setup session, ~$67/month. Each has one job. Nothing overlaps.</div>
+      <div class="stack-table-wrap">
+        <table class="stack-table">
+          <tr><th>Tool</th><th>Its job</th><th>Cost</th></tr>
+          <tr><td>🎓 LearnCube</td><td>Live classroom, CEFR A1–C2 content library, student portal, homework, session notes</td><td>~$27/mo</td></tr>
+          <tr><td>📅 Acuity Scheduling</td><td>Student booking, Stripe payment, intake forms, reminders, Google Calendar sync</td><td>$20/mo</td></tr>
+          <tr><td>🤖 Claude.ai Pro</td><td>Lesson prep, progress notes, admin writing, translation — already subscribed ✓</td><td>$20/mo</td></tr>
+          <tr><td>📁 Google (free tier)</td><td>Drive storage, Gmail, Calendar, Meet (emergency backup classroom)</td><td>$0/mo</td></tr>
+          <tr class="stack-total"><td>Total</td><td></td><td>~$67/mo</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- LEARNCUBE -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="learncube">🎓 Step 1 — LearnCube</div>
+
+  <div class="card" id="c-learncube">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c-learncube')">
+      <div class="cicon i-sage">🎓</div>
+      <div>
+        <div class="ctitle">LearnCube — Your Classroom</div>
+        <div class="csub">5 steps · your primary teaching platform</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Sign up for Virtual Classroom Pro + Premium ESL (~$27/mo). Set your profile. Copy your permanent classroom link — you'll paste it into Acuity in the next section. That link is the critical thing to save.</div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-n sn-sage">1</div>
+          <div>
+            <span class="step-t">Sign up at learncube.com</span>
+            <span class="step-d">Go to <a href="https://www.learncube.com" target="_blank" class="ilink">learncube.com</a> → click <strong>Get Started</strong> → on the pricing page, choose <strong>Virtual Classroom Pro</strong> → when asked about content, add the <strong>Premium ESL</strong> add-on. This is the plan that includes CEFR A1–C2 content. ~$27/month total.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-sage">2</div>
+          <div>
+            <span class="step-t">Complete your instructor profile</span>
+            <span class="step-d">After sign-up, click your name or avatar (top-right corner) → <strong>Profile Settings</strong> → fill in: display name, upload a photo, write a short bio (2–3 sentences), and set your timezone. Students see this — warm and professional.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-sage">3</div>
+          <div>
+            <span class="step-t">Enable student access and copy your classroom link</span>
+            <span class="step-d">In your dashboard, click <strong>Settings</strong> (gear icon, top-right or left sidebar) → click <strong>Student Portal</strong> → toggle <strong>Enable Student Portal</strong> to ON → copy the URL shown under "Your Portal Link."</span>
+            <span class="step-note">⭐ Save this link in your notes app or a sticky note right now. It's permanent, never changes, and you'll paste it into Acuity in Step 2.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-sage">4</div>
+          <div>
+            <span class="step-t">Explore the Content Library</span>
+            <span class="step-d">In the left sidebar, click <strong>Content Library</strong> → use the <strong>CEFR Level</strong> filter → browse and bookmark 3–5 exercises each for A1, A2, B1, and B2 to start. (The Content Library is inside your dashboard after login — not a public URL.)</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-sage">5</div>
+          <div>
+            <span class="step-t">Run a test session with yourself</span>
+            <span class="step-d">Click <strong>Classroom</strong> → <strong>Start Session</strong> → test your microphone and camera in the permissions prompt → add one homework item from the Content Library → then open your Student Portal link in a second browser tab to verify what students see.</span>
+            <span class="step-note">Takes about 10 minutes. Catches tech issues before your students encounter them.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="done-box">
+        <span class="done-icon">✅</span>
+        <div>
+          <span class="done-label">Done when</span>
+          <span class="done-text">You've run a test session, found content by CEFR level, and your classroom link is saved somewhere you can find it in 5 seconds.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- ACUITY -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="acuity">📅 Step 2 — Acuity Scheduling</div>
+
+  <div class="card" id="c-acuity">
+    <div class="card-top t-terra"></div>
+    <div class="card-trigger" onclick="toggle('c-acuity')">
+      <div class="cicon i-terra">📅</div>
+      <div>
+        <div class="ctitle">Acuity — Booking & Payment</div>
+        <div class="csub">7 steps · students book, pay, and get everything they need automatically</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Sign up ($20/mo), connect Stripe and Google Calendar, create your three session types, then paste your LearnCube link into every confirmation email. That paste is the only manual connection between these two tools — do it once, it's permanent.</div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-n sn-terra">1</div>
+          <div>
+            <span class="step-t">Sign up at acuityscheduling.com</span>
+            <span class="step-d">Go to <a href="https://acuityscheduling.com" target="_blank" class="ilink-terra">acuityscheduling.com</a> → click <strong>Get Started Free</strong> → create your account → when prompted to choose a plan, select <strong>Emerging</strong> ($20/month). This is the plan with Stripe payment, intake forms, and automated reminder emails.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-terra">2</div>
+          <div>
+            <span class="step-t">Connect Stripe for payment</span>
+            <span class="step-d">In Acuity's left sidebar, click <strong>Business Settings</strong> → click <strong>Payment Processing</strong> → click <strong>Connect with Stripe</strong> → if you don't have a Stripe account, click <strong>Create one</strong> (or go directly to <a href="https://dashboard.stripe.com/register" target="_blank" class="ilink-terra">dashboard.stripe.com/register</a>) and follow the prompts (takes ~5 minutes) → once connected, Stripe will confirm and return you to Acuity.</span>
+            <span class="step-note">Students pay automatically at booking. You'll never need to send an invoice or chase a payment.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-terra">3</div>
+          <div>
+            <span class="step-t">Connect Google Calendar</span>
+            <span class="step-d">In the left sidebar, click <strong>Business Settings</strong> → click <strong>Integrations</strong> → scroll to find <strong>Google Calendar</strong> → click <strong>Add New</strong> → click <strong>Sign in with Google</strong> → choose your Google account → click <strong>Allow</strong> on the permissions screen → once connected, select which Google Calendar to sync to (your main teaching calendar) from the dropdown → click <strong>Save</strong>.</span>
+            <span class="step-note">From now on, every booking automatically blocks your Google Calendar. No manual updates needed.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-terra">4</div>
+          <div>
+            <span class="step-t">Create your three session types</span>
+            <span class="step-d">In the left sidebar, click <strong>Appointment Types</strong> → click <strong>+ New Appointment Type</strong> → fill in the details below. Repeat for all three:</span>
+            <div class="mini-steps" style="margin-top: 10px;">
+              <div class="mini-step"><div class="mini-step-n">A</div><div><strong>Trial Session</strong> — 30 min, set a lower/introductory price, description: "30-minute intro session for new students."</div></div>
+              <div class="mini-step"><div class="mini-step-n">B</div><div><strong>Individual Session</strong> — 60 min, set your full hourly rate.</div></div>
+              <div class="mini-step"><div class="mini-step-n">C</div><div><strong>Group Session</strong> — 60 min, set your group rate (typically lower per student than individual).</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-terra">5</div>
+          <div>
+            <span class="step-t">Paste your LearnCube link into each confirmation email</span>
+            <span class="step-d">In <strong>Appointment Types</strong>, click a session type → click <strong>Edit</strong> → scroll to the <strong>Email Templates</strong> tab → find <strong>Confirmation Email</strong> → in the email body, add a line like: <em>"Join your classroom here: [paste your LearnCube link]"</em> → click <strong>Save</strong>. Repeat for all three session types.</span>
+            <span class="step-note">⚠️ This is the only manual connection between Acuity and LearnCube. Once done, it's permanent — students automatically receive the link every time they book.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-terra">6</div>
+          <div>
+            <span class="step-t">Add an intake form to Trial and Individual session types</span>
+            <span class="step-d">In <strong>Appointment Types</strong>, click a session type → click <strong>Edit</strong> → click the <strong>Intake Forms</strong> tab → click <strong>+ Add a new intake form</strong> → add these fields:</span>
+            <div class="mini-steps" style="margin-top: 10px;">
+              <div class="mini-step"><div class="mini-step-n">1</div><div>What is your native language? <em>(text field)</em></div></div>
+              <div class="mini-step"><div class="mini-step-n">2</div><div>How would you describe your current English level? <em>(dropdown: Beginner / Elementary / Intermediate / Upper-Intermediate / Advanced)</em></div></div>
+              <div class="mini-step"><div class="mini-step-n">3</div><div>What are your main goals for learning English? <em>(text area)</em></div></div>
+              <div class="mini-step"><div class="mini-step-n">4</div><div>Which days/times work best for you? <em>(text field)</em></div></div>
+            </div>
+            <span class="step-note">This intake data feeds directly into your Claude student profiles. See the Connections section for how to get it there.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-terra">7</div>
+          <div>
+            <span class="step-t">Set up automated reminder emails</span>
+            <span class="step-d">In the left sidebar, click <strong>Business Settings</strong> → click <strong>Email &amp; Reminder Settings</strong> → find <strong>Appointment Reminders</strong> → enable it → set <strong>First reminder: 24 hours before</strong> → click <strong>+ Add another reminder</strong> → set <strong>Second reminder: 1 hour before</strong> → in each reminder email template, add your LearnCube link with the note: <em>"Your classroom link: [link]"</em> → click <strong>Save</strong>.</span>
+            <span class="step-note">Students who get reminders show up. Students who don't, sometimes don't.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="done-box">
+        <span class="done-icon">✅</span>
+        <div>
+          <span class="done-label">Done when</span>
+          <span class="done-text">A student can find your page, choose a session type, pay, and automatically receive a confirmation with the LearnCube link and a reminder — without you doing anything.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- CLAUDE -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="claude">🤖 Step 3 — Claude.ai Pro</div>
+
+  <div class="card" id="c-claude">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c-claude')">
+      <div class="cicon i-sage">🤖</div>
+      <div>
+        <div class="ctitle">Claude — Your Teaching Brain</div>
+        <div class="csub">5 steps · lesson prep, notes, progress reports, translation</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Create the "FPLE Teaching Workspace" project, upload your three documents (templates below ↓), add one custom instruction, then connect Google Drive and Gmail. After that, lesson prep takes 10 minutes and post-session notes take 5.</div>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-n sn-sage">1</div>
+          <div>
+            <span class="step-t">Create the FPLE Teaching Workspace project</span>
+            <span class="step-d">Go to <a href="https://claude.ai" target="_blank" class="ilink">claude.ai</a> → in the left sidebar, click <strong>Projects</strong> (or the folder icon) → click <strong>+ New Project</strong> → type the name: <strong>FPLE Teaching Workspace</strong> → click <strong>Create project</strong>. You'll land inside the new project.</span>
+            <span class="step-note">Projects give Claude persistent memory. Every conversation inside this project automatically knows your students, templates, and preferences — you never re-explain yourself.</span>
+            <span class="step-note" style="margin-top:6px; border-left-color: var(--amber-mid);">🗂️ <strong>One project only.</strong> Do not create separate projects per student. Everything teaching-related lives in <em>FPLE Teaching Workspace</em>. Splitting it breaks Claude's ability to cross-reference students.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-sage">2</div>
+          <div>
+            <span class="step-t">Upload your three project documents</span>
+            <span class="step-d">Inside the FPLE Teaching Workspace project, click <strong>+ Add content</strong> (or the upload icon in the project sidebar) → upload each of these three files. <strong>Need to create them first?</strong> Templates and step-by-step instructions are in the section directly below ↓</span>
+            <span class="step-note">🗂️ <strong>Naming matters.</strong> Use the exact filenames from the Templates section below — <em>FPLE_LP_Speaking.docx</em>, <em>FPLE_Student_Profiles.docx</em>, <em>FPLE_Business_Overview.docx</em>. Claude references files by name. Vague names like "template2" or "new doc" mean Claude won't find them reliably.</span>
+            <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px;">
+              <a class="doc-link" onclick="openSubCard('sc-lessonplan'); document.getElementById('docs').scrollIntoView({behavior:'smooth'})">📄 Lesson Plan Template →</a>
+              <a class="doc-link" onclick="openSubCard('sc-profiles'); document.getElementById('docs').scrollIntoView({behavior:'smooth'})">👤 Student Profiles Doc →</a>
+              <a class="doc-link" onclick="openSubCard('sc-overview'); document.getElementById('docs').scrollIntoView({behavior:'smooth'})">🏢 FPLE Business Overview →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-sage">3</div>
+          <div>
+            <span class="step-t">Add the Custom Instruction</span>
+            <span class="step-d">Inside your project, click the project name or the <strong>⚙️ settings icon</strong> near the top → find <strong>Project Instructions</strong> (sometimes labelled Custom Instructions) → click to edit → paste the text below exactly → click <strong>Save</strong>.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout co-sage" style="margin: 4px 0 6px 46px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; line-height: 1.85;">
+        "You are Jennifer's teaching assistant for FPLE. Students are adult Ukrainian learners at levels A1–C2. Always respond warmly and professionally. Use the uploaded lesson plan template when building lesson plans — I have five templates named FPLE_LP_Speaking.docx, FPLE_LP_Writing.docx, FPLE_LP_Reading.docx, FPLE_LP_Listening.docx, and FPLE_LP_Grammar.docx — always use the correct one for the lesson type requested. When I refer to a student by name, check the student profiles document. After generating any lesson plan, end your response with a clearly formatted line: SAVE AS: YYYY-MM-DD_[Student]_[Level]_[Type]_[Topic].docx → FPLE — Teaching / Students / [Student] / Lesson Plans. After any session-planning chat, suggest a chat title using format: [Student] — [Level] — [Type] — [Topic] — [Month Year]."
+      </div>
+
+      <div class="callout co-amber" style="margin: 0 0 18px 46px; font-style: normal; font-size: 13px;">
+        <strong>⚠️ This is the key detail that makes the whole system work automatically.</strong> The two lines at the end of that instruction mean: (1) Claude reminds you to save every lesson plan and tells you exactly what to name it and where to put it — you never have to remember the format. (2) Claude suggests the chat rename at the end of every session — you never have to remember to do it. These behaviors are baked into every single conversation in this project, from day one, at zero ongoing effort.
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-n sn-sage">4</div>
+          <div>
+            <span class="step-t">Connect Google Drive and Gmail</span>
+            <span class="step-d">On <a href="https://claude.ai/settings" target="_blank" class="ilink">claude.ai/settings</a>, click <strong>Integrations</strong> in the left menu → find <strong>Google Drive</strong> in the list → click <strong>Connect</strong> → Google opens an authorization screen → click <strong>Allow</strong> → you'll be returned to Claude. Repeat the same steps for <strong>Gmail</strong> in the same Integrations list.</span>
+            <span class="step-note">Once connected, Claude can read notes from your Drive folders and draft emails in your Gmail voice — no copying and pasting needed.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-sage">5</div>
+          <div>
+            <span class="step-t">Test your three core workflows</span>
+            <span class="step-d">Inside the FPLE Teaching Workspace project, start a new conversation and try each of these with a real student. These are your daily Claude prompts going forward:</span>
+            <span class="step-note">🗂️ <strong>Name every chat before you close it.</strong> Claude auto-names chats but the names are often useless ("lesson plan question"). Click the chat title and rename it: <em>Olena — B1 Speaking — Job Interviews — Mar 2025</em>. Takes 5 seconds. Means you can find any session in 3 months without scrolling.</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin: 12px 0 0 46px; display: flex; flex-direction: column; gap: 8px;">
+        <div class="week-item">
+          <div class="week-num">①</div>
+          <div class="week-text"><strong>Pre-session (10 min):</strong> "Using FPLE_LP_Speaking.docx, build a lesson plan for Olena, B1 level — topic: asking for directions."</div>
+        </div>
+        <div class="week-item">
+          <div class="week-num">②</div>
+          <div class="week-text"><strong>Post-session (5 min):</strong> "Update [Student Name]'s profile with today's notes: [paste your notes]."</div>
+        </div>
+        <div class="week-item">
+          <div class="week-num">③</div>
+          <div class="week-text"><strong>Monthly report:</strong> "Write a 200-word progress summary for [Student Name] from the accumulated notes in her profile."</div>
+        </div>
+      </div>
+
+      <div class="done-box" style="margin-top: 20px;">
+        <span class="done-icon">✅</span>
+        <div>
+          <span class="done-label">Done when</span>
+          <span class="done-text">Your project exists, three documents are uploaded, Drive and Gmail are connected, and you've run at least one test lesson plan prompt successfully.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- YOUR CLAUDE DOCUMENTS -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="docs">📄 Your Claude documents</div>
+
+  <p class="prose" style="margin-bottom: 18px;">These are the files you upload to the FPLE Teaching Workspace project in Step 3 above. The lesson plan templates section has been expanded — your existing printed materials and PowerPoints are the starting point, not something to set aside.</p>
+
+  <!-- LESSON PLAN TEMPLATES -->
+  <div class="sub-card" id="sc-lessonplan">
+    <div class="sub-card-trigger" onclick="toggleSub('sc-lessonplan')">
+      <div style="font-size: 22px; flex-shrink:0;">📄</div>
+      <div>
+        <div class="sub-ctitle">Lesson Plan Templates — 5 Types</div>
+        <div class="sub-csub">Your printed materials + PPTs are the starting point · one template per lesson type</div>
+      </div>
+      <div class="sub-carrow">+</div>
+    </div>
+    <div class="sub-card-body">
+
+      <div class="callout co-gold" style="margin-bottom: 20px;">
+        <strong>You already have the raw material.</strong> Your printed lesson plans and existing PowerPoints aren't separate from this workflow — they <em>are</em> the workflow. The steps below show you how to digitize them, hand them to Claude, and let Claude extract a reusable template from what you've already built. You're not starting from scratch.
+      </div>
+
+      <!-- PHASE 1: DIGITIZE -->
+      <p class="mini-head">Phase 1 — Get your printed materials into Claude</p>
+
+      <div class="phase-step">
+        <div class="phase-n">1</div>
+        <div>
+          <span class="phase-t">Scan or photograph your printed lesson plans</span>
+          <span class="phase-d">For each lesson type you have a printed plan for: use your phone camera or a scanner app (e.g. <strong>Adobe Scan</strong> or <strong>iPhone's built-in document scan</strong> in Notes → tap the camera icon → Scan Document) → save as a PDF or clear photo. One file per lesson type is ideal. If you have a stack, start with one representative example of each type.</span>
+        </div>
+      </div>
+
+      <div class="phase-step">
+        <div class="phase-n">2</div>
+        <div>
+          <span class="phase-t">For existing PowerPoints — export as PDF</span>
+          <span class="phase-d">Open the PowerPoint → <strong>File → Export → Create PDF/XPS</strong> (Windows) or <strong>File → Save As → PDF</strong> (Mac) → save. Claude reads PDF slides fully — every slide becomes readable text it can reason about. Keep the original .pptx too; you'll upload that separately for active lesson use.</span>
+        </div>
+      </div>
+
+      <div class="phase-step">
+        <div class="phase-n">3</div>
+        <div>
+          <span class="phase-t">Upload to Claude and extract the template structure</span>
+          <span class="phase-d">Open a new conversation inside your <strong>FPLE Teaching Workspace</strong> project → click the paperclip or upload icon → attach the scanned lesson plan (or exported PDF) → then send this prompt:</span>
+          <div class="prompt-box">
+            <strong>📋 Prompt to use</strong>
+            "This is one of my existing lesson plans. Please study its structure carefully and extract a reusable blank template from it — keeping all section headings, time allocations, and field names exactly as I use them. Label it as a [Speaking / Writing / Reading / Listening / Grammar] lesson plan template. Show me the result and ask me if I want to adjust anything before we finalize it."
+          </div>
+          <span class="phase-d" style="margin-top:8px; display:block;">Claude will read your layout, mirror your own terminology and structure, and hand you back a clean template in your voice — not a generic one. If the scan has 4 sections, the template has 4 sections. If you call it "Production Task" instead of "Speaking Practice," the template uses that name.</span>
+        </div>
+      </div>
+
+      <div class="phase-step">
+        <div class="phase-n">4</div>
+        <div>
+          <span class="phase-t">Use an existing PPT to generate a lesson plan — and reverse-engineer the template</span>
+          <span class="phase-d">If a PowerPoint already represents a complete lesson, Claude can work from the slides rather than a written plan. Upload the exported PDF of that PPT and send:</span>
+          <div class="prompt-box">
+            <strong>📋 Prompt to use</strong>
+            "These slides are a complete [B1 Speaking / B2 Writing / etc.] lesson I've already taught. Please reconstruct the lesson plan from these slides — what was the goal, what was the sequence, what did each slide ask students to do? Then use that reconstruction to create a blank template I can reuse for future [lesson type] lessons at this level."
+          </div>
+          <span class="phase-d" style="margin-top:8px; display:block;">This works particularly well when your printed plan and the PPT were built together — Claude can cross-reference both uploads in the same conversation and produce a template that reflects how you actually run that lesson type.</span>
+        </div>
+      </div>
+
+      <div class="phase-step">
+        <div class="phase-n">5</div>
+        <div>
+          <span class="phase-t">Save each finalized template as its own file and upload to the project</span>
+          <span class="phase-d">Once Claude produces a template you're happy with, copy it into a new Google Doc or Word document. Use this naming convention so Claude always knows which template to use:</span>
+          <div class="template-block" style="margin-top: 10px;">
+            <span class="t-label">📁 File naming convention</span>
+            <div class="t-field"><span class="t-field-name">FPLE_LP_Speaking.docx</span><span class="t-field-val">Speaking / Conversation lessons</span></div>
+            <div class="t-field"><span class="t-field-name">FPLE_LP_Writing.docx</span><span class="t-field-val">Writing / Composition lessons</span></div>
+            <div class="t-field"><span class="t-field-name">FPLE_LP_Reading.docx</span><span class="t-field-val">Reading Comprehension lessons</span></div>
+            <div class="t-field"><span class="t-field-name">FPLE_LP_Listening.docx</span><span class="t-field-val">Listening lessons</span></div>
+            <div class="t-field"><span class="t-field-name">FPLE_LP_Grammar.docx</span><span class="t-field-val">Explicit Grammar Focus lessons</span></div>
+          </div>
+          <span class="phase-d" style="margin-top:8px; display:block;">Upload all five to the FPLE Teaching Workspace project. Then update your Custom Instruction (Step 3 in Claude setup above) to include: <em>"I have five lesson plan templates named FPLE_LP_[Type].docx — always use the correct one for the lesson type requested."</em> The full ready-to-paste instruction is in Claude Step 3 above — it already includes this line.</span>
+
+          <div class="callout co-amber" style="margin-top: 12px;">
+            <strong>🔑 This is the line that makes file naming automatic.</strong> The Project Instruction in Claude Step 3 contains this exact text: <em>"After generating any lesson plan, end your response with a clearly formatted line: SAVE AS: YYYY-MM-DD_[Student]_[Level]_[Type]_[Topic].docx → FPLE — Teaching / Students / [Student] / Lesson Plans."</em><br><br>
+            Once that instruction is in your project settings, <strong>Claude reminds you to save every single lesson plan with the correct filename and exact folder path — automatically, at the end of every response.</strong> You never have to remember the format. You never have to think about where it goes. You just copy the filename it gives you and save.
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2: THE 5 TEMPLATES -->
+      <p class="mini-head" style="margin-top: 24px;">Phase 2 — The five template structures</p>
+      <p style="font-size: 13px; color: var(--mid); margin-bottom: 12px; line-height: 1.7;">These are starting-point structures — use them as-is, or let Claude adapt them from your own printed materials using the prompts above. Your terminology takes precedence over these field names. Select a type to preview:</p>
+
+      <div class="ltype-tabs" id="ltype-tabs">
+        <div class="ltype-tab active" onclick="showLtype('speaking', this)">🗣️ Speaking</div>
+        <div class="ltype-tab" onclick="showLtype('writing', this)">✍️ Writing</div>
+        <div class="ltype-tab" onclick="showLtype('reading', this)">📖 Reading</div>
+        <div class="ltype-tab" onclick="showLtype('listening', this)">🎧 Listening</div>
+        <div class="ltype-tab" onclick="showLtype('grammar', this)">🔤 Grammar</div>
+      </div>
+
+      <!-- SPEAKING -->
+      <div class="ltype-panel active" id="ltype-speaking">
+        <div class="template-block">
+          <span class="t-label">🗣️ Speaking / Conversation Lesson — FPLE_LP_Speaking.docx</span>
+          <span class="t-group">Header</span>
+          <div class="t-field"><span class="t-field-name">Student Name:</span><span class="t-field-val">leave blank</span></div>
+          <div class="t-field"><span class="t-field-name">Session Date:</span><span class="t-field-val">leave blank</span></div>
+          <div class="t-field"><span class="t-field-name">CEFR Level:</span><span class="t-field-val">e.g. B1</span></div>
+          <div class="t-field"><span class="t-field-name">Session Goal:</span><span class="t-field-val">what the student will be able to say or do fluently by the end</span></div>
+          <div class="t-field"><span class="t-field-name">Topic / Context:</span><span class="t-field-val">e.g. "job interviews," "asking for help in a shop," "describing family"</span></div>
+          <span class="t-group">Lesson Flow</span>
+          <div class="t-field"><span class="t-field-name">Warm-Up (5 min):</span><span class="t-field-val">icebreaker question or low-stakes speaking prompt to activate English</span></div>
+          <div class="t-field"><span class="t-field-name">Model Language (10 min):</span><span class="t-field-val">key phrases, expressions, or sentence frames to introduce — Claude provides these</span></div>
+          <div class="t-field"><span class="t-field-name">Controlled Practice (15 min):</span><span class="t-field-val">guided dialogue, role-play script, or structured drill — accuracy focus</span></div>
+          <div class="t-field"><span class="t-field-name">Free Production (20 min):</span><span class="t-field-val">open-ended speaking task — fluency focus, minimal interruption</span></div>
+          <div class="t-field"><span class="t-field-name">Wrap-Up (10 min):</span><span class="t-field-val">brief feedback, student self-assessment, preview of next topic</span></div>
+          <span class="t-group">Notes</span>
+          <div class="t-field"><span class="t-field-name">Fluency vs. Accuracy:</span><span class="t-field-val">which is the priority for this session?</span></div>
+          <div class="t-field"><span class="t-field-name">Errors to Address:</span><span class="t-field-val">mistakes noted during session — Claude logs these post-session</span></div>
+          <div class="t-field"><span class="t-field-name">Homework:</span><span class="t-field-val">short spoken task — e.g. record a 1-minute voice note on topic X</span></div>
+          <div class="t-field"><span class="t-field-name">Post-Session Notes:</span><span class="t-field-val">leave blank — fill in after class</span></div>
+        </div>
+      </div>
+
+      <!-- WRITING -->
+      <div class="ltype-panel" id="ltype-writing">
+        <div class="template-block">
+          <span class="t-label">✍️ Writing Lesson — FPLE_LP_Writing.docx</span>
+          <span class="t-group">Header</span>
+          <div class="t-field"><span class="t-field-name">Student Name:</span><span class="t-field-val">leave blank</span></div>
+          <div class="t-field"><span class="t-field-name">Session Date:</span><span class="t-field-val">leave blank</span></div>
+          <div class="t-field"><span class="t-field-name">CEFR Level:</span><span class="t-field-val">e.g. B2</span></div>
+          <div class="t-field"><span class="t-field-name">Session Goal:</span><span class="t-field-val">what the student will produce in writing by the end</span></div>
+          <div class="t-field"><span class="t-field-name">Writing Type:</span><span class="t-field-val">email / formal letter / paragraph / short essay / narrative / description</span></div>
+          <span class="t-group">Lesson Flow</span>
+          <div class="t-field"><span class="t-field-name">Warm-Up — Model Text (10 min):</span><span class="t-field-val">read and analyze a strong example — what makes it effective?</span></div>
+          <div class="t-field"><span class="t-field-name">Structure Focus (10 min):</span><span class="t-field-val">layout, paragraphing, or format-specific conventions for this writing type</span></div>
+          <div class="t-field"><span class="t-field-name">Useful Language (5 min):</span><span class="t-field-val">phrases, connectors, and vocabulary specific to this writing type</span></div>
+          <div class="t-field"><span class="t-field-name">Drafting Task (25 min):</span><span class="t-field-val">the writing task itself — prompt, context, length, and any constraints</span></div>
+          <div class="t-field"><span class="t-field-name">Feedback Method:</span><span class="t-field-val">live verbal / written corrections shown / tracked changes in shared doc</span></div>
+          <div class="t-field"><span class="t-field-name">Wrap-Up (10 min):</span><span class="t-field-val">highlight two strengths, identify one priority to improve in the redraft</span></div>
+          <span class="t-group">Notes</span>
+          <div class="t-field"><span class="t-field-name">Common Errors This Session:</span><span class="t-field-val">patterns to address — grammar, punctuation, structure</span></div>
+          <div class="t-field"><span class="t-field-name">Homework:</span><span class="t-field-val">redraft incorporating feedback, OR a new short writing task</span></div>
+          <div class="t-field"><span class="t-field-name">Post-Session Notes:</span><span class="t-field-val">leave blank — fill in after class</span></div>
+        </div>
+      </div>
+
+      <!-- READING -->
+      <div class="ltype-panel" id="ltype-reading">
+        <div class="template-block">
+          <span class="t-label">📖 Reading Comprehension Lesson — FPLE_LP_Reading.docx</span>
+          <span class="t-group">Header</span>
+          <div class="t-field"><span class="t-field-name">Student Name:</span><span class="t-field-val">leave blank</span></div>
+          <div class="t-field"><span class="t-field-name">Session Date:</span><span class="t-field-val">leave blank</span></div>
+          <div class="t-field"><span class="t-field-name">CEFR Level:</span><span class="t-field-val">e.g. A2</span></div>
+          <div class="t-field"><span class="t-field-name">Session Goal:</span><span class="t-field-val">reading skill focus — gist / detailed comprehension / inference / skimming</span></div>
+          <div class="t-field"><span class="t-field-name">Text Source:</span><span class="t-field-val">article title / LearnCube content / adapted text — include link or file name</span></div>
+          <div class="t-field"><span class="t-field-name">Text Level Check:</span><span class="t-field-val">confirm text is appropriate for student's current CEFR level</span></div>
+          <span class="t-group">Lesson Flow</span>
+          <div class="t-field"><span class="t-field-name">Pre-Reading (10 min):</span><span class="t-field-val">prediction task or pre-teach 3–5 key vocabulary items from the text</span></div>
+          <div class="t-field"><span class="t-field-name">First Read — Gist (5 min):</span><span class="t-field-val">read quickly for main idea — one or two guiding questions only</span></div>
+          <div class="t-field"><span class="t-field-name">Second Read — Detail (15 min):</span><span class="t-field-val">comprehension questions, true/false, or annotation task</span></div>
+          <div class="t-field"><span class="t-field-name">Post-Reading Discussion (15 min):</span><span class="t-field-val">opinion questions, personal connections, critical thinking on the topic</span></div>
+          <div class="t-field"><span class="t-field-name">Wrap-Up (15 min):</span><span class="t-field-val">vocabulary review, grammar structures noticed in the text, summary task</span></div>
+          <span class="t-group">Notes</span>
+          <div class="t-field"><span class="t-field-name">Vocabulary Harvested:</span><span class="t-field-val">new words encountered — Claude adds to student's vocabulary log</span></div>
+          <div class="t-field"><span class="t-field-name">Grammar Noticed:</span><span class="t-field-val">structures worth flagging from the text for future grammar focus</span></div>
+          <div class="t-field"><span class="t-field-name">Homework:</span><span class="t-field-val">re-read + write a 3-sentence summary, OR read a related text</span></div>
+          <div class="t-field"><span class="t-field-name">Post-Session Notes:</span><span class="t-field-val">leave blank — fill in after class</span></div>
+        </div>
+      </div>
+
+      <!-- LISTENING -->
+      <div class="ltype-panel" id="ltype-listening">
+        <div class="template-block">
+          <span class="t-label">🎧 Listening Lesson — FPLE_LP_Listening.docx</span>
+          <span class="t-group">Header</span>
+          <div class="t-field"><span class="t-field-name">Student Name:</span><span class="t-field-val">leave blank</span></div>
+          <div class="t-field"><span class="t-field-name">Session Date:</span><span class="t-field-val">leave blank</span></div>
+          <div class="t-field"><span class="t-field-name">CEFR Level:</span><span class="t-field-val">e.g. B1</span></div>
+          <div class="t-field"><span class="t-field-name">Session Goal:</span><span class="t-field-val">listening skill focus — gist / specific information / inference / note-taking</span></div>
+          <div class="t-field"><span class="t-field-name">Audio Source:</span><span class="t-field-val">podcast episode / video / LearnCube audio — include link or file name and timestamp if needed</span></div>
+          <div class="t-field"><span class="t-field-name">Accent / Speed Note:</span><span class="t-field-val">note if the speaker's accent or pace may challenge this student</span></div>
+          <span class="t-group">Lesson Flow</span>
+          <div class="t-field"><span class="t-field-name">Pre-Listening (10 min):</span><span class="t-field-val">context-setting, prediction task, and pre-teach 3–5 vocabulary items from the audio</span></div>
+          <div class="t-field"><span class="t-field-name">First Listen — Gist (5 min):</span><span class="t-field-val">what is the main topic? — one broad question only</span></div>
+          <div class="t-field"><span class="t-field-name">Second Listen — Detail (15 min):</span><span class="t-field-val">specific comprehension questions, gap-fill, or note-taking task</span></div>
+          <div class="t-field"><span class="t-field-name">Post-Listening Discussion (15 min):</span><span class="t-field-val">reaction, opinion, connection to student's experience</span></div>
+          <div class="t-field"><span class="t-field-name">Wrap-Up (15 min):</span><span class="t-field-val">pronunciation features noticed, connected speech patterns, vocabulary review</span></div>
+          <span class="t-group">Notes</span>
+          <div class="t-field"><span class="t-field-name">Pronunciation Focus:</span><span class="t-field-val">features worth highlighting — connected speech, stress, intonation</span></div>
+          <div class="t-field"><span class="t-field-name">Comprehension Difficulties:</span><span class="t-field-val">what caused confusion — speed, accent, vocabulary, background knowledge?</span></div>
+          <div class="t-field"><span class="t-field-name">Homework:</span><span class="t-field-val">re-listen + note 5 new phrases heard, OR listen to a related short clip</span></div>
+          <div class="t-field"><span class="t-field-name">Post-Session Notes:</span><span class="t-field-val">leave blank — fill in after class</span></div>
+        </div>
+      </div>
+
+      <!-- GRAMMAR -->
+      <div class="ltype-panel" id="ltype-grammar">
+        <div class="template-block">
+          <span class="t-label">🔤 Grammar Focus Lesson — FPLE_LP_Grammar.docx</span>
+          <span class="t-group">Header</span>
+          <div class="t-field"><span class="t-field-name">Student Name:</span><span class="t-field-val">leave blank</span></div>
+          <div class="t-field"><span class="t-field-name">Session Date:</span><span class="t-field-val">leave blank</span></div>
+          <div class="t-field"><span class="t-field-name">CEFR Level:</span><span class="t-field-val">e.g. A2</span></div>
+          <div class="t-field"><span class="t-field-name">Grammar Point:</span><span class="t-field-val">e.g. "Present Perfect vs. Simple Past," "Modal verbs for advice"</span></div>
+          <div class="t-field"><span class="t-field-name">Session Goal:</span><span class="t-field-val">what the student will be able to use accurately by the end</span></div>
+          <div class="t-field"><span class="t-field-name">Why This Point Now:</span><span class="t-field-val">connection to student's goals or a pattern of errors from previous sessions</span></div>
+          <span class="t-group">Lesson Flow — PPP (Presentation · Practice · Production)</span>
+          <div class="t-field"><span class="t-field-name">Context Introduction (10 min):</span><span class="t-field-val">short text, dialogue, or listening that features the grammar point naturally</span></div>
+          <div class="t-field"><span class="t-field-name">Presentation — Form (10 min):</span><span class="t-field-val">how the structure is built — affirmative, negative, question forms</span></div>
+          <div class="t-field"><span class="t-field-name">Presentation — Meaning &amp; Use (10 min):</span><span class="t-field-val">when and why we use it — contrast with a related structure if needed</span></div>
+          <div class="t-field"><span class="t-field-name">Controlled Practice (15 min):</span><span class="t-field-val">gap-fill, sentence transformation, or error correction — accuracy focus</span></div>
+          <div class="t-field"><span class="t-field-name">Freer Production (10 min):</span><span class="t-field-val">speaking or writing task that requires the target structure naturally</span></div>
+          <div class="t-field"><span class="t-field-name">Wrap-Up (5 min):</span><span class="t-field-val">quick summary rule in student's own words + one memorable example sentence</span></div>
+          <span class="t-group">Notes</span>
+          <div class="t-field"><span class="t-field-name">Common Errors This Point:</span><span class="t-field-val">typical L1 interference patterns for Ukrainian speakers — Claude flags these</span></div>
+          <div class="t-field"><span class="t-field-name">Homework:</span><span class="t-field-val">grammar exercise + write 5 original sentences using the target structure</span></div>
+          <div class="t-field"><span class="t-field-name">Post-Session Notes:</span><span class="t-field-val">leave blank — fill in after class</span></div>
+        </div>
+      </div>
+
+      <!-- HOW TO USE PPTs -->
+      <p class="mini-head" style="margin-top: 24px;">Using your existing PowerPoints in active lessons</p>
+      <p style="font-size: 13px; color: var(--mid); margin-bottom: 12px; line-height: 1.7;">Once your templates are in the Claude project, your PPTs become a live teaching layer on top of them:</p>
+
+      <div class="callout co-sage">
+        <strong>During lesson prep:</strong> Tell Claude which PPT you're using alongside the lesson plan — <em>"I'm using the B1 job interview slides for Olena's speaking lesson tomorrow. Build the lesson plan using FPLE_LP_Speaking.docx and make the activities match those slides."</em> Claude aligns the plan to your slide deck rather than generating activities from scratch.
+      </div>
+
+      <div class="callout co-terra" style="margin-top: 10px;">
+        <strong>Building new PPTs from a plan:</strong> Once Claude generates a lesson plan, you can ask it to outline a slide deck — <em>"Now outline a 10-slide PowerPoint for this lesson with one slide per activity. Include the key phrases and any example sentences on the relevant slides."</em> Use that outline to build or adapt slides in PowerPoint.
+      </div>
+
+      <div class="callout co-amber" style="margin-top: 10px;">
+        <strong>Building your PPT library over time:</strong> As you add more existing PPTs as PDFs to the project, Claude builds up a reference library of your teaching style, activity types, and vocabulary choices. After 5–10 uploads it starts producing plans that sound distinctly like your lessons — not generic ESL content.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STUDENT PROFILES DOC -->
+  <div class="sub-card sc-terra" id="sc-profiles">
+    <div class="sub-card-trigger" onclick="toggleSub('sc-profiles')">
+      <div style="font-size: 22px; flex-shrink:0;">👤</div>
+      <div>
+        <div class="sub-ctitle">Student Profiles Document</div>
+        <div class="sub-csub">One file · one section per student · Claude updates it after every session</div>
+      </div>
+      <div class="sub-carrow">+</div>
+    </div>
+    <div class="sub-card-body">
+      <p class="prose">Create a single Google Doc or Word document called <strong>FPLE Student Profiles.docx</strong>. Add one section per student, separated by a clear heading (e.g. <strong>## Olena M.</strong>). Claude reads and updates this file — the more you put in it, the smarter your lesson planning gets.</p>
+
+      <div class="template-block">
+        <span class="t-label">👤 Student Profile — one section like this per student</span>
+        <div class="t-field"><span class="t-field-name">## Student Name</span><span class="t-field-val">e.g. ## Olena M.</span></div>
+        <div class="t-field"><span class="t-field-name">Native Language:</span><span class="t-field-val">Ukrainian</span></div>
+        <div class="t-field"><span class="t-field-name">Current CEFR Level:</span><span class="t-field-val">e.g. B1</span></div>
+        <div class="t-field"><span class="t-field-name">Learning Goals:</span><span class="t-field-val">what the student wants to achieve — job interview English, daily conversation, academic writing, etc.</span></div>
+        <div class="t-field"><span class="t-field-name">Session Frequency:</span><span class="t-field-val">e.g. weekly, bi-weekly</span></div>
+        <div class="t-field"><span class="t-field-name">Strengths:</span><span class="t-field-val">what this student does well — you add to this over time</span></div>
+        <div class="t-field"><span class="t-field-name">Areas to Work On:</span><span class="t-field-val">grammar gaps, pronunciation, vocabulary — updated after sessions</span></div>
+        <div class="t-field"><span class="t-field-name">Vocabulary Logged:</span><span class="t-field-val">running list of words covered — Claude adds to this automatically</span></div>
+        <div class="t-field"><span class="t-field-name">Grammar Covered:</span><span class="t-field-val">running list of grammar points taught</span></div>
+        <div class="t-field"><span class="t-field-name">Session Log:</span><span class="t-field-val">date · brief summary of what was covered · what to continue next time — Claude appends after each session</span></div>
+        <div class="t-field"><span class="t-field-name">Notes:</span><span class="t-field-val">anything else useful — personality, pace preference, cultural context</span></div>
+      </div>
+
+      <div class="callout co-sage" style="margin-top: 14px;">
+        <strong>How it grows:</strong> Start by filling in just Name, Level, and Goals for each of your 3 current students. After each session, tell Claude: <em>"Update Olena's profile — we worked on past tense, she struggled with irregular verbs, vocabulary: schedule, deadline, negotiate."</em> Claude handles the rest.
+      </div>
+
+      <div class="callout co-terra" style="margin-top: 10px;">
+        <strong>New student intake:</strong> When a student books through Acuity and fills in the intake form, forward that email to Claude with: <em>"Add this student to the profiles doc using the intake form data."</em> Claude creates a new section automatically.
+      </div>
+    </div>
+  </div>
+
+  <!-- BUSINESS OVERVIEW -->
+  <div class="sub-card sc-gold" id="sc-overview">
+    <div class="sub-card-trigger" onclick="toggleSub('sc-overview')">
+      <div style="font-size: 22px; flex-shrink:0;">🏢</div>
+      <div>
+        <div class="sub-ctitle">FPLE Business Overview</div>
+        <div class="sub-csub">This document already exists · just locate and upload it</div>
+      </div>
+      <div class="sub-carrow">+</div>
+    </div>
+    <div class="sub-card-body">
+      <p class="prose">Your FPLE Business Plan document is already written. This is the document Claude needs so it understands your business context when helping with admin writing, student communications, and pricing decisions.</p>
+
+      <div class="callout co-gold">
+        <strong>You already have this.</strong> It's the FPLE Business Plan (V1) — the document with your pricing tiers, student growth targets, LLC details, and business model. Locate it on your computer, then upload it to the Claude project in Step 3.
+      </div>
+
+      <p class="prose">If you want a lighter-weight version just for Claude, you can create a short 1-page summary instead. Include:</p>
+
+      <div class="template-block">
+        <span class="t-label">🏢 FPLE Overview — what to include</span>
+        <div class="t-field"><span class="t-field-name">Business name:</span><span class="t-field-val">For People Learning English (FPLE)</span></div>
+        <div class="t-field"><span class="t-field-name">Owner / instructor:</span><span class="t-field-val">Jennifer A. Koetters</span></div>
+        <div class="t-field"><span class="t-field-name">Student base:</span><span class="t-field-val">Adult Ukrainian learners, A1–C2, primarily online</span></div>
+        <div class="t-field"><span class="t-field-name">Current students:</span><span class="t-field-val">3 (growing to 20+)</span></div>
+        <div class="t-field"><span class="t-field-name">Session types + prices:</span><span class="t-field-val">Trial (30 min), Individual (60 min), Group (60 min) — add your actual prices</span></div>
+        <div class="t-field"><span class="t-field-name">Tools in use:</span><span class="t-field-val">LearnCube, Acuity, Claude, Google</span></div>
+        <div class="t-field"><span class="t-field-name">Tone / brand voice:</span><span class="t-field-val">warm, encouraging, professional — never condescending</span></div>
+        <div class="t-field"><span class="t-field-name">LLC status:</span><span class="t-field-val">Wyoming LLC (or update when formed)</span></div>
+      </div>
+
+      <div class="callout co-sage" style="margin-top: 14px;">
+        <strong>Why Claude needs this:</strong> When you ask Claude to draft a follow-up email, write a student invoice note, or suggest pricing for a new package, it draws on this document for context — so responses are aligned with your actual business, not a generic tutoring service.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- GOOGLE -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="google">📁 Step 4 — Google</div>
+
+  <div class="card" id="c-google">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c-google')">
+      <div class="cicon i-sage">📁</div>
+      <div>
+        <div class="ctitle">Google — The Backbone</div>
+        <div class="csub">3 quick actions — you probably already have most of this</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Create a consistent Drive folder structure, confirm the Acuity calendar sync is actually working, and grab a permanent Google Meet link as your emergency backup classroom.</div>
+
+      <div class="skip-box">
+        <span class="skip-icon">⏭️</span>
+        <div>
+          <span class="skip-label">Already use Google regularly?</span>
+          <span class="skip-text">Just confirm the three things below are set up the right way. You don't need to redo anything — just verify.</span>
+        </div>
+      </div>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-n sn-sage">1</div>
+          <div>
+            <span class="step-t">Create your Drive folder structure</span>
+            <span class="step-d">Go to <a href="https://drive.google.com" target="_blank" class="ilink">drive.google.com</a> → click <strong>+ New</strong> → <strong>New folder</strong> → create this exact structure. Copy the names precisely — Claude searches by folder name:</span>
+            <div class="tree" style="margin-top: 10px;">
+              <div><span class="t-folder">📁 FPLE — Teaching</span></div>
+              <div>&nbsp;&nbsp;<span class="t-folder">📁 _Templates</span> <span class="t-note">← lesson plan templates live here</span></div>
+              <div>&nbsp;&nbsp;<span class="t-folder">📁 Students</span></div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 Olena M</span></div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 Lesson Plans</span> <span class="t-note">← subfolder inside each student</span></div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 Session Notes</span></div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 Progress Reports</span></div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 Darya K</span></div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 [new student]</span> <span class="t-note">← duplicate when a student joins</span></div>
+              <div>&nbsp;&nbsp;<span class="t-folder">📁 Business</span></div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 FPLE_Business_Overview.docx</span></div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 FPLE_Student_Profiles.docx</span></div>
+            </div>
+            <span class="step-note">🗂️ The underscore in <em>_Templates</em> forces it to sort to the top in Drive so you always see it first. Use the same structure for every student — don't improvise subfolders. Consistent structure is what lets Claude find the right file without you guiding it every time.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-sage">2</div>
+          <div>
+            <span class="step-t">Confirm Google Calendar syncs with Acuity</span>
+            <span class="step-d">Open your Acuity booking page in a private browser window → book a test appointment with a fake name → go to <a href="https://calendar.google.com" target="_blank" class="ilink">calendar.google.com</a> → confirm the test booking appears on your calendar automatically. If it does, the sync is working. Cancel the test booking in Acuity when done.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-n sn-sage">3</div>
+          <div>
+            <span class="step-t">Get a permanent Google Meet backup link</span>
+            <span class="step-d">Go to <a href="https://meet.google.com" target="_blank" class="ilink">meet.google.com</a> → click <strong>New meeting</strong> → select <strong>Create a meeting for later</strong> → copy the link that appears (it looks like <em>meet.google.com/abc-defg-hij</em>). Save this link — it's permanent and reusable. Add it to your Gmail signature: <em>"Emergency classroom link: [link]"</em>.</span>
+            <span class="step-note">You'll almost never need this. But when LearnCube has an outage, pasting this link takes 10 seconds and feels completely professional to your student.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="done-box">
+        <span class="done-icon">✅</span>
+        <div>
+          <span class="done-label">Done when</span>
+          <span class="done-text">Your Drive folder exists with student subfolders, a test Acuity booking shows on your calendar, and you have a Meet backup link saved somewhere obvious.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- CONNECTIONS -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="seams">🔗 The Two Manual Connections</div>
+
+  <div class="card" id="c-seams">
+    <div class="card-top t-amber"></div>
+    <div class="card-trigger" onclick="toggle('c-seams')">
+      <div class="cicon i-amber">🔗</div>
+      <div>
+        <div class="ctitle">Connecting the Tools</div>
+        <div class="csub">Only two manual steps exist in the whole stack</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Everything in this stack connects automatically — <em>except</em> these two things. Connection 1 you've already done (if you followed Acuity Step 5). Connection 2 is a 30-second forward or one optional Zapier rule.</div>
+
+      <div class="seam-box">
+        <span class="seam-label">⚠️ Manual Connection 1</span>
+        <div class="seam-title">Acuity → LearnCube</div>
+        <div class="seam-text">No native integration exists between these two tools. Students who book won't automatically receive your LearnCube classroom link unless you add it to the confirmation email.</div>
+        <div class="seam-fix">
+          ✅ <strong>Fix (one-time, permanent):</strong> In each Acuity session type → Edit → Email Templates → Confirmation Email → paste your LearnCube link. You did this in Acuity Step 5. Once saved, every future booking includes the link automatically. Nothing more to do.
+        </div>
+      </div>
+
+      <div class="seam-box" style="margin-top: 16px;">
+        <span class="seam-label">⚠️ Manual Connection 2</span>
+        <div class="seam-title">Acuity Intake Form → Claude Student Profiles</div>
+        <div class="seam-text">When a new student books and fills in your intake form, that information arrives as an Acuity email. It doesn't automatically reach your Claude student profiles doc — you need to move it there.</div>
+        <div class="seam-fix">
+          <strong>Option A — Manual (best for under ~10 students):</strong><br>
+          When you receive a new booking email from Acuity: open a new chat in your FPLE Teaching Workspace project → paste or forward the intake email contents → say: <em>"Add this new student to the profiles doc."</em> Claude creates their profile section. Takes 60 seconds.<br><br>
+          <strong>Option B — Automated via Zapier (optional, for 10+ students):</strong><br>
+          In <a href="https://zapier.com" target="_blank" class="ilink">Zapier</a> (free tier works), create one rule: <em>Trigger:</em> New Appointment in Acuity → <em>Action:</em> Append row to a Google Sheet named "FPLE Student Intake Log." Claude reads your Drive, so it can then access this log when you ask. Set-up time: ~20 minutes, one-time.
+        </div>
+      </div>
+
+      <div class="callout co-sage" style="margin-top: 18px;">
+        <strong>Everything else is automatic</strong> after initial setup — Stripe payment processing, Google Calendar blocking, reminder emails, Drive/Gmail access in Claude, LearnCube session notes. These two are genuinely the only manual steps in the whole stack.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- 30-DAY LAUNCH PLAN -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="sec-label" id="launch">🚀 30-Day Launch Plan</div>
+
+  <div class="card" id="c-launch">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c-launch')">
+      <div class="cicon i-gold">🚀</div>
+      <div>
+        <div class="ctitle">30-Day Launch Plan</div>
+        <div class="csub">Follow this order — each week builds on the last</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Week 1: tools live. Week 2: test with real students. Weeks 3–4: refine and go public. Don't skip ahead — each phase catches problems before the next one starts.</div>
+
+      <div class="week-block">
+        <span class="week-label">📅 Week 1 — Tools Online</span>
+        <div class="week-items">
+          <div class="week-item"><div class="week-num">1</div><div class="week-text">Set up <strong>LearnCube</strong> — account, profile, classroom link saved (Section 1)</div></div>
+          <div class="week-item"><div class="week-num">2</div><div class="week-text">Set up <strong>Acuity + Stripe</strong> — session types, confirmation emails with LearnCube link, intake forms, reminders (Section 2)</div></div>
+          <div class="week-item"><div class="week-num">3</div><div class="week-text">Create your <strong>three Claude documents</strong> and upload to the FPLE Teaching Workspace project (Section 3 + Documents section above)</div></div>
+          <div class="week-item"><div class="week-num">4</div><div class="week-text">Connect <strong>Google Drive + Gmail</strong> to Claude, create Drive folder structure (Sections 3 + 4)</div></div>
+        </div>
+      </div>
+
+      <div class="week-block">
+        <span class="week-label" style="color: var(--terra);">📅 Week 2 — First Students</span>
+        <div class="week-items">
+          <div class="week-item"><div class="week-num terra">1</div><div class="week-text">Run a <strong>test booking with yourself</strong> — verify the full flow: book → pay → receive confirmation with LearnCube link → reminder arrives</div></div>
+          <div class="week-item"><div class="week-num terra">2</div><div class="week-text">Enroll your <strong>3 current students</strong> in LearnCube — send them the portal link and walk them through joining</div></div>
+          <div class="week-item"><div class="week-num terra">3</div><div class="week-text">Run one complete <strong>pre-session Claude workflow</strong> before a real lesson — then the post-session update immediately after</div></div>
+        </div>
+      </div>
+
+      <div class="week-block">
+        <span class="week-label" style="color: var(--gold);">📅 Weeks 3–4 — Refine &amp; Go Public</span>
+        <div class="week-items">
+          <div class="week-item"><div class="week-num gold">1</div><div class="week-text">Use <strong>LearnCube homework</strong> with at least 2 students — assign from the Content Library, check completion in the student portal</div></div>
+          <div class="week-item"><div class="week-num gold">2</div><div class="week-text">Generate your <strong>first monthly progress summaries</strong> via Claude for each current student</div></div>
+          <div class="week-item"><div class="week-num gold">3</div><div class="week-text"><strong>Make your Acuity booking page public</strong> — share the link in your Facebook group, add it to your Instagram bio</div></div>
+          <div class="week-item"><div class="week-num gold">4</div><div class="week-text">Review: what's working, what feels clunky — <strong>adjust before you scale to 20</strong></div></div>
+        </div>
+      </div>
+
+      <div class="done-box">
+        <span class="done-icon">🎉</span>
+        <div>
+          <span class="done-label">Done when</span>
+          <span class="done-text">Your booking page is live and public, all 3 current students are in LearnCube, and you've completed a full Claude pre/post-session workflow at least once. Everything from here is iteration, not setup.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROWTH NOTE -->
+  <div class="card" style="margin-top: 24px;" id="c-growth">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c-growth')">
+      <div class="cicon i-gold">📈</div>
+      <div>
+        <div class="ctitle">Will this stack hold up as you grow?</div>
+        <div class="csub">Short answer: yes, and here's the math.</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">This stack was validated across the full <strong>3 → 20+ student</strong> growth arc. No tool swaps required at any point in that range.</p>
+      <p class="prose">LearnCube's flat ~$27/month gets <strong>proportionally cheaper per student as you grow</strong> — at 3 students it's $9/student/month, at 20 it's $1.35/student/month. Acuity and Claude pricing doesn't change either.</p>
+      <div class="callout co-gold">
+        <strong>The system you're building today is the one you'll use at full capacity.</strong> You're not building a starter setup that needs to be replaced later. This is it.
+      </div>
+    </div>
+  </div>
+
+  <!-- PERMISSION SLIP -->
+  <div class="card" style="margin-top: 24px;" id="c-permit">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c-permit')">
+      <div class="cicon i-gold">💛</div>
+      <div>
+        <div class="ctitle">Your Permission Slip</div>
+        <div class="csub">Read this one whenever you need it</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="callout co-gold" style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; text-align: center; line-height: 2;">
+        You are allowed to set up one tool and ignore the rest for a week.<br>
+        You're allowed to come back to any section only when you need it.<br>
+        You're allowed to do Week 1 across two weeks if that's what works.<br><br>
+        <strong style="font-style: normal;">There is no wrong pace. Students are being taught. That's what matters.</strong>
+      </div>
+      <div class="permit-items">
+        <div class="permit-item">
+          <span class="item-icon">✅</span>
+          <div><span class="item-title">You don't need to do this all in one session</span><span class="item-desc">One tool per day is a perfectly reasonable pace. Each section ends with a Done When checkpoint — stop there, breathe, come back tomorrow.</span></div>
+        </div>
+        <div class="permit-item">
+          <span class="item-icon">✅</span>
+          <div><span class="item-title">You don't need perfect documents on day one</span><span class="item-desc">A lesson plan template with five fields is enough to start. A student profile with just name and level is enough to start. Claude will fill in the rest as you use it.</span></div>
+        </div>
+        <div class="permit-item">
+          <span class="item-icon">✅</span>
+          <div><span class="item-title">You don't need Zapier right now</span><span class="item-desc">Forwarding an intake email to Claude takes 60 seconds and works fine at 3–10 students. Add automation later if it starts to feel like friction.</span></div>
+        </div>
+        <div class="permit-item">
+          <span class="item-icon">✅</span>
+          <div><span class="item-title">You can ask Claude to help with any step in this guide</span><span class="item-desc">"Help me write intake form questions for adult Ukrainian learners." "Draft a custom instruction for my project." "Build me a starter student profile for Olena." That's what it's for.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- LEVEL UP -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="wrap" id="levelup">
+  <div class="sec-label">⚡ Level up — advanced Claude moves</div>
+
+  <p class="prose" style="margin-bottom: 6px;">None of this is day-one work. Come back here when the basics feel easy. <strong>Start with the Organization card — it makes everything else work better.</strong> Every other card below is a standalone upgrade — open one, try it, close the rest.</p>
+  <p style="font-size: 13px; color: var(--soft); font-style: italic; margin-bottom: 24px;">Prompts marked <span class="tag tag-claude">Claude</span> run in your FPLE Teaching Workspace project. Prompts marked <span class="tag tag-chrome">Chrome</span> use Claude in Chrome while a web page is open.</p>
+
+  <!-- ── 0. ORGANIZATION ── -->
+  <div class="card open" id="c-lu-org">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c-lu-org')">
+      <div class="cicon i-sage">🗂️</div>
+      <div>
+        <div class="ctitle">Stay Organized — The System That Works for You</div>
+        <div class="csub">Read this first · the more organized your setup, the smarter Claude gets · automatically</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+
+      <div class="tldr"><strong>TL;DR</strong>Organization isn't about being tidy — it's about making the <em>system</em> do the remembering so you don't have to. The rules below are short and specific. Follow the naming conventions and folder structure once, and Claude can find anything. Don't follow them, and it can't.</div>
+
+      <div class="callout co-amber" style="margin-bottom: 22px;">
+        <strong>⚠️ This section is the highest-leverage thing you can do after setup.</strong> Every prompt you give Claude works better when files behind it are named consistently and live in the right folder. A messy Drive = a confused Claude = you doing more work, not less. Five minutes of organization now saves hours of frustration later.
+      </div>
+
+      <!-- ─ CLAUDE THREE LAYERS ─ -->
+      <p class="mini-head">🤖 Claude — How Your Project Is Structured (3 Layers)</p>
+      <p style="font-size: 13px; color: var(--mid); line-height: 1.7; margin-bottom: 12px;">Think of your Claude project as three distinct layers. Keep them clean and separate. Mixing them up is the most common reason Claude gives weird or unhelpful answers.</p>
+
+      <div class="lu-grid">
+        <div class="lu-card">
+          <div class="lu-card-head">📎 Layer 1 — Project Knowledge Base</div>
+          <div class="lu-card-body">The files uploaded to <em>FPLE Teaching Workspace</em> via <strong>+ Add content</strong>. This is Claude's permanent reference memory — lesson plan templates, student profiles, business overview. <strong>These are reference documents only. Do not upload individual lesson plans or one-off notes here.</strong> Treat this like a filing cabinet, not a notepad.</div>
+        </div>
+        <div class="lu-card">
+          <div class="lu-card-head">💬 Layer 2 — Named Chats</div>
+          <div class="lu-card-body">Each conversation inside the project. One chat = one student = one session purpose. Claude auto-names chats with useless titles like "Can you help me with..." — <strong>always rename before closing.</strong> Format: <em>Olena — Speaking — Job Interviews — Apr 2025</em>. In 3 months you'll thank yourself.</div>
+        </div>
+        <div class="lu-card">
+          <div class="lu-card-head">⚙️ Layer 3 — Project Instruction</div>
+          <div class="lu-card-body">The standing instruction in project Settings → Project Instructions. This is the "always remember this" layer — your teaching persona, student base, template preference. Set it once during setup. Only edit it when something fundamentally changes about your business.</div>
+        </div>
+        <div class="lu-card">
+          <div class="lu-card-head">🔄 What lives where — quick rule</div>
+          <div class="lu-card-body">Project files = permanent templates &amp; profiles only.<br>Named chats = individual session work.<br>Google Drive = completed lesson plans, session notes, PPTs.<br><strong>Never paste a full completed lesson plan into the project knowledge base</strong> — it bloats Claude's context and degrades response quality over time.</div>
+        </div>
+      </div>
+
+      <!-- ─ CLAUDE NEVER/ALWAYS ─ -->
+      <p class="mini-head" style="margin-top: 24px;">Claude org rules — the never/always list</p>
+
+      <div class="org-rule or-never">
+        <span class="org-rule-icon">🚫</span>
+        <div><strong>Never create a separate project per student</strong>One project only. Claude needs to see all students together to cross-reference, avoid repeating content, and spot patterns across your teaching. Splitting into multiple projects breaks all of that.</div>
+      </div>
+      <div class="org-rule or-never">
+        <span class="org-rule-icon">🚫</span>
+        <div><strong>Never leave a chat with Claude's auto-generated name</strong>"Can you help me make a lesson plan" tells you nothing in two weeks. At the end of every lesson plan chat, paste this single line before you close the tab:<br><br>
+        <code style="font-size: 12px; background: var(--white); padding: 3px 8px; border-radius: 5px; display: inline-block; margin: 4px 0 8px;">"Suggest a title for this chat using format: [Student] — [Level] — [Type] — [Topic] — [Month Year]"</code><br>
+        Claude returns something like <em>Olena — B1 — Speaking — Job Interviews — Apr 2025.</em> Copy it, click the chat title at the top, paste, done. Five seconds. The Project Instruction below also makes Claude offer this automatically every time — so you don't even have to remember to ask.</div>
+      </div>
+      <div class="org-rule or-never">
+        <span class="org-rule-icon">🚫</span>
+        <div><strong>Never mix two students in the same chat</strong>Start a fresh chat for each student each session. If you start asking about Olena halfway through a Darya chat, Claude gets confused and so will you when you look back.</div>
+      </div>
+      <div class="org-rule or-never">
+        <span class="org-rule-icon">🚫</span>
+        <div><strong>Never upload a file with a vague name</strong>"Scan1.pdf", "lesson (2).docx", "new template" — Claude can't reliably reference these. Name every file before uploading: <em>FPLE_LP_Grammar_V1.docx.</em> If the name doesn't tell you exactly what it is, rename it first.</div>
+      </div>
+      <div class="org-rule or-never">
+        <span class="org-rule-icon">🚫</span>
+        <div><strong>Never accumulate stale files in the project knowledge base</strong>If you upload a draft template and later make a better version, delete the old one from the project. Claude reads all uploaded files — outdated versions create contradictions and confusion.</div>
+      </div>
+      <div class="org-rule or-always">
+        <span class="org-rule-icon">✅</span>
+        <div><strong>Always update the Student Profiles doc, not a chat</strong>Post-session notes belong in the Profiles doc — not buried in a conversation. Use the post-session update prompt, confirm Claude updated the doc, close the chat. The doc is permanent; the chat is temporary.</div>
+      </div>
+      <div class="org-rule or-always">
+        <span class="org-rule-icon">✅</span>
+        <div><strong>Always do the 5-minute weekly reset — automate the reminder</strong>Every Friday or Sunday. It catches everything that drifted — un-updated profiles, un-renamed chats, lesson plans not yet saved to Drive. Five minutes a week prevents a two-hour backlog every month.<br><br>
+        <strong style="font-weight:800; color: var(--sage-dark);">Automate the reminder with Google Calendar:</strong> Go to <a href="https://calendar.google.com" target="_blank" style="color: var(--sage);">calendar.google.com</a> → create a recurring event every Sunday at a time you'll actually have 5 minutes → in the event description, paste the full weekly reset prompt (from the prompt box below). The reminder fires, the prompt is right there, open Claude, paste, done. This is the most reliable "automation" in your current stack — zero additional tools, zero cost, always fires.<br><br>
+        <strong style="font-weight:800; color: var(--sage-dark);">CoWork (optional, if Drive is synced to desktop):</strong> CoWork — Claude's desktop file tool — can help with the physical file-tidying part of the reset: moving completed lesson plans into the correct student subfolder, renaming files in bulk, or organizing downloads. It's on-demand (you open it and ask), not scheduled, so pair it with the Calendar reminder as your trigger.</div>
+      </div>
+      <div class="org-rule or-always">
+        <span class="org-rule-icon">✅</span>
+        <div><strong>When a new student joins — run the CoWork onboarding sequence immediately</strong>Same day they book. The full sequence below takes under 5 minutes and sets up everything in Claude and Drive in one pass. Do not wait until you have something to put in a folder. Starting organized on day one is the entire point.<br><br>
+
+        <strong style="font-weight:800; color: var(--sage-dark);">If CoWork + Google Drive for Desktop are installed (recommended path):</strong><br>
+        Open CoWork → type: <em>"Add new student [First Name] [Last Initial] to FPLE."</em><br>
+        CoWork then:<br>
+        &nbsp;&nbsp;① Creates the full folder structure inside <code style="font-size:11px; background:var(--white); padding:1px 5px; border-radius:4px;">FPLE — Teaching / Students / [Name]</code> — all 4 subfolders, correctly named<br>
+        &nbsp;&nbsp;② Copies the <code style="font-size:11px; background:var(--white); padding:1px 5px; border-radius:4px;">_STUDENT_TEMPLATE</code> profile doc, renames it <code style="font-size:11px; background:var(--white); padding:1px 5px; border-radius:4px;">FPLE_Student_Profile_[Name].docx</code>, saves it in their folder<br>
+        &nbsp;&nbsp;③ Asks you each profile field in sequence: <em>"What CEFR level is Nadia?" → "What are her learning goals?" → "How often will she book?" → "Any notes from the intake form?"</em><br>
+        &nbsp;&nbsp;④ Writes your answers into the profile doc and saves it<br>
+        &nbsp;&nbsp;⑤ Reminds you: <em>"Upload FPLE_Student_Profile_NadiaK.docx to your FPLE Teaching Workspace project in Claude to complete setup."</em><br><br>
+
+        <strong style="font-weight:800; color: var(--sage-dark);">Without CoWork (manual path — still only ~3 minutes):</strong><br>
+        In Drive: right-click <code style="font-size:11px; background:var(--white); padding:1px 5px; border-radius:4px;">_STUDENT_TEMPLATE</code> → Make a copy → rename to student name → drag into Students folder.<br>
+        In Claude: forward the Acuity intake email into a new project chat → <em>"Add this student to the profiles doc and create a starter profile section."</em> → Claude fills in everything from the intake form.<br>
+        Final step either path: go to claude.ai → FPLE Teaching Workspace → Add content → upload the new profile doc.
+        </div>
+      </div>
+
+      <!-- ─ DRIVE FULL STRUCTURE ─ -->
+      <p class="mini-head" style="margin-top: 26px;">📁 Google Drive — The Complete Folder Map</p>
+      <p style="font-size: 13px; color: var(--mid); line-height: 1.7; margin-bottom: 10px;">Build this once during setup and never change the top-level structure. The underscore prefix forces folders to sort to the top so you always see them first. When a new student joins, duplicate the student folder template.</p>
+
+      <div class="tree">
+        <div><span class="t-folder">📁 FPLE — Teaching</span></div>
+        <div>&nbsp;&nbsp;<span class="t-folder">📁 _Templates</span> <span class="t-note">← lesson plan .docx files live here — the master copies</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 FPLE_LP_Speaking.docx</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 FPLE_LP_Writing.docx</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 FPLE_LP_Reading.docx</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 FPLE_LP_Listening.docx</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 FPLE_LP_Grammar.docx</span></div>
+        <div>&nbsp;&nbsp;<span class="t-folder">📁 _Business</span> <span class="t-note">← also uploaded to Claude project</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 FPLE_Business_Overview.docx</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 FPLE_Student_Profiles.docx</span></div>
+        <div>&nbsp;&nbsp;<span class="t-folder">📁 Students</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 _STUDENT_TEMPLATE</span> <span class="t-note">← master template — right-click → Make a copy for every new student</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 Lesson Plans</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 Session Notes</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 Progress Reports</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 PPTs</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-file">📄 FPLE_Student_Profile_TEMPLATE.docx</span> <span class="t-note">← blank profile doc — CoWork copies + fills this</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 Olena M</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 Lesson Plans</span> <span class="t-note">← completed plans, named by date</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 Session Notes</span> <span class="t-note">← raw notes from during class</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 Progress Reports</span> <span class="t-note">← monthly summaries to send her</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 PPTs</span> <span class="t-note">← slide decks used in her sessions</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 Darya K</span> <span class="t-note">← same four subfolders</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-folder">📁 [New Student Name]</span> <span class="t-note">← duplicate this pattern when anyone new books</span></div>
+      </div>
+
+      <div class="callout co-sage" style="margin-top: 14px;">
+        <strong>Lesson plan file naming — use this format every single time:</strong><br>
+        <code style="font-size: 13px; background: var(--white); padding: 3px 8px; border-radius: 5px; display: inline-block; margin-top: 6px;">YYYY-MM-DD_[Student]_[Level]_[Type]_[Topic].docx</code><br>
+        <span style="font-size: 13px; color: var(--mid); display: block; margin-top: 6px;">Example: <code style="background: var(--white); padding: 2px 6px; border-radius: 4px;">2025-04-10_Olena_B1_Speaking_JobInterviews.docx</code></span>
+        The date prefix makes files sort chronologically on their own — no renaming, no hunting, no "which one was the latest version?"
+      </div>
+
+      <!-- ─ DRIVE ORG RULES ─ -->
+      <p class="mini-head" style="margin-top: 24px;">Drive org rules</p>
+
+      <div class="org-rule or-never">
+        <span class="org-rule-icon">🚫</span>
+        <div><strong>Never save to the desktop, Downloads, or "I'll organize it later"</strong>Everything goes straight into the correct Drive subfolder, the moment you create it. Desktop is where files go to disappear. There is no "later."</div>
+      </div>
+      <div class="org-rule or-never">
+        <span class="org-rule-icon">🚫</span>
+        <div><strong>Never name a file "lesson plan," "template," or "new doc"</strong>That tells you nothing in 6 weeks. Every file needs student name, level, type, and topic in the filename before it gets saved anywhere.</div>
+      </div>
+      <div class="org-rule or-always">
+        <span class="org-rule-icon">✅</span>
+        <div><strong>Save completed lesson plans to Drive before the session, not after</strong>Before. Not "right after class." Before. If LearnCube or Claude has an issue mid-session, your plan is already saved and you can teach from Drive. After-the-fact saving gets skipped under time pressure.</div>
+      </div>
+      <div class="org-rule or-always">
+        <span class="org-rule-icon">✅</span>
+        <div><strong>Keep template master copies in _Templates only</strong>If you need to adapt a template for a specific lesson, save the adapted version in the student's Lesson Plans folder with the full filename. Never overwrite the master template — it's the one Claude references for all future lessons.</div>
+      </div>
+
+      <!-- ─ LEARNCUBE ─ -->
+      <p class="mini-head" style="margin-top: 26px;">🎓 LearnCube — Keep the Classroom Clean</p>
+
+      <div class="lu-grid">
+        <div class="lu-card">
+          <div class="lu-card-head">👤 Student name consistency</div>
+          <div class="lu-card-body">Enroll every student with first name + last initial only: <em>Olena M.</em> This matches Drive exactly. No nicknames, no email addresses as names, no "Olena Ukrainian student." Consistency across tools means nothing falls through the cracks.</div>
+        </div>
+        <div class="lu-card">
+          <div class="lu-card-head">🔖 Content Library — less is more</div>
+          <div class="lu-card-body">Bookmark content by CEFR level group, not topic: A1–A2 together, B1–B2 together, C1 together. 3–5 strong bookmarks per level is enough. Twenty bookmarks by topic creates a second organizing problem you don't need.</div>
+        </div>
+        <div class="lu-card">
+          <div class="lu-card-head">📝 Session notes — raw then refined</div>
+          <div class="lu-card-body">Use LearnCube's session notes for <em>in-session</em> observations only — real-time, short, messy is fine. After class, copy those raw notes into Claude's post-session prompt. Claude cleans, formats, and adds them to the student profile automatically. Don't try to write polished notes during a live lesson.</div>
+        </div>
+        <div class="lu-card">
+          <div class="lu-card-head">📚 Homework titles include the due date</div>
+          <div class="lu-card-body">When assigning homework through the Student Portal, add the due date to the title: <em>"Vocabulary review — complete by Apr 15."</em> Students see this in their portal. No separate tracking system needed, no "did I tell her when it was due?" anxiety.</div>
+        </div>
+      </div>
+
+      <!-- ─ RESET PROMPTS ─ -->
+      <p class="mini-head" style="margin-top: 26px;">🔁 The Two Reset Prompts — Run These Regularly</p>
+
+      <div class="prompt-box">
+        <strong>📋 Weekly reset — 5 minutes, every Sunday <span class="tag tag-claude">Claude</span></strong>
+        "Quick weekly tidy: (1) Have all student profiles been updated with this week's sessions? If anything's missing, tell me what so I can add it now. (2) Are there lesson plans from this week I should save to Drive but haven't? (3) Are there chats from this week with default auto-names that I should rename? Give me a short checklist of what still needs doing, in order of priority."
+      </div>
+
+      <div class="prompt-box">
+        <strong>📋 Monthly org audit <span class="tag tag-claude">Claude</span></strong>
+        "Monthly org check: (1) Review all student profiles — who has the most up-to-date session log and who's missing entries? (2) Are there any files in the project knowledge base that are outdated or duplicated? (3) Which students haven't had a session logged in more than 3 weeks — should I follow up with any of them? (4) Anything I should archive or clean up before next month starts?"
+      </div>
+
+      <div class="prompt-box">
+        <strong>📋 "I can't find it" recovery <span class="tag tag-claude">Claude</span></strong>
+        "I'm looking for something I taught recently — I think it was a [type] lesson for [student name] around [month]. Can you find any reference to it in the student profiles or our recent chats? If not, summarize what you know about what we've covered with her recently so I can reconstruct it."
+      </div>
+
+      <!-- ─ AUTOMATION SUMMARY ─ -->
+      <p class="mini-head" style="margin-top: 26px;">⚙️ What's Automated vs. What Needs You — Full Stack View</p>
+      <p style="font-size: 13px; color: var(--mid); line-height: 1.7; margin-bottom: 14px;">Here's the honest breakdown of every recurring task in this system and whether it runs itself or requires a human touch. The goal: reduce "needs you" tasks to less than 15 minutes per student per week.</p>
+
+      <div style="overflow-x: auto;">
+        <table style="width:100%; font-size: 12.5px; border-collapse: collapse; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
+          <thead>
+            <tr style="background: var(--sage-pale);">
+              <th style="padding: 10px 14px; text-align: left; font-weight: 800; color: var(--sage-dark); border-bottom: 1px solid var(--border);">Task</th>
+              <th style="padding: 10px 14px; text-align: left; font-weight: 800; color: var(--sage-dark); border-bottom: 1px solid var(--border);">Status</th>
+              <th style="padding: 10px 14px; text-align: left; font-weight: 800; color: var(--sage-dark); border-bottom: 1px solid var(--border);">How / Tool</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 9px 14px; color: var(--text);">Student books + pays</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--success); font-weight: 800;">✅ Automatic</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Acuity + Stripe</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border); background: var(--cream);">
+              <td style="padding: 9px 14px; color: var(--text);">Confirmation email + LearnCube link sent</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--success); font-weight: 800;">✅ Automatic</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Acuity email template</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 9px 14px; color: var(--text);">24hr + 1hr reminder to student</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--success); font-weight: 800;">✅ Automatic</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Acuity reminders</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border); background: var(--cream);">
+              <td style="padding: 9px 14px; color: var(--text);">Booking appears on Google Calendar</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--success); font-weight: 800;">✅ Automatic</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Acuity → Google Calendar sync</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 9px 14px; color: var(--text);">Lesson plan filename suggested after generation</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--success); font-weight: 800;">✅ Automatic</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Project Instruction → Claude</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border); background: var(--cream);">
+              <td style="padding: 9px 14px; color: var(--text);">Chat rename suggested after session</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--success); font-weight: 800;">✅ Automatic</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Project Instruction → Claude</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 9px 14px; color: var(--text);">Weekly reset reminder fires</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--success); font-weight: 800;">✅ Automatic</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Google Calendar recurring event (set once)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border); background: var(--cream);">
+              <td style="padding: 9px 14px; color: var(--text);">Monthly audit reminder fires</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--success); font-weight: 800;">✅ Automatic</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Google Calendar recurring event (set once)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 9px 14px; color: var(--text);">Lesson plan saved to Drive with correct name</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--amber); font-weight: 800;">🖐 30 seconds</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Copy filename Claude suggests → save to Drive</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border); background: var(--cream);">
+              <td style="padding: 9px 14px; color: var(--text);">Chat renamed in project sidebar</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--amber); font-weight: 800;">🖐 5 seconds</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Copy title Claude suggests → click chat title → paste</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 9px 14px; color: var(--text);">Post-session notes added to Student Profile</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--amber); font-weight: 800;">🖐 5 minutes</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Paste raw notes → Claude formats and updates profile</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border); background: var(--cream);">
+              <td style="padding: 9px 14px; color: var(--text);">Weekly reset prompt run</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--amber); font-weight: 800;">🖐 5 minutes</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Triggered by Calendar event → paste prompt → Claude</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 9px 14px; color: var(--text);">New student profile doc created + fields filled</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--success); font-weight: 800;">✅ CoWork</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">CoWork copies template, asks each field, writes answers into doc <span style="color:var(--soft); font-size:11px;">(requires Drive for Desktop)</span></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border); background: var(--cream);">
+              <td style="padding: 9px 14px; color: var(--text);">New student Drive folder structure created</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--success); font-weight: 800;">✅ CoWork</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">CoWork creates full nested folder tree from one instruction <span style="color:var(--soft); font-size:11px;">(requires Drive for Desktop)</span></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 9px 14px; color: var(--text);">New student profile uploaded to Claude project</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--amber); font-weight: 800;">🖐 30 seconds</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">claude.ai → project → Add content → upload profile doc (CoWork reminds you)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 9px 14px; color: var(--text);">New student enrolled in LearnCube</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--amber); font-weight: 800;">🖐 2 minutes</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Manual — no Zapier/API integration for LearnCube</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border); background: var(--cream);">
+              <td style="padding: 9px 14px; color: var(--text);">Monthly progress report drafted</td>
+              <td style="padding: 9px 14px;"><span style="color: var(--amber); font-weight: 800;">🖐 2 minutes</span></td>
+              <td style="padding: 9px 14px; color: var(--mid);">Triggered by Calendar event → one Claude prompt</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout co-gold" style="margin-top: 14px;">
+        <strong>Three things that unlock the most automation and aren't in the stack yet:</strong><br>
+        (1) <strong>CoWork + Google Drive for Desktop</strong> — together these let you onboard a new student entirely from a single CoWork instruction: folder structure created, profile doc copied from template, fields filled conversationally, reminder to upload to Claude project. One sentence in CoWork replaces ~8 minutes of manual setup. Install Drive for Desktop first (it syncs Drive to a local folder), then CoWork handles the rest. (2) <strong>_STUDENT_TEMPLATE folder in Drive</strong> — the master folder CoWork copies from, and your manual fallback when CoWork isn't open. Create it once during setup. (3) <strong>Google Calendar recurring events with prompt text in the description</strong> — set the weekly reset and monthly audit once, they fire forever without you remembering anything.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 1. LESSON REVIEW SYSTEM ── -->
+  <div class="card" id="c-lu-review">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c-lu-review')">
+      <div class="cicon i-sage">🔍</div>
+      <div>
+        <div class="ctitle">Quick Lesson Review Before You Teach</div>
+        <div class="csub">30-second sanity check on every lesson plan you generate</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Ask Claude to review its own lesson plan before you use it. Catches level mismatches, unclear instructions, and missing transitions — before students see them.</div>
+
+      <p class="prose">After Claude generates a lesson plan, add one follow-up before you move on:</p>
+
+      <div class="prompt-box">
+        <strong>📋 Prompt — lesson self-review <span class="tag tag-claude">Claude</span></strong>
+        "Review this lesson plan critically before I use it. Check: (1) Is every activity clearly described — would I know exactly what to do without guessing? (2) Are the timing allocations realistic for a B1 student working in a second language? (3) Does the lesson flow logically from warm-up to close? (4) Is there anything likely to confuse a Ukrainian adult learner specifically? Flag any issues and suggest a fix for each one."
+      </div>
+
+      <p class="prose">For a faster check when time is short:</p>
+
+      <div class="prompt-box">
+        <strong>📋 Prompt — 60-second check <span class="tag tag-claude">Claude</span></strong>
+        "Quick check only: is this lesson too ambitious, too easy, or well-calibrated for [Student Name] based on her profile? Give me one sentence."
+      </div>
+
+      <div class="callout co-sage" style="margin-top: 14px;">
+        <strong>Why this matters:</strong> ESL lesson plans often look complete on paper but have a hidden gap — a vocabulary jump, an activity with ambiguous instructions, or a timing sequence that only works if the student already knows more than they do. A 30-second review loop catches this before the lesson, not during it.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2. STUDENT DIFFERENTIATION ── -->
+  <div class="card" id="c-lu-diff">
+    <div class="card-top t-terra"></div>
+    <div class="card-trigger" onclick="toggle('c-lu-diff')">
+      <div class="cicon i-terra">🌍</div>
+      <div>
+        <div class="ctitle">Differentiate Instantly Across Students</div>
+        <div class="csub">One topic · five students · five different lesson plans in under 10 minutes</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Because your student profiles are in the project, Claude can generate level-appropriate and goal-appropriate plans for different students from the same topic brief — without you repeating context.</div>
+
+      <div class="prompt-box">
+        <strong>📋 Prompt — level batch <span class="tag tag-claude">Claude</span></strong>
+        "I'm teaching 'making plans / future tense' this week. Using each student's profile and the appropriate lesson plan template, generate a short (bullet-point) lesson outline for: Olena (B1 speaking focus), Darya (A2 writing focus), and Marta (B2 grammar — will vs. going to distinction). Show each as a separate section."
+      </div>
+
+      <div class="prompt-box">
+        <strong>📋 Prompt — goal adaptation <span class="tag tag-claude">Claude</span></strong>
+        "I have a B1 reading lesson on 'workplace emails' ready. Olena's goal is job interviews — adapt the discussion questions to connect to job-seeking rather than general workplace contexts. Keep the reading text the same, only change the comprehension and speaking tasks."
+      </div>
+
+      <div class="callout co-terra" style="margin-top: 14px;">
+        <strong>As you expand beyond Ukraine:</strong> Add a "Country / Cultural Context" field to each student profile. For a student in Poland, Turkey, or Egypt, Claude can flag cultural references in lesson materials that may not land — and suggest alternatives — when you ask.
+      </div>
+
+      <div class="prompt-box">
+        <strong>📋 Prompt — cultural fit check <span class="tag tag-claude">Claude</span></strong>
+        "I'm teaching a B1 student in Egypt whose goal is business English. Review this lesson plan for any examples, idioms, or cultural references that may not resonate in that context, and suggest localised alternatives for each one."
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. PROGRESSIVE LESSON SEQUENCING ── -->
+  <div class="card" id="c-lu-seq">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c-lu-seq')">
+      <div class="cicon i-sage">📈</div>
+      <div>
+        <div class="ctitle">Build Lesson Sequences, Not Just Single Lessons</div>
+        <div class="csub">Plan 4–6 sessions ahead so each lesson builds on the last</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Ask Claude to plan a short arc — a 4-week sequence for one student — rather than session by session. This prevents you from teaching the same things repeatedly and creates visible student progress.</div>
+
+      <div class="prompt-box">
+        <strong>📋 Prompt — 4-week arc <span class="tag tag-claude">Claude</span></strong>
+        "Using Olena's profile, plan a 4-week sequence (one 60-min session per week) to move her from her current B1 level toward her goal of job interview English. Each week should build on the last. For each week give me: the session type, the topic, the main skill focus, and one sentence on what it builds toward. I'll generate the full lesson plan for each session separately."
+      </div>
+
+      <div class="prompt-box">
+        <strong>📋 Prompt — gap check after a sequence <span class="tag tag-claude">Claude</span></strong>
+        "Review Olena's session log for the past 4 weeks. Are there any significant grammar points or skill areas at B1 level that we haven't covered yet? List them in order of priority for her job interview goal."
+      </div>
+
+      <div class="callout co-sage" style="margin-top: 14px;">
+        <strong>Low-overhead version:</strong> Don't want to plan 4 weeks ahead right now? Just ask: <em>"What should the next logical session be for Olena, based on what we covered last time?"</em> Claude reads her session log and gives you a one-line recommendation.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 4. COMMON ESL RISKS ── -->
+  <div class="card" id="c-lu-risk">
+    <div class="card-top t-amber"></div>
+    <div class="card-trigger" onclick="toggle('c-lu-risk')">
+      <div class="cicon i-amber">⚠️</div>
+      <div>
+        <div class="ctitle">ESL Lesson Risks — and How to Catch Them Early</div>
+        <div class="csub">Common construction problems and the Claude prompts that prevent them</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Well-planned ESL lessons can still have hidden problems — level mismatch, grammar overload, Ukrainian L1 interference, or activities that only work in a classroom. These prompts flag them before they cost you a session.</div>
+
+      <div class="risk-row">
+        <span class="risk-icon">⚠️</span>
+        <div>
+          <span class="risk-label">Risk 1 — Level creep</span>
+          <span class="risk-text">A B1 lesson quietly contains B2 vocabulary or grammar, frustrating the student without either of you knowing why.</span>
+        </div>
+      </div>
+      <div class="risk-fix">
+        <strong>Fix prompt <span class="tag tag-claude">Claude</span>:</strong> "Scan this lesson plan for any vocabulary items or grammar structures above B1 CEFR level. List each one and suggest a simpler alternative at B1."
+      </div>
+
+      <div class="risk-row">
+        <span class="risk-icon">⚠️</span>
+        <div>
+          <span class="risk-label">Risk 2 — Grammar overload</span>
+          <span class="risk-text">Introducing two or three grammar points in one lesson — common when adapting printed materials — prevents any of them from sticking.</span>
+        </div>
+      </div>
+      <div class="risk-fix">
+        <strong>Fix prompt <span class="tag tag-claude">Claude</span>:</strong> "This lesson plan touches on more than one grammar point. Which is the most important for this student's current level and goals? Help me restructure the lesson to focus only on that one, and suggest when to schedule the others."
+      </div>
+
+      <div class="risk-row">
+        <span class="risk-icon">⚠️</span>
+        <div>
+          <span class="risk-label">Risk 3 — Ukrainian L1 interference</span>
+          <span class="risk-text">Ukrainian speakers have predictable difficulties: articles (a/the — absent in Ukrainian), aspect in past tense, prepositions, and some false cognates. These may not be obvious in a plan built without that lens.</span>
+        </div>
+      </div>
+      <div class="risk-fix">
+        <strong>Fix prompt <span class="tag tag-claude">Claude</span>:</strong> "Review this lesson plan for grammar points or vocabulary that are typically difficult for Ukrainian L1 speakers. Flag each potential difficulty and suggest a brief pre-emptive explanation or comparison I can add to the lesson."
+      </div>
+
+      <div class="risk-row">
+        <span class="risk-icon">⚠️</span>
+        <div>
+          <span class="risk-label">Risk 4 — Online delivery gap</span>
+          <span class="risk-text">Activities designed for physical classrooms — pass this to your partner, write on the board, listen to the classroom recording — break in an online session without adaptation.</span>
+        </div>
+      </div>
+      <div class="risk-fix">
+        <strong>Fix prompt <span class="tag tag-claude">Claude</span>:</strong> "This plan was adapted from a printed lesson. Identify any activities that assume a physical classroom and suggest a practical online equivalent for each one using LearnCube's virtual classroom features."
+      </div>
+
+      <div class="risk-row">
+        <span class="risk-icon">⚠️</span>
+        <div>
+          <span class="risk-label">Risk 5 — Homework drop-off</span>
+          <span class="risk-text">Homework that is too open-ended, too long, or not clearly connected to the lesson goal gets ignored — especially by adult learners with full-time jobs and families.</span>
+        </div>
+      </div>
+      <div class="risk-fix">
+        <strong>Fix prompt <span class="tag tag-claude">Claude</span>:</strong> "Review the homework task in this lesson plan. Is it specific enough that the student knows exactly what to do, short enough to complete in under 20 minutes, and clearly connected to today's lesson goal? If not, suggest a revised homework task."
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 5. STUDENT PROGRESS & REPORTING ── -->
+  <div class="card" id="c-lu-progress">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c-lu-progress')">
+      <div class="cicon i-gold">📊</div>
+      <div>
+        <div class="ctitle">Student Progress, Reports & Retention</div>
+        <div class="csub">Keep students longer, communicate progress clearly, reduce churn</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Students who can see their own progress stay enrolled. Claude can generate monthly summaries, celebration emails, and honest gap analyses from session notes — all in 2–3 minutes.</div>
+
+      <div class="prompt-group">
+        <span class="prompt-group-label">Monthly progress reports</span>
+        <div class="prompt-box-stack">
+          <div class="prompt-box">
+            <strong>📋 Monthly summary <span class="tag tag-claude">Claude</span></strong>
+            "Write a warm, encouraging 200-word monthly progress report for Olena to send directly to her. Highlight 2–3 specific things she improved this month (use her session log), name the grammar or vocabulary areas we focused on, and set one clear focus for next month. Write it in the second person — 'you have' not 'she has.'"
+          </div>
+          <div class="prompt-box">
+            <strong>📋 Progress email in Ukrainian <span class="tag tag-claude">Claude</span></strong>
+            "Translate the progress report above into Ukrainian so Olena can share it with family members who want to understand her progress."
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-group">
+        <span class="prompt-group-label">Re-enrollment and retention</span>
+        <div class="prompt-box-stack">
+          <div class="prompt-box">
+            <strong>📋 Milestone celebration <span class="tag tag-claude">Claude</span></strong>
+            "Olena has just completed her 10th session. Draft a short, warm email celebrating this milestone, acknowledging two specific things she's achieved, and introducing the idea of setting goals for the next 10 sessions together."
+          </div>
+          <div class="prompt-box">
+            <strong>📋 Re-engagement — lapsed student <span class="tag tag-claude">Claude</span></strong>
+            "Darya hasn't booked a session in 3 weeks. Draft a gentle check-in message that mentions something specific from her last session, asks how she's doing, and makes it easy to rebook — without any pressure."
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-group">
+        <span class="prompt-group-label">Honest gap analysis (for your eyes only)</span>
+        <div class="prompt-box-stack">
+          <div class="prompt-box">
+            <strong>📋 What's missing <span class="tag tag-claude">Claude</span></strong>
+            "Based on Olena's session log, what key B1 skills or grammar areas have we NOT covered in the past 6 weeks? Rank them by importance for her job interview goal and suggest which to prioritise next."
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 6. BUSINESS SUPPORT ── -->
+  <div class="card" id="c-lu-biz">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c-lu-biz')">
+      <div class="cicon i-gold">💼</div>
+      <div>
+        <div class="ctitle">Business Admin on Autopilot</div>
+        <div class="csub">Onboarding, pricing, new student emails, and more — drafted in seconds</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Claude knows your business, your rates, and your voice from the FPLE Business Overview. Use it for every admin task you'd otherwise delay because writing feels hard.</div>
+
+      <div class="prompt-group">
+        <span class="prompt-group-label">New student onboarding</span>
+        <div class="prompt-box-stack">
+          <div class="prompt-box">
+            <strong>📋 Welcome email <span class="tag tag-claude">Claude</span></strong>
+            "Draft a warm welcome email for a new student named Nadia who just booked her first trial session. Her intake form says she's A2 level, goal is improving spoken English for travel, native language Ukrainian. Include: what to expect in the trial, how to access the classroom, and one thing to think about or prepare before we meet."
+          </div>
+          <div class="prompt-box">
+            <strong>📋 Post-trial follow-up <span class="tag tag-claude">Claude</span></strong>
+            "Nadia's trial session went well. She's interested in continuing but hasn't booked yet. Draft a follow-up email sent 24 hours after the trial: warm, brief, mention one thing she did well in the session, and include a clear next step to book her first regular session."
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-group">
+        <span class="prompt-group-label">Scheduling and communication</span>
+        <div class="prompt-box-stack">
+          <div class="prompt-box">
+            <strong>📋 Session cancellation — student <span class="tag tag-claude">Claude</span></strong>
+            "Draft a response to a student who cancelled 2 hours before our session with no explanation. Keep it warm and professional, offer to reschedule, and gently remind them of the cancellation policy without making it confrontational."
+          </div>
+          <div class="prompt-box">
+            <strong>📋 Rate increase notice <span class="tag tag-claude">Claude</span></strong>
+            "I'm increasing my rates by 10% starting next month. Draft a short email to existing students announcing this. Make it warm and forward-looking — mention the value they're getting, acknowledge it's a change, and give them 4 weeks' notice."
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-group">
+        <span class="prompt-group-label">Group sessions</span>
+        <div class="prompt-box-stack">
+          <div class="prompt-box">
+            <strong>📋 Group lesson plan — mixed levels <span class="tag tag-claude">Claude</span></strong>
+            "I have a group session with 3 students: one A2, one B1, one B1+. The topic is everyday shopping vocabulary. Using FPLE_LP_Speaking.docx, build a 60-minute group lesson plan where the A2 student isn't lost and the stronger students are still challenged. Suggest how to structure pair work so levels are mixed rather than grouped."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 7. CLAUDE IN CHROME ── -->
+  <div class="card" id="c-lu-chrome">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c-lu-chrome')">
+      <div class="cicon i-sage">🌐</div>
+      <div>
+        <div class="ctitle">Claude in Chrome — Teaching on the Open Web</div>
+        <div class="csub">Use Claude alongside any website during lesson prep or live sessions</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Claude in Chrome lets you point Claude at any web page — a news article, a YouTube video page, a LearnCube activity — and ask it questions or generate lesson material from what's on screen. No copying and pasting.</div>
+
+      <p class="prose">Claude in Chrome is a browser extension. Install it from the <a href="https://chromewebstore.google.com/detail/claude/clnhgldfplficekichffgchdmfnioifb" target="_blank" class="ilink">Chrome Web Store</a> → sign in with your Claude account → the Claude panel appears in your browser sidebar.</p>
+
+      <div class="prompt-group">
+        <span class="prompt-group-label">Building lessons from real content</span>
+        <div class="prompt-box-stack">
+          <div class="prompt-box">
+            <strong>📋 Article → Reading lesson <span class="tag tag-chrome">Chrome</span></strong>
+            Open a BBC Learning English article or any news page → open Claude in Chrome → say: "This article is open in my browser. Assess its CEFR level. Then build a 45-minute reading comprehension lesson from it for a B1 student using my FPLE_LP_Reading.docx template. Include a pre-teaching vocabulary list and 5 comprehension questions."
+          </div>
+          <div class="prompt-box">
+            <strong>📋 YouTube → Listening lesson <span class="tag tag-chrome">Chrome</span></strong>
+            Open a YouTube video page (e.g. a TED-Ed or BBC News clip) → Claude in Chrome → "Using the title, description, and transcript of this video (if available), assess its suitability for a B1 listening lesson. If suitable, outline a pre-listening task, two listening tasks, and a post-listening discussion question."
+          </div>
+          <div class="prompt-box">
+            <strong>📋 LearnCube activity → plan integration <span class="tag tag-chrome">Chrome</span></strong>
+            Open a LearnCube content activity in your browser → Claude in Chrome → "I have this LearnCube activity open. Describe what it covers and suggest where it fits best in a 60-minute [Reading / Speaking / Grammar] lesson — as warm-up, main activity, or wrap-up — and why."
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-group">
+        <span class="prompt-group-label">Live session support</span>
+        <div class="prompt-box-stack">
+          <div class="prompt-box">
+            <strong>📋 In-session vocabulary lookup <span class="tag tag-chrome">Chrome</span></strong>
+            During a session, if a student encounters an unknown word on screen → Claude in Chrome → "Define '[word]' at B1 level in simple English. Give one example sentence in a workplace context. Do not use the word in the definition."
+          </div>
+          <div class="prompt-box">
+            <strong>📋 Grammar question mid-lesson <span class="tag tag-chrome">Chrome</span></strong>
+            "A Ukrainian student just asked why 'I am knowing' is wrong but 'I am learning' is fine. Give me a brief, clear explanation suitable for a B1 adult learner — no linguistic jargon — and one memorable example to illustrate the difference."
+          </div>
+        </div>
+      </div>
+
+      <div class="callout co-sage" style="margin-top: 14px;">
+        <strong>Useful ESL sites to use with Claude in Chrome:</strong> BBC Learning English (bbclearningenglish.com) · British Council Learn English (learnenglish.britishcouncil.org) · News in Levels (newsinlevels.com) · TED-Ed (ed.ted.com). Open any of these, ask Claude to assess the level and build a lesson from the page.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 8. MATERIALS LIBRARY ── -->
+  <div class="card" id="c-lu-library">
+    <div class="card-top t-terra"></div>
+    <div class="card-trigger" onclick="toggle('c-lu-library')">
+      <div class="cicon i-terra">📚</div>
+      <div>
+        <div class="ctitle">Building Your Materials Library Over Time</div>
+        <div class="csub">Turn every lesson into a reusable asset — not a one-time document</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="tldr"><strong>TL;DR</strong>Every lesson plan Claude generates, every PPT you build from it, every set of corrections from a session — these are assets. With a simple Drive filing system, they compound. After 3 months you have a personalised curriculum rather than a collection of one-off sessions.</div>
+
+      <div class="lu-grid">
+        <div class="lu-card">
+          <div class="lu-card-head">🗂️ Filing system</div>
+          <div class="lu-card-body">Store completed lesson plans in <strong>FPLE — Student Files / [Name] / Lesson Plans</strong>. Name each file: <em>2024-03-15_Olena_B1_Speaking_JobInterviews.docx</em>. Claude can search by name when you ask "what speaking lessons have I run with Olena?"</div>
+        </div>
+        <div class="lu-card">
+          <div class="lu-card-head">♻️ Adapting past lessons</div>
+          <div class="lu-card-body">Before building a new plan, ask: <em>"Have I already taught a B1 speaking lesson on a similar topic with any student? If so, summarise it so I can adapt rather than rebuild."</em> This only works if past plans are saved with descriptive file names.</div>
+        </div>
+        <div class="lu-card">
+          <div class="lu-card-head">📎 PPT + Plan together</div>
+          <div class="lu-card-body">Keep each lesson plan and its corresponding PPT in the same subfolder, with matching names. When you ask Claude to update a lesson next term, it can reference both — the plan for structure, the slides for what you actually showed.</div>
+        </div>
+        <div class="lu-card">
+          <div class="lu-card-head">🏷️ Tag as you go</div>
+          <div class="lu-card-body">Add a single line to every post-session note: <em>Tags: B1, speaking, job-interviews, past-perfect, worked-well</em>. After 20 lessons, Claude can search these tags to find what worked for specific student types and goals.</div>
+        </div>
+      </div>
+
+      <div class="prompt-box" style="margin-top: 14px;">
+        <strong>📋 Quarterly curriculum audit <span class="tag tag-claude">Claude</span></strong>
+        "Review all session logs in the FPLE Student Files folder for the past 3 months. What lesson types have I taught most? Which student levels have had the most sessions? Are there any CEFR levels or skill types I've underprepared for? Give me a brief summary and three suggestions for where to focus next quarter."
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /levelup wrap -->
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- RESOURCES -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="wrap" id="resources" style="padding-bottom: 0;">
+  <div class="sec-label">🔗 All resources in one place</div>
+
+  <div class="card open" id="c-resources">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c-resources')">
+      <div class="cicon i-sage">🔗</div>
+      <div>
+        <div class="ctitle">Quick-Access Resource Links</div>
+        <div class="csub">Every tool, signup page, and support link — all here</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+
+      <div class="mini-head">🎓 LearnCube</div>
+      <div class="res-grid">
+        <a href="https://www.learncube.com" target="_blank" class="res-item">
+          <span class="res-item-label">Sign Up / Home</span>
+          <span class="res-item-name">LearnCube</span>
+          <span class="res-item-url">learncube.com</span>
+        </a>
+        <a href="https://www.learncube.com/pricing" target="_blank" class="res-item">
+          <span class="res-item-label">Pricing</span>
+          <span class="res-item-name">Plans & Pricing</span>
+          <span class="res-item-url">learncube.com/pricing</span>
+        </a>
+        <a href="https://www.learncube.com/pricing" target="_blank" class="res-item">
+          <span class="res-item-label">Content (Dashboard)</span>
+          <span class="res-item-name">ESL Content Library</span>
+          <span class="res-item-url">Accessible inside your account after login</span>
+        </a>
+        <a href="https://support.learncube.com" target="_blank" class="res-item">
+          <span class="res-item-label">Help</span>
+          <span class="res-item-name">LearnCube Support</span>
+          <span class="res-item-url">support.learncube.com</span>
+        </a>
+      </div>
+
+      <div class="mini-head">📅 Acuity Scheduling</div>
+      <div class="res-grid">
+        <a href="https://acuityscheduling.com" target="_blank" class="res-item">
+          <span class="res-item-label">Sign Up / Home</span>
+          <span class="res-item-name">Acuity Scheduling</span>
+          <span class="res-item-url">acuityscheduling.com</span>
+        </a>
+        <a href="https://acuityscheduling.com/login.php" target="_blank" class="res-item">
+          <span class="res-item-label">Log In</span>
+          <span class="res-item-name">Acuity Dashboard</span>
+          <span class="res-item-url">acuityscheduling.com/login</span>
+        </a>
+        <a href="https://help.acuityscheduling.com" target="_blank" class="res-item">
+          <span class="res-item-label">Help</span>
+          <span class="res-item-name">Acuity Help Center</span>
+          <span class="res-item-url">help.acuityscheduling.com</span>
+        </a>
+        <a href="https://help.acuityscheduling.com/hc/en-us/articles/219149527" target="_blank" class="res-item">
+          <span class="res-item-label">Guide</span>
+          <span class="res-item-name">Setting Up Payment</span>
+          <span class="res-item-url">Acuity payment docs</span>
+        </a>
+      </div>
+
+      <div class="mini-head">💳 Stripe</div>
+      <div class="res-grid">
+        <a href="https://dashboard.stripe.com/register" target="_blank" class="res-item">
+          <span class="res-item-label">Sign Up</span>
+          <span class="res-item-name">Create Stripe Account</span>
+          <span class="res-item-url">dashboard.stripe.com/register</span>
+        </a>
+        <a href="https://dashboard.stripe.com/login" target="_blank" class="res-item">
+          <span class="res-item-label">Log In</span>
+          <span class="res-item-name">Stripe Dashboard</span>
+          <span class="res-item-url">dashboard.stripe.com</span>
+        </a>
+        <a href="https://stripe.com/docs/payouts" target="_blank" class="res-item">
+          <span class="res-item-label">Guide</span>
+          <span class="res-item-name">How Payouts Work</span>
+          <span class="res-item-url">stripe.com/docs/payouts</span>
+        </a>
+        <a href="https://support.stripe.com" target="_blank" class="res-item">
+          <span class="res-item-label">Help</span>
+          <span class="res-item-name">Stripe Support</span>
+          <span class="res-item-url">support.stripe.com</span>
+        </a>
+      </div>
+
+      <div class="mini-head">🤖 Claude</div>
+      <div class="res-grid">
+        <a href="https://claude.ai" target="_blank" class="res-item">
+          <span class="res-item-label">Open</span>
+          <span class="res-item-name">Claude.ai</span>
+          <span class="res-item-url">claude.ai</span>
+        </a>
+        <a href="https://claude.ai/settings" target="_blank" class="res-item">
+          <span class="res-item-label">Settings</span>
+          <span class="res-item-name">Claude Settings & Integrations</span>
+          <span class="res-item-url">claude.ai/settings</span>
+        </a>
+        <a href="https://support.anthropic.com" target="_blank" class="res-item">
+          <span class="res-item-label">Help</span>
+          <span class="res-item-name">Anthropic Support</span>
+          <span class="res-item-url">support.anthropic.com</span>
+        </a>
+        <a href="https://docs.anthropic.com/en/docs/build-with-claude/projects" target="_blank" class="res-item">
+          <span class="res-item-label">Guide</span>
+          <span class="res-item-name">How Projects Work</span>
+          <span class="res-item-url">Anthropic docs</span>
+        </a>
+      </div>
+
+      <div class="mini-head">📁 Google Workspace</div>
+      <div class="res-grid">
+        <a href="https://drive.google.com" target="_blank" class="res-item">
+          <span class="res-item-label">Open</span>
+          <span class="res-item-name">Google Drive</span>
+          <span class="res-item-url">drive.google.com</span>
+        </a>
+        <a href="https://calendar.google.com" target="_blank" class="res-item">
+          <span class="res-item-label">Open</span>
+          <span class="res-item-name">Google Calendar</span>
+          <span class="res-item-url">calendar.google.com</span>
+        </a>
+        <a href="https://meet.google.com" target="_blank" class="res-item">
+          <span class="res-item-label">Open</span>
+          <span class="res-item-name">Google Meet</span>
+          <span class="res-item-url">meet.google.com</span>
+        </a>
+        <a href="https://mail.google.com" target="_blank" class="res-item">
+          <span class="res-item-label">Open</span>
+          <span class="res-item-name">Gmail</span>
+          <span class="res-item-url">mail.google.com</span>
+        </a>
+      </div>
+
+      <div class="mini-head">🌐 Claude in Chrome</div>
+      <div class="res-grid">
+        <a href="https://chromewebstore.google.com/detail/claude/clnhgldfplficekichffgchdmfnioifb" target="_blank" class="res-item">
+          <span class="res-item-label">Install</span>
+          <span class="res-item-name">Claude in Chrome Extension</span>
+          <span class="res-item-url">Chrome Web Store</span>
+        </a>
+        <a href="https://bbclearningenglish.com" target="_blank" class="res-item">
+          <span class="res-item-label">ESL Content</span>
+          <span class="res-item-name">BBC Learning English</span>
+          <span class="res-item-url">bbclearningenglish.com</span>
+        </a>
+        <a href="https://learnenglish.britishcouncil.org" target="_blank" class="res-item">
+          <span class="res-item-label">ESL Content</span>
+          <span class="res-item-name">British Council Learn English</span>
+          <span class="res-item-url">learnenglish.britishcouncil.org</span>
+        </a>
+        <a href="https://newsinlevels.com" target="_blank" class="res-item">
+          <span class="res-item-label">Levelled News</span>
+          <span class="res-item-name">News in Levels</span>
+          <span class="res-item-url">newsinlevels.com</span>
+        </a>
+      </div>
+
+      <div class="mini-head">⚡ Automation (optional)</div>
+      <div class="res-grid">
+        <a href="https://zapier.com" target="_blank" class="res-item">
+          <span class="res-item-label">Optional</span>
+          <span class="res-item-name">Zapier</span>
+          <span class="res-item-url">zapier.com — free tier available</span>
+        </a>
+        <a href="https://zapier.com/apps/acuity-scheduling/integrations/google-sheets" target="_blank" class="res-item">
+          <span class="res-item-label">Template</span>
+          <span class="res-item-name">Acuity → Google Sheets Zap</span>
+          <span class="res-item-url">Zapier integration template</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div style="height: 40px;"></div>
+
+<footer>
+  <p class="big">You've got this. 🌿</p>
+  <p style="font-size:11px;color:var(--soft);margin-top:-4px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;">Release 1</p>
+  <p>Four tools. One setup. A business that runs itself while you teach.<br>
+  Everything in this guide will still be here when you need it.<br>
+  No deadline. No test. Just you and your students.</p>
+  <button class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to top</button>
+  <p style="margin-top:24px; font-size:12px; color:var(--soft);">
+    <button onclick="resetProgress()" style="color:var(--soft); text-decoration:underline dotted; text-underline-offset: 3px;">Reset my progress</button>
+    &nbsp;·&nbsp; Your progress is saved in this browser automatically.
+  </p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
+<script>
+function toggleDrawer() {
+  const drawer = document.getElementById('nav-drawer');
+  const burger = document.getElementById('nav-burger');
+  const isOpen = drawer.classList.toggle('open');
+  burger.classList.toggle('open', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+function closeDrawer() {
+  document.getElementById('nav-drawer').classList.remove('open');
+  document.getElementById('nav-burger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Close drawer on outside click
+document.addEventListener('click', function(e) {
+  const drawer = document.getElementById('nav-drawer');
+  const burger = document.getElementById('nav-burger');
+  if (drawer.classList.contains('open') && !drawer.contains(e.target) && !burger.contains(e.target)) {
+    closeDrawer();
+  }
+});
+function showLtype(type, el) {
+  document.querySelectorAll('.ltype-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ltype-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('ltype-' + type).classList.add('active');
+  if (el) el.classList.add('active');
+}
+function toggle(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+function openCard(id) {
+  document.getElementById(id).classList.add('open');
+}
+function toggleSub(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+function openSubCard(id) {
+  document.getElementById(id).classList.add('open');
+}
+// ═══════════════════════════════════════════════════════
+// FPLE PROGRESS SYSTEM — V9
+// ═══════════════════════════════════════════════════════
+const FPLE_SETUP = [
+  { id:'c-learncube', label:'LearnCube',    requires:[],                                             steps:true  },
+  { id:'c-acuity',    label:'Acuity',       requires:['c-learncube'],                                steps:true  },
+  { id:'c-claude',    label:'Claude',        requires:[],                                             steps:true  },
+  { id:'c-google',    label:'Google',        requires:[],                                             steps:true  },
+  { id:'c-seams',     label:'Connections',  requires:['c-learncube','c-acuity'],                     steps:false },
+  { id:'c-launch',    label:'30-Day Plan',  requires:['c-learncube','c-acuity','c-claude','c-google'], steps:false },
+];
+const FPLE_LEVELUP = ['c-lu-org','c-lu-review','c-lu-diff','c-lu-seq','c-lu-risk','c-lu-progress','c-lu-biz','c-lu-chrome','c-lu-library'];
+const FPLE_SETUP_TOTAL = FPLE_SETUP.length;
+
+function getPS() {
+  try { return JSON.parse(localStorage.getItem('fple_v9')||'{}'); }
+  catch(e) { return {}; }
+}
+function savePS(s) {
+  try { localStorage.setItem('fple_v9', JSON.stringify(s)); }
+  catch(e) { /* storage unavailable */ }
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function() {
+  FPLE_SETUP.forEach(card => {
+    injectDepNotice(card);
+    if (card.steps) { injectStepBoxes(card.id); injectMiniBar(card.id); }
+    injectMarkDoneBtn(card.id);
+  });
+  FPLE_LEVELUP.forEach(id => injectMarkDoneBtn(id));
+  restorePS();
+  renderPS();
+});
+
+function injectDepNotice(card) {
+  if (!card.requires.length) return;
+  const el = document.getElementById(card.id);
+  if (!el) return;
+  const body = el.querySelector('.card-body');
+  if (!body) return;
+  const div = document.createElement('div');
+  div.className = 'dep-notice'; div.id = 'dep-' + card.id;
+  const tldr = body.querySelector('.tldr');
+  if (tldr) body.insertBefore(div, tldr); else body.insertBefore(div, body.firstChild);
+  updateDepNotice(card, getPS());
+}
+
+function injectStepBoxes(cardId) {
+  const el = document.getElementById(cardId);
+  if (!el) return;
+  el.querySelectorAll('.step').forEach((step, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'step-check'; btn.innerHTML = '✓';
+    btn.setAttribute('data-card', cardId);
+    btn.setAttribute('data-step', String(i+1));
+    btn.setAttribute('aria-label', 'Mark step ' + (i+1) + ' complete');
+    btn.onclick = function(e) { e.stopPropagation(); toggleStep(cardId, i+1); };
+    step.insertBefore(btn, step.firstChild);
+  });
+}
+
+function injectMiniBar(cardId) {
+  const el = document.getElementById(cardId);
+  if (!el) return;
+  const stepsEl = el.querySelector('.steps');
+  if (!stepsEl) return;
+  const n = el.querySelectorAll('.step').length;
+  const bar = document.createElement('div');
+  bar.className = 'card-mini-prog'; bar.id = 'cmp-' + cardId;
+  bar.innerHTML = '<span class="cmp-lbl" id="cmpl-'+cardId+'">0/'+n+' steps</span><div class="cmp-track"><div class="cmp-bar" id="cmpb-'+cardId+'"></div></div>';
+  stepsEl.before(bar);
+}
+
+function injectMarkDoneBtn(cardId) {
+  const el = document.getElementById(cardId);
+  if (!el) return;
+  const doneBox = el.querySelector('.done-box');
+  if (!doneBox) return;
+  const btn = document.createElement('button');
+  btn.className = 'mark-done-btn'; btn.id = 'mdb-' + cardId;
+  btn.innerHTML = '✓ Mark this section done';
+  btn.onclick = function() { markCardDone(cardId); };
+  doneBox.after(btn);
+}
+
+// ── Restore ──
+function restorePS() {
+  const s = getPS();
+  if (s.steps) {
+    Object.entries(s.steps).forEach(([key, val]) => {
+      if (!val) return;
+      const parts = key.split('|');
+      const cardId = parts[0], stepNum = parts[1];
+      const check = document.querySelector('.step-check[data-card="'+cardId+'"][data-step="'+stepNum+'"]');
+      if (check) { check.classList.add('checked'); check.closest('.step').classList.add('step-done'); }
+    });
+  }
+  if (s.cards) {
+    Object.entries(s.cards).forEach(([id, done]) => { if (done) applyDone(id, false); });
+  }
+}
+
+// ── Step toggle ──
+function toggleStep(cardId, stepNum) {
+  const s = getPS();
+  if (!s.steps) s.steps = {};
+  const key = cardId + '|' + stepNum;
+  s.steps[key] = !s.steps[key];
+  savePS(s);
+  const check = document.querySelector('.step-check[data-card="'+cardId+'"][data-step="'+stepNum+'"]');
+  if (check) {
+    const done = !!s.steps[key];
+    check.classList.toggle('checked', done);
+    check.closest('.step').classList.toggle('step-done', done);
+    if (done) { check.style.transform='scale(1.35)'; setTimeout(()=>{check.style.transform='';},200); }
+  }
+  updateMiniBar(cardId, s);
+  checkAutoSuggest(cardId, s);
+}
+
+// ── Mark card done ──
+function markCardDone(cardId) {
+  const s = getPS();
+  if (!s.cards) s.cards = {};
+  if (s.cards[cardId]) { // undo
+    s.cards[cardId] = false; savePS(s);
+    undoDone(cardId); renderPS();
+  } else {
+    s.cards[cardId] = true; savePS(s);
+    applyDone(cardId, true); renderPS();
+    if (FPLE_SETUP.every(c => s.cards && s.cards[c.id])) setTimeout(showCelebration, 800);
+  }
+}
+
+function applyDone(cardId, animate) {
+  const el = document.getElementById(cardId);
+  if (!el) return;
+  el.classList.add('completed');
+  if (!el.querySelector('.stamp-badge')) {
+    const stamp = document.createElement('div');
+    stamp.className = 'stamp-badge'; stamp.textContent = '✓ Done';
+    el.querySelector('.card-trigger').appendChild(stamp);
+  }
+  const btn = document.getElementById('mdb-' + cardId);
+  if (btn) { btn.classList.add('is-done'); btn.innerHTML = '↩ Unmark as done'; }
+  if (animate && typeof confetti === 'function') {
+    const b = btn || el.querySelector('.done-box');
+    if (b) {
+      const r = b.getBoundingClientRect();
+      confetti({
+        particleCount:65, spread:75, scalar:0.9, ticks:90,
+        origin:{ x: (r.left+r.width/2)/window.innerWidth, y: r.top/window.innerHeight },
+        colors:['#5e9180','#c49520','#fdf8f2','#c8714a','#a8ccbf','#e0c070']
+      });
+    }
+  }
+}
+
+function undoDone(cardId) {
+  const el = document.getElementById(cardId);
+  if (!el) return;
+  el.classList.remove('completed');
+  const stamp = el.querySelector('.stamp-badge'); if (stamp) stamp.remove();
+  const btn = document.getElementById('mdb-' + cardId);
+  if (btn) { btn.classList.remove('is-done'); btn.innerHTML = '✓ Mark this section done'; }
+}
+
+// ── Render ──
+function renderPS() {
+  const s = getPS();
+  FPLE_SETUP.forEach(c => {
+    if (c.steps) { updateMiniBar(c.id, s); checkAutoSuggest(c.id, s); }
+    updateDepNotice(c, s);
+  });
+  updateGlobalBar(s);
+  updateNavPills(s);
+}
+
+function updateMiniBar(cardId, s) {
+  const el = document.getElementById(cardId);
+  if (!el) return;
+  const steps = el.querySelectorAll('.step');
+  const total = steps.length; if (!total) return;
+  let done = 0;
+  steps.forEach((_,i) => { if (s.steps && s.steps[cardId+'|'+(i+1)]) done++; });
+  const bar = document.getElementById('cmpb-'+cardId);
+  const lbl = document.getElementById('cmpl-'+cardId);
+  if (bar) bar.style.width = (done/total*100)+'%';
+  if (lbl) lbl.textContent = done+'/'+total+' steps';
+}
+
+function checkAutoSuggest(cardId, s) {
+  const el = document.getElementById(cardId); if (!el) return;
+  const steps = el.querySelectorAll('.step'); const total = steps.length; if (!total) return;
+  let done = 0;
+  steps.forEach((_,i) => { if (s.steps && s.steps[cardId+'|'+(i+1)]) done++; });
+  const btn = document.getElementById('mdb-'+cardId);
+  if (!btn) return;
+  if (done === total && !btn.classList.contains('is-done')) {
+    btn.innerHTML = '🎉 All steps done — mark section complete?';
+  } else if (done < total && !btn.classList.contains('is-done')) {
+    btn.innerHTML = '✓ Mark this section done';
+  }
+}
+
+function updateDepNotice(card, s) {
+  if (!card.requires.length) return;
+  var div = document.getElementById('dep-'+card.id); if (!div) return;
+  var allMet = card.requires.every(function(id) { return s.cards && s.cards[id]; });
+  var names = card.requires.map(function(id) {
+    var c = FPLE_SETUP.find(function(x){ return x.id===id; });
+    return c ? c.label : id;
+  }).join(' + ');
+  var verb = card.requires.length > 1 ? 'are' : 'is';
+  var secWord = card.requires.length === 1 ? 'that section' : 'those sections';
+  if (allMet) {
+    div.className = 'dep-notice dep-met';
+    div.innerHTML = '<span class="dep-icon">✅</span><div><strong>Prerequisites complete:</strong> ' + names + ' ' + verb + ' done. Good to go.</div>';
+  } else {
+    div.className = 'dep-notice';
+    div.innerHTML = '<span class="dep-icon">⚠️</span><div><strong>Needs to be done first:</strong> ' + names + '. Complete ' + secWord + ' and mark it done before starting this one.</div>';
+  }
+}
+
+function updateGlobalBar(s) {
+  const done = FPLE_SETUP.filter(c => s.cards && s.cards[c.id]).length;
+  const fill = document.getElementById('pb-fill');
+  const cnt  = document.getElementById('pb-count');
+  const lbl  = document.getElementById('pb-label');
+  if (fill) fill.style.width = (done/FPLE_SETUP_TOTAL*100)+'%';
+  if (cnt)  cnt.textContent  = done+'/'+FPLE_SETUP_TOTAL;
+  if (lbl)  lbl.textContent  = done===FPLE_SETUP_TOTAL ? 'Setup complete! 🎉' : done===0 ? 'Setup progress' : (FPLE_SETUP_TOTAL-done)+' section'+(FPLE_SETUP_TOTAL-done>1?'s':'')+' to go';
+}
+
+function updateNavPills(s) {
+  const map = {'#learncube':'c-learncube','#acuity':'c-acuity','#claude':'c-claude','#google':'c-google','#seams':'c-seams','#launch':'c-launch'};
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    const id = map[a.getAttribute('href')];
+    if (!id) return;
+    if (s.cards && s.cards[id]) { a.classList.add('nl-done'); a.classList.remove('nl-dim'); }
+    else a.classList.remove('nl-done');
+  });
+}
+
+// ── Celebration ──
+function showCelebration() {
+  const el = document.getElementById('fple-celebration');
+  if (!el) return;
+  el.classList.add('show');
+  if (typeof confetti !== 'function') return;
+  const end = Date.now()+3500;
+  const colors1 = ['#5e9180','#c49520','#fdf8f2'];
+  const colors2 = ['#c8714a','#a8ccbf','#e0c070'];
+  const run = setInterval(() => {
+    if (Date.now()>end) return clearInterval(run);
+    confetti({particleCount:7,angle:60, spread:55,origin:{x:0},   colors:colors1});
+    confetti({particleCount:7,angle:120,spread:55,origin:{x:1},   colors:colors2});
+  }, 75);
+}
+function closeCelebration() { document.getElementById('fple-celebration').classList.remove('show'); }
+
+function resetProgress() {
+  if (!confirm('Reset all progress? This will clear all step checkboxes and section completions.')) return;
+  try { localStorage.removeItem('fple_v9'); } catch(e) {}
+  location.reload();
+}
+
+</script>
+</body>
+</html>

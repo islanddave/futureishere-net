@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unified Style Guide — V3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+
+    /* ════════════════════════════════════════════════════════
+       UNIFIED DESIGN SYSTEM — V2
+       (This document both IS the system and DEMONSTRATES it)
+    ════════════════════════════════════════════════════════ */
+
+    :root {
+      /* ── Surfaces ── */
+      --cream:        #fdf8f2;
+      --card:         #fffdf9;
+      --card-hover:   #faf5ed;
+      --border:       rgba(0,0,0,.08);
+      --border-focus: rgba(94,145,128,.6);
+
+      /* ── Ink scale ── */
+      --ink:          #2d2d2d;
+      --ink-mid:      #5a5a5a;
+      --ink-soft:     #6b6b6b;   /* 4.7:1 on --cream — passes WCAG AA */
+
+      /* ── Sage · primary calm ── */
+      --sage:         #5e9180;   /* 3.6:1 on white, use on cream: ✓ AA for large text */
+      --sage-dark:    #3d6b5a;   /* 5.8:1 on cream — AA on all text sizes */
+      --sage-light:   #a8ccbf;
+      --sage-pale:    #eaf3f0;
+
+      /* ── Terra · warm action ── */
+      --terra:        #c8714a;   /* 3.0:1 — large text + icons only */
+      --terra-dark:   #9e4f2d;   /* 5.2:1 on cream — AA all sizes */
+      --terra-pale:   #fdf0e8;
+
+      /* ── Gold · reward ── */
+      --gold:         #c49520;   /* adjusted for 3.2:1+ on pale */
+      --gold-pale:    #fdf5dc;
+
+      /* ── Amber · heads-up (not alarming) ── */
+      --amber:        #b87820;   /* 4.5:1 on cream — AA all sizes */
+      --amber-dark:   #8a5810;   /* 6.8:1 on cream — AAA */
+      --amber-mid:    #e0c88a;
+      --amber-pale:   #fdf3dc;
+
+      /* ── State colors ── */
+      --state-success:      #4a8f6a;
+      --state-success-pale: #edf7f1;
+      --state-error:        #b84040;
+      --state-error-pale:   #fdecea;
+      --state-warning:      #b87820;
+      --state-warning-pale: #fdf3dc;
+      --state-disabled-fg:  #a0a0a0;
+      --state-disabled-bg:  #f0ece8;
+
+      /* ── Focus ring ── */
+      --focus-ring: 0 0 0 3px rgba(94,145,128,.35);
+      --focus-ring-error: 0 0 0 3px rgba(184,64,64,.3);
+
+      /* ── Typography ── */
+      --font-display: 'Nunito', 'Helvetica Rounded', sans-serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+      --font-mono:    'DM Mono', 'Courier New', monospace;
+
+      /* ── Spacing scale ── */
+      --space-2xs:  4px;
+      --space-xs:   8px;
+      --space-sm:   12px;
+      --space-md:   16px;
+      --space-lg:   24px;
+      --space-xl:   32px;
+      --space-2xl:  48px;
+      --space-3xl:  64px;
+      --space-4xl:  96px;
+
+      /* ── Radius scale ── */
+      --radius-sm:  6px;
+      --radius-md:  10px;
+      --radius-lg:  16px;
+      --radius-pill:100px;
+
+      /* ── Motion ── */
+      --transition-quick:  150ms ease;
+      --transition-base:   250ms ease;
+      --transition-slow:   400ms ease;
+      --transition-reveal: 350ms cubic-bezier(.16,1,.3,1);
+
+      /* ── Shadow ── */
+      --shadow-card:  0 1px 6px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.04);
+      --shadow-raise: 0 4px 20px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.06);
+    }
+
+    /* ── Dark mode token override ── */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --cream:       #1c1a17;
+        --card:        #231f1b;
+        --card-hover:  #2a2520;
+        --border:      rgba(255,255,255,.09);
+        --ink:         #f0ece4;
+        --ink-mid:     #b8b0a4;
+        --ink-soft:    #8a8278;
+        --sage:        #7ab8a4;
+        --sage-dark:   #a8d9c8;
+        --sage-pale:   #1e3028;
+        --terra:       #e0906a;
+        --terra-dark:  #f0b090;
+        --terra-pale:  #2e1e14;
+        --gold:        #e8bc50;
+        --gold-pale:   #2a2010;
+        --amber:       #e8b858;
+        --amber-pale:  #281a04;
+        --state-success-pale: #162414;
+        --state-error-pale:   #2a1010;
+        --state-warning-pale: #281a04;
+        --state-disabled-fg: #5a5a5a;
+        --state-disabled-bg: #2a2520;
+        --shadow-card:  0 1px 6px rgba(0,0,0,.4);
+        --shadow-raise: 0 4px 20px rgba(0,0,0,.5);
+      }
+    }
+
+    /* ═══════════════════════════════════════
+       DOC CHROME — this document's own styles
+    ═══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(150deg, var(--sage-pale) 0%, #fdf5dc 55%, var(--terra-pale) 100%);
+      padding: var(--space-4xl) var(--space-2xl) var(--space-3xl);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -60px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(94,145,128,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .version-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      background: var(--sage);
+      color: white;
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      margin-bottom: var(--space-lg);
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(26px,5vw,46px);
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.1;
+      margin-bottom: var(--space-md);
+      max-width: 700px;
+    }
+    .hero p {
+      color: var(--ink-mid);
+      font-size: 16px;
+      max-width: 580px;
+      margin-bottom: var(--space-xl);
+    }
+    .hero-pills { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+    .hero-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 5px 14px;
+      font-size: 12.5px;
+      color: var(--ink-mid);
+    }
+
+    /* ── PRINCIPLES STRIP ── */
+    .principles-strip {
+      background: var(--sage);
+      padding: var(--space-xl) var(--space-2xl);
+    }
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-lg);
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+    .principle {
+      color: rgba(255,255,255,.95);
+    }
+    .principle-num {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      opacity: .6;
+      margin-bottom: 4px;
+    }
+    .principle h4 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .principle p {
+      font-size: 12.5px;
+      opacity: .75;
+      line-height: 1.5;
+    }
+
+    /* ── NAV ── */
+    nav.doc-nav {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 var(--space-2xl);
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav.doc-nav a {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      text-decoration: none;
+      padding: 14px 16px;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color var(--transition-base), border-color var(--transition-base);
+    }
+    nav.doc-nav a:hover { color: var(--sage); border-color: var(--sage); }
+    nav.doc-nav a:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+    /* ── PAGE WRAPPER ── */
+    .page { max-width: 1060px; margin: 0 auto; padding: var(--space-3xl) var(--space-2xl); }
+    section { margin-bottom: var(--space-4xl); }
+
+    .section-header { margin-bottom: var(--space-xl); }
+    .section-eyebrow { font-family: var(--font-display); font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--sage); margin-bottom: var(--space-xs); }
+    .section-title { font-family: var(--font-display); font-size: 26px; font-weight: 900; color: var(--ink); line-height: 1.2; margin-bottom: var(--space-xs); }
+    .section-sub { font-size: 14px; color: var(--ink-soft); }
+
+    .sub-label {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-soft);
+      margin-bottom: var(--space-md);
+      margin-top: var(--space-xl);
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px solid var(--border);
+    }
+    .sub-label:first-of-type { margin-top: 0; }
+
+    /* ── CODE BLOCK ── */
+    .code-wrap {
+      background: #1a1714;
+      border-radius: var(--radius-md);
+      padding: var(--space-xl) var(--space-xl);
+      overflow-x: auto;
+      margin-bottom: var(--space-lg);
+    }
+    .code-wrap pre {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      line-height: 1.9;
+      color: #c8c0b4;
+    }
+    .cv  { color: #a8d9cf; }
+    .cv2 { color: #e8c88a; }
+    .cc  { color: #4a4438; }
+    .ck  { color: #c8a8f0; }
+    .cs  { color: #a8d8a0; }
+    .cn  { color: #f0c8a0; }
+
+    /* ── SWATCH GRID ── */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+      gap: var(--space-sm);
+      margin-bottom: var(--space-lg);
+    }
+    .swatch {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--card);
+      box-shadow: var(--shadow-card);
+    }
+    .swatch-color { height: 56px; }
+    .swatch-info { padding: 10px 12px; }
+    .swatch-name { font-family: var(--font-mono); font-size: 10px; color: var(--ink-mid); margin-bottom: 1px; }
+    .swatch-hex  { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink); }
+    .swatch-ratio{ font-size: 10px; color: var(--sage-dark); font-weight: 600; }
+    .swatch-role { font-size: 10.5px; color: var(--ink-soft); margin-top: 2px; }
+
+    /* ── TYPE CARDS ── */
+    .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-lg); }
+    .type-card {
+      background: var(--card);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-card);
+    }
+    .type-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ink-soft); margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--border); }
+
+    /* ── SPACING SCALE VIZ ── */
+    .space-row { display: flex; align-items: center; gap: var(--space-md); margin-bottom: 10px; }
+    .space-bar { background: var(--sage-light); border-radius: 3px; height: 12px; transition: width .3s; }
+    .space-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-mid); white-space: nowrap; min-width: 130px; }
+
+    /* ── COMPONENT SPECIMENS ── */
+
+    /* Button */
+    .btn {
+      display: inline-flex; align-items: center; gap: var(--space-xs);
+      padding: 11px 22px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-display); font-size: 14px; font-weight: 700;
+      cursor: pointer; border: none;
+      transition: filter var(--transition-base), box-shadow var(--transition-base), transform var(--transition-quick);
+    }
+    .btn:hover          { filter: brightness(1.06); transform: translateY(-1px); box-shadow: var(--shadow-raise); }
+    .btn:active         { transform: translateY(0); filter: brightness(.97); }
+    .btn:focus-visible  { outline: none; box-shadow: var(--focus-ring); }
+    .btn:disabled       { background: var(--state-disabled-bg) !important; color: var(--state-disabled-fg) !important; cursor: not-allowed; transform: none; filter: none; box-shadow: none; }
+    .btn-primary        { background: var(--sage);       color: white; }
+    .btn-secondary      { background: var(--terra-pale); color: var(--terra-dark); border: 1.5px solid var(--terra); }
+    .btn-ghost          { background: transparent; color: var(--ink-mid); border: 1.5px solid var(--border); }
+    .btn-gold           { background: var(--gold); color: white; }
+
+    /* Badge/Chip */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: var(--radius-pill);
+      font-family: var(--font-display); font-size: 11px; font-weight: 700;
+    }
+    .badge-sage    { background: var(--sage-pale);           color: var(--sage-dark); }
+    .badge-terra   { background: var(--terra-pale);          color: var(--terra-dark); }
+    .badge-gold    { background: var(--gold-pale);           color: #8a6010; }
+    .badge-success { background: var(--state-success-pale);  color: var(--state-success); }
+    .badge-error   { background: var(--state-error-pale);    color: var(--state-error); }
+
+    /* Callout */
+    .callout {
+      border-left: 3px solid var(--sage);
+      background: var(--sage-pale);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: var(--space-md) var(--space-lg);
+      font-size: 14px; line-height: 1.7; color: var(--ink-mid);
+      margin-bottom: var(--space-sm);
+    }
+    .callout-terra   { border-left-color: var(--terra);          background: var(--terra-pale); }
+    .callout-gold    { border-left-color: var(--gold);           background: var(--gold-pale); }
+    .callout-success { border-left-color: var(--state-success);  background: var(--state-success-pale); }
+    .callout-error   { border-left-color: var(--state-error);    background: var(--state-error-pale); }
+
+    /* Input field */
+    .field-wrap { margin-bottom: var(--space-md); }
+    .field-label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 13px; font-weight: 700;
+      color: var(--ink); margin-bottom: var(--space-xs);
+    }
+    .field-input {
+      width: 100%;
+      padding: 11px var(--space-md);
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      color: var(--ink);
+      font-family: var(--font-body); font-size: 14px;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
+      outline: none;
+    }
+    .field-input:focus    { border-color: var(--sage); box-shadow: var(--focus-ring); }
+    .field-input.error    { border-color: var(--state-error); }
+    .field-input.error:focus { box-shadow: var(--focus-ring-error); }
+    .field-hint { font-size: 12px; color: var(--ink-soft); margin-top: var(--space-2xs); }
+    .field-error-msg { font-size: 12px; color: var(--state-error); margin-top: var(--space-2xs); font-weight: 500; }
+
+    /* Step */
+    .step { display: flex; gap: var(--space-md); align-items: flex-start; margin-bottom: var(--space-md); }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--sage); color: white;
+      font-family: var(--font-display); font-weight: 800; font-size: 14px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .step-body h4 { font-family: var(--font-display); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+    .step-body p  { font-size: 13.5px; color: var(--ink-mid); line-height: 1.65; }
+
+    /* Progress */
+    .progress-wrap { margin-bottom: var(--space-md); }
+    .progress-label { font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: var(--space-xs); display: flex; justify-content: space-between; }
+    .progress-track { height: 10px; background: var(--sage-pale); border-radius: var(--radius-pill); overflow: hidden; }
+    .progress-fill  { height: 100%; background: var(--sage); border-radius: var(--radius-pill); transition: width var(--transition-slow); }
+
+    /* Accordion */
+    .accord {
+      background: var(--card);
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      margin-bottom: var(--space-xs);
+      transition: box-shadow var(--transition-base);
+    }
+    .accord:hover { box-shadow: var(--shadow-card); }
+    .accord-trigger {
+      padding: var(--space-md) var(--space-lg);
+      font-family: var(--font-display); font-size: 15px; font-weight: 700;
+      color: var(--ink); display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; user-select: none;
+      transition: background var(--transition-quick);
+    }
+    .accord-trigger:hover { background: var(--sage-pale); }
+    .accord-arrow { font-size: 12px; color: var(--sage); transition: transform var(--transition-base); }
+    .accord[open] .accord-arrow { transform: rotate(180deg); }
+    .accord-body { padding: 0 var(--space-lg) var(--space-md); font-size: 14px; color: var(--ink-mid); line-height: 1.7; border-top: 1px solid var(--border); }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: var(--space-3xl) var(--space-xl);
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1.5px dashed var(--border);
+    }
+    .empty-state .icon { font-size: 40px; margin-bottom: var(--space-md); }
+    .empty-state h3 { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: var(--space-xs); }
+    .empty-state p  { font-size: 14px; color: var(--ink-soft); max-width: 300px; margin: 0 auto var(--space-lg); }
+
+    /* Specimen wrapper */
+    .specimen {
+      background: var(--card);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      box-shadow: var(--shadow-card);
+      margin-bottom: var(--space-md);
+    }
+    .specimen-label { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: var(--space-md); }
+    .flex-row { display: flex; gap: var(--space-sm); align-items: center; flex-wrap: wrap; }
+
+    /* Platform table */
+    .ptable { width: 100%; border-collapse: collapse; font-size: 13px; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-card); }
+    .ptable th { background: var(--sage-pale); font-family: var(--font-display); font-size: 12px; font-weight: 800; color: var(--sage-dark); padding: 12px var(--space-md); text-align: left; }
+    .ptable td { background: var(--card); padding: 11px var(--space-md); border-bottom: 1px solid var(--border); vertical-align: top; font-size: 12.5px; }
+    .ptable tr:last-child td { border-bottom: none; }
+    .ptable td:first-child { font-family: var(--font-mono); font-size: 11px; color: var(--terra-dark); font-weight: 500; }
+
+    hr.rule { border: none; border-top: 1px solid var(--border); margin: var(--space-4xl) 0; }
+
+    @media (max-width: 768px) {
+      .hero, .page { padding-left: var(--space-lg); padding-right: var(--space-lg); }
+      .principles-strip { padding: var(--space-xl) var(--space-lg); }
+      nav.doc-nav { padding: 0 var(--space-md); }
+      .type-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── AMBER BADGE ── */
+    .badge-amber { background: var(--amber-pale); color: var(--amber-dark); }
+
+    /* ── FULL-BORDER CALLOUT VARIANT ── */
+    /* Used when callout needs equal visual weight on all sides (vs left-accent only) */
+    .callout-full {
+      border-radius: var(--radius-md);
+      padding: var(--space-md) var(--space-lg);
+      font-size: 14px; color: var(--ink); line-height: 1.8;
+      margin-bottom: var(--space-sm);
+    }
+    .callout-full-sage  { background: var(--sage-pale);  border: 1.5px solid var(--sage-light); }
+    .callout-full-terra { background: var(--terra-pale); border: 1.5px solid #e8ab92; }
+    .callout-full-gold  { background: var(--gold-pale);  border: 1.5px solid #e0c070; }
+    .callout-full-amber { background: var(--amber-pale); border: 1.5px solid var(--amber-mid); }
+
+    /* ── TL;DR STRIP ── */
+    .tldr-strip {
+      background: var(--sage-pale); border-left: 4px solid var(--sage);
+      border-radius: var(--radius-sm); padding: var(--space-sm) var(--space-md);
+      margin: var(--space-md) 0; font-size: 14px; color: var(--ink-mid); line-height: 1.7;
+    }
+    .tldr-strip strong {
+      color: var(--sage); font-family: var(--font-display); font-size: 10px;
+      font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+      display: block; margin-bottom: 3px;
+    }
+
+    /* ── DONE-WHEN BOX ── */
+    .done-when {
+      background: var(--state-success-pale); border: 1.5px solid #c4e8d4;
+      border-radius: var(--radius-md); padding: var(--space-sm) var(--space-md);
+      margin: var(--space-lg) 0; display: flex; gap: var(--space-sm); align-items: flex-start;
+    }
+    .done-when-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .done-when-label {
+      font-family: var(--font-display); font-size: 10px; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--state-success);
+      display: block; margin-bottom: 3px;
+    }
+    .done-when-text { font-size: 13px; color: var(--ink-mid); line-height: 1.65; }
+
+    /* ── SKIP BOX ── */
+    .skip-box {
+      background: #f8f5ff; border: 1.5px dashed #c4b8e8;
+      border-radius: var(--radius-md); padding: var(--space-md);
+      display: flex; gap: var(--space-sm); align-items: flex-start; margin: var(--space-md) 0;
+    }
+    .skip-label {
+      font-family: var(--font-display); font-size: 10px; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase; color: #8b72c8; display: block; margin-bottom: 3px;
+    }
+    .skip-text { font-size: 13px; color: var(--ink-mid); line-height: 1.65; }
+
+    /* ── BREATHE / EMOTIONAL MOMENT BOX ── */
+    .breathe-box {
+      background: linear-gradient(135deg, var(--sage-pale), #f5f9f7);
+      border-left: 4px solid var(--sage); border-radius: var(--radius-md);
+      padding: var(--space-lg) var(--space-xl); margin: var(--space-xl) 0;
+      font-family: 'Playfair Display', Georgia, serif; font-style: italic;
+      font-size: 15px; color: var(--ink); line-height: 1.9; text-align: center;
+    }
+    .breathe-box strong { font-style: normal; color: var(--sage); }
+
+    /* ── CARD COLOR-ACCENT TOP BAR ── */
+    .card-accent { height: 4px; width: 100%; border-radius: 0; }
+    .card-accent-sage  { background: linear-gradient(90deg, var(--sage),  var(--sage-light)); }
+    .card-accent-terra { background: linear-gradient(90deg, var(--terra), #e8ab92); }
+    .card-accent-gold  { background: linear-gradient(90deg, var(--gold),  #e0c070); }
+    .card-accent-amber { background: linear-gradient(90deg, var(--amber), var(--amber-mid)); }
+
+    /* ── INTERACTIVE STEP (with checkbox) ── */
+    .step-check-btn {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 2px solid var(--border); background: var(--card);
+      cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: transparent;
+      transition: all var(--transition-quick); margin-top: 4px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .step-check-btn:hover { border-color: var(--sage-light); background: var(--sage-pale); }
+    .step-check-btn.checked { background: var(--state-success); border-color: var(--state-success); color: white; }
+    .step.done .step-body h4 { text-decoration: line-through; color: var(--ink-soft); }
+    .step.done .step-body p  { opacity: 0.55; }
+
+    /* ── MINI PROGRESS BAR (card-level) ── */
+    .mini-prog {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 14px; background: var(--cream);
+      border-radius: var(--radius-sm); border: 1px solid var(--border); margin: var(--space-md) 0;
+    }
+    .mini-prog-lbl   { font-size: 11px; font-weight: 700; color: var(--ink-soft); white-space: nowrap; min-width: 56px; font-family: var(--font-display); }
+    .mini-prog-track { flex: 1; height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .mini-prog-bar   { height: 100%; background: var(--state-success); border-radius: 99px; transition: width var(--transition-base); }
+
+    /* ── GLOBAL STICKY PROGRESS BAR ── */
+    /* Positioned below sticky nav — set scroll-padding-top: nav-h + bar-h on html */
+    .global-prog-bar {
+      background: rgba(253,248,242,0.97); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 var(--space-2xl); height: 38px;
+      display: flex; align-items: center; gap: var(--space-md);
+    }
+    .global-prog-lbl   { font-size: 11px; font-weight: 800; color: var(--sage-dark); white-space: nowrap; min-width: 130px; font-family: var(--font-display); }
+    .global-prog-track { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .global-prog-fill  { height: 100%; background: linear-gradient(90deg, var(--sage), var(--gold)); border-radius: 99px; transition: width 550ms cubic-bezier(0.4,0,0.2,1); }
+    .global-prog-count { font-size: 11px; font-weight: 900; color: var(--sage-dark); min-width: 32px; text-align: right; font-family: var(--font-display); }
+
+    /* ── MARK-DONE BUTTON ── */
+    .btn-mark-done {
+      display: flex; align-items: center; gap: var(--space-xs);
+      background: var(--card); border: 2px solid #c4e8d4;
+      color: var(--state-success); font-family: var(--font-display);
+      font-size: 13px; font-weight: 800; padding: 11px 22px;
+      border-radius: var(--radius-pill); cursor: pointer; transition: all var(--transition-base);
+    }
+    .btn-mark-done:hover { background: var(--state-success); color: white; border-color: var(--state-success); transform: translateY(-2px); box-shadow: 0 5px 18px rgba(74,143,106,0.28); }
+    .btn-mark-done.done  { background: var(--state-success-pale); color: var(--state-success); font-size: 12px; }
+    .btn-mark-done.done:hover { background: #fef2f2; color: #c44; border-color: #f5a5a5; box-shadow: none; transform: none; }
+
+    /* ── DEPENDENCY NOTICE ── */
+    .dep-notice {
+      border-radius: var(--radius-md); padding: var(--space-sm) var(--space-md);
+      font-size: 13px; line-height: 1.65;
+      display: flex; gap: var(--space-sm); align-items: flex-start; margin: var(--space-md) 0;
+      background: var(--amber-pale); border: 1.5px solid var(--amber-mid); color: var(--ink);
+    }
+    .dep-notice.met { background: var(--state-success-pale); border-color: #c4e8d4; }
+    .dep-notice-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── STAMP BADGE (completion animation) ── */
+    .stamp-badge {
+      display: inline-block;
+      background: var(--state-success); color: white;
+      font-family: var(--font-display); font-size: 10px; font-weight: 900;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 5px 13px; border-radius: var(--radius-pill);
+      box-shadow: 0 3px 14px rgba(74,143,106,0.45);
+      transform: rotate(-3deg);
+      animation: stampIn 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    @keyframes stampIn {
+      0%   { transform: rotate(-3deg) scale(0); opacity: 0; }
+      65%  { transform: rotate(-3deg) scale(1.18); opacity: 1; }
+      100% { transform: rotate(-3deg) scale(1);   opacity: 1; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<header class="hero">
+  <div class="version-chip">✦ V3</div>
+  <h1>Unified Design System<br>for Calm, Clear Guides</h1>
+  <p>One cohesive system merging three project design sources, optimized for ADHD-friendly, anxiety-conscious, and broadly accessible experiences.</p>
+  <div class="hero-pills">
+    <span class="hero-pill">16 color tokens</span>
+    <span class="hero-pill">+ 6 state tokens</span>
+    <span class="hero-pill">Spacing scale</span>
+    <span class="hero-pill">Motion tokens</span>
+    <span class="hero-pill">Progress &amp; completion</span>
+    <span class="hero-pill">Dark mode ready</span>
+    <span class="hero-pill">WCAG AA+</span>
+  </div>
+</header>
+
+<!-- ═══ PRINCIPLES STRIP ═══ -->
+<div class="principles-strip">
+  <div class="principles-grid">
+    <div class="principle">
+      <div class="principle-num">01</div>
+      <h4>Warm, never clinical</h4>
+      <p>Cream backgrounds. Soft ink. No pure white, no institutional navy.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-num">02</div>
+      <h4>Show one thing at a time</h4>
+      <p>Progressive disclosure by default. Accordions, not walls of text.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-num">03</div>
+      <h4>Friendly type, always</h4>
+      <p>Nunito for headings — rounded, approachable. Never formal serif as display.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-num">04</div>
+      <h4>Slow, smooth motion</h4>
+      <p>250–400ms transitions. Nothing sudden or startling. Changes feel earned.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-num">05</div>
+      <h4>Errors feel safe</h4>
+      <p>State colors inform, never alarm. Error red is calm, not crisis.</p>
+    </div>
+    <div class="principle">
+      <div class="principle-num">06</div>
+      <h4>Gold is for wins only</h4>
+      <p>Gold tokens are reserved for positive reinforcement. Never warnings.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STICKY NAV ═══ -->
+<nav class="doc-nav">
+  <a href="#colors">Colors</a>
+  <a href="#type">Typography</a>
+  <a href="#spacing">Spacing</a>
+  <a href="#components">Components</a>
+  <a href="#states">States</a>
+  <a href="#motion">Motion</a>
+  <a href="#css">CSS</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#rules">Rules</a>
+  <a href="#platforms">Platforms</a>
+</nav>
+
+<main class="page">
+
+  <!-- ══════════════ COLORS ══════════════ -->
+  <section id="colors">
+    <div class="section-header">
+      <div class="section-eyebrow">Token Set</div>
+      <div class="section-title">Color Tokens</div>
+      <div class="section-sub">13 core tokens + 8 state tokens. Reduced from 41 tokens across the three source systems.</div>
+    </div>
+
+    <div class="sub-label">Surfaces &amp; Ink — contrast ratios vs --cream</div>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fdf8f2;border:1px solid #e8e0d4;"></div>
+        <div class="swatch-info"><div class="swatch-name">--cream</div><div class="swatch-hex">#fdf8f2</div><div class="swatch-role">Page canvas</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fffdf9;border:1px solid #e8e0d4;"></div>
+        <div class="swatch-info"><div class="swatch-name">--card</div><div class="swatch-hex">#fffdf9</div><div class="swatch-role">Card surface</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#2d2d2d;"></div>
+        <div class="swatch-info"><div class="swatch-name">--ink</div><div class="swatch-hex">#2d2d2d</div><div class="swatch-ratio">14.8:1 ✓ AAA</div><div class="swatch-role">Body text</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#5a5a5a;"></div>
+        <div class="swatch-info"><div class="swatch-name">--ink-mid</div><div class="swatch-hex">#5a5a5a</div><div class="swatch-ratio">6.5:1 ✓ AAA</div><div class="swatch-role">Secondary text</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#6b6b6b;"></div>
+        <div class="swatch-info"><div class="swatch-name">--ink-soft</div><div class="swatch-hex">#6b6b6b</div><div class="swatch-ratio">4.7:1 ✓ AA</div><div class="swatch-role">Muted labels — AA floor</div></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Sage — Primary calm accent</div>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#5e9180;"></div>
+        <div class="swatch-info"><div class="swatch-name">--sage</div><div class="swatch-hex">#5e9180</div><div class="swatch-ratio">3.6:1 — large text+</div><div class="swatch-role">Buttons, active states</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#3d6b5a;"></div>
+        <div class="swatch-info"><div class="swatch-name">--sage-dark</div><div class="swatch-hex">#3d6b5a</div><div class="swatch-ratio">5.8:1 ✓ AA all</div><div class="swatch-role">Text on light bg</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#a8ccbf;"></div>
+        <div class="swatch-info"><div class="swatch-name">--sage-light</div><div class="swatch-hex">#a8ccbf</div><div class="swatch-role">Badges, fills, tints</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#eaf3f0;border:1px solid #c0dcd4;"></div>
+        <div class="swatch-info"><div class="swatch-name">--sage-pale</div><div class="swatch-hex">#eaf3f0</div><div class="swatch-role">Info callout, section tint</div></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Terra — Warm action accent</div>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#c8714a;"></div>
+        <div class="swatch-info"><div class="swatch-name">--terra</div><div class="swatch-hex">#c8714a</div><div class="swatch-ratio">3.0:1 — large + icons</div><div class="swatch-role">Secondary CTAs, steps</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#9e4f2d;"></div>
+        <div class="swatch-info"><div class="swatch-name">--terra-dark</div><div class="swatch-hex">#9e4f2d</div><div class="swatch-ratio">5.2:1 ✓ AA all</div><div class="swatch-role">Text on light bg</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fdf0e8;border:1px solid #f0ddd0;"></div>
+        <div class="swatch-info"><div class="swatch-name">--terra-pale</div><div class="swatch-hex">#fdf0e8</div><div class="swatch-role">Action callout bg</div></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Gold — Reward &amp; positive only</div>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#c49520;"></div>
+        <div class="swatch-info"><div class="swatch-name">--gold</div><div class="swatch-hex">#c49520</div><div class="swatch-ratio">3.2:1 — large + icons</div><div class="swatch-role">Celebrate, copy btn</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fdf5dc;border:1px solid #f0e4b0;"></div>
+        <div class="swatch-info"><div class="swatch-name">--gold-pale</div><div class="swatch-hex">#fdf5dc</div><div class="swatch-role">Tip bg, positive note</div></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Amber — Heads-up (calm, not alarming)</div>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#b87820;"></div>
+        <div class="swatch-info"><div class="swatch-name">--amber</div><div class="swatch-hex">#b87820</div><div class="swatch-ratio">4.5:1 ✓ AA all</div><div class="swatch-role">Heads-up notices, warnings</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#8a5810;"></div>
+        <div class="swatch-info"><div class="swatch-name">--amber-dark</div><div class="swatch-hex">#8a5810</div><div class="swatch-ratio">6.8:1 ✓ AAA</div><div class="swatch-role">Text on amber surfaces</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#e0c88a;border:1px solid #d0b478;"></div>
+        <div class="swatch-info"><div class="swatch-name">--amber-mid</div><div class="swatch-hex">#e0c88a</div><div class="swatch-role">Border on amber surfaces</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fdf3dc;border:1px solid #e8d898;"></div>
+        <div class="swatch-info"><div class="swatch-name">--amber-pale</div><div class="swatch-hex">#fdf3dc</div><div class="swatch-role">Warning surface, dep. notice bg</div></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:8px;margin-bottom:var(--space-lg);">⚠️ <strong>Amber vs Gold:</strong> Gold is reward-only — wins, achievements, positive CTAs. Amber is for attention without alarm — prerequisite notices, things to check, non-urgent heads-up. Never swap them. Using gold for a warning will erode its emotional meaning.</div>
+
+    <div class="sub-label">State colors — inform, never alarm</div>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#4a8f6a;"></div>
+        <div class="swatch-info"><div class="swatch-name">--state-success</div><div class="swatch-hex">#4a8f6a</div><div class="swatch-role">Done, saved, confirmed</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#edf7f1;border:1px solid #c4e8d4;"></div>
+        <div class="swatch-info"><div class="swatch-name">--state-success-pale</div><div class="swatch-hex">#edf7f1</div><div class="swatch-role">Success surface</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#b84040;"></div>
+        <div class="swatch-info"><div class="swatch-name">--state-error</div><div class="swatch-hex">#b84040</div><div class="swatch-role">Error — calm, not alarm</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fdecea;border:1px solid #f0d0d0;"></div>
+        <div class="swatch-info"><div class="swatch-name">--state-error-pale</div><div class="swatch-hex">#fdecea</div><div class="swatch-role">Error surface</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#b87820;"></div>
+        <div class="swatch-info"><div class="swatch-name">--state-warning</div><div class="swatch-hex">#b87820</div><div class="swatch-role">Heads up, not panic</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fdf3dc;border:1px solid #f0e0b0;"></div>
+        <div class="swatch-info"><div class="swatch-name">--state-warning-pale</div><div class="swatch-hex">#fdf3dc</div><div class="swatch-role">Warning surface</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#a0a0a0;"></div>
+        <div class="swatch-info"><div class="swatch-name">--state-disabled-fg</div><div class="swatch-hex">#a0a0a0</div><div class="swatch-role">Disabled text/icon</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#f0ece8;border:1px solid #e4ddd8;"></div>
+        <div class="swatch-info"><div class="swatch-name">--state-disabled-bg</div><div class="swatch-hex">#f0ece8</div><div class="swatch-role">Disabled surface</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ TYPOGRAPHY ══════════════ -->
+  <section id="type">
+    <div class="section-header">
+      <div class="section-eyebrow">Typefaces</div>
+      <div class="section-title">Typography</div>
+      <div class="section-sub">Three fonts, three strict roles. Monospace never appears in UI labels — only in code and data.</div>
+    </div>
+
+    <div class="type-grid">
+      <div class="type-card">
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:36px;color:var(--ink);line-height:1.05;margin-bottom:10px;">Let's figure<br>this out.</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:21px;color:var(--sage);margin-bottom:6px;">Section Heading</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;color:var(--ink);">Card title · Navigation item</div>
+        <div class="type-meta">Nunito · 700, 800, 900 · All headings, CTAs, nav, emotional moments</div>
+      </div>
+      <div class="type-card">
+        <div style="font-family:'DM Sans',sans-serif;font-weight:400;font-size:15px;line-height:1.8;color:var(--ink);margin-bottom:10px;">Body copy reads easily even when tired or distracted. Short sentences help. So does plenty of space between thoughts. No need to read every word — skimming is valid here.</div>
+        <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;color:var(--ink-mid);">Label / helper text · 500 weight</div>
+        <div class="type-meta">DM Sans · 300 (decorative only), 400 (body), 500 (labels) · min 14px</div>
+      </div>
+      <div class="type-card">
+        <div style="font-family:'DM Mono',monospace;font-size:13px;line-height:1.9;color:var(--ink-mid);">--sage: #5e9180<br>Step 3 of 5 complete<br>const prompt = "Help…"</div>
+        <div class="type-meta">DM Mono · ONLY: code, CSS vars, data counters. Never for nav, labels, eyebrows, headings.</div>
+      </div>
+      <div class="type-card">
+        <div style="font-size:12.5px;line-height:1.9;">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--terra);">display</span><span style="color:var(--ink-mid);">clamp(26px,5vw,44px) · Nunito 900</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--terra);">h1</span><span style="color:var(--ink-mid);">28–34px · Nunito 800</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--terra);">h2</span><span style="color:var(--ink-mid);">20–24px · Nunito 800</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--terra);">h3</span><span style="color:var(--ink-mid);">16–18px · Nunito 700</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--terra);">body</span><span style="color:var(--ink-mid);">14–16px · DM Sans 400</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--terra);">small</span><span style="color:var(--ink-mid);">12–13px · DM Sans 500</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--terra);">code</span><span style="color:var(--ink-mid);">12–13px · DM Mono 400</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ SPACING ══════════════ -->
+  <section id="spacing">
+    <div class="section-header">
+      <div class="section-eyebrow">Spatial rhythm</div>
+      <div class="section-title">Spacing Scale</div>
+      <div class="section-sub">Generous spacing is not wasted space — it is the primary tool for reducing visual overwhelm.</div>
+    </div>
+
+    <div class="specimen">
+      <div class="specimen-label">Scale — use token names, not raw values</div>
+      <div class="space-row"><div class="space-bar" style="width:4px;"></div><div class="space-meta">--space-2xs · 4px</div><span style="font-size:12px;color:var(--ink-soft);">Icon gap, tight inline</span></div>
+      <div class="space-row"><div class="space-bar" style="width:8px;"></div><div class="space-meta">--space-xs · 8px</div><span style="font-size:12px;color:var(--ink-soft);">Label to input, small gaps</span></div>
+      <div class="space-row"><div class="space-bar" style="width:12px;"></div><div class="space-meta">--space-sm · 12px</div><span style="font-size:12px;color:var(--ink-soft);">Between list items</span></div>
+      <div class="space-row"><div class="space-bar" style="width:16px;"></div><div class="space-meta">--space-md · 16px</div><span style="font-size:12px;color:var(--ink-soft);">Card padding, step gap</span></div>
+      <div class="space-row"><div class="space-bar" style="width:24px;"></div><div class="space-meta">--space-lg · 24px</div><span style="font-size:12px;color:var(--ink-soft);">Card padding (preferred)</span></div>
+      <div class="space-row"><div class="space-bar" style="width:32px;"></div><div class="space-meta">--space-xl · 32px</div><span style="font-size:12px;color:var(--ink-soft);">Section sub-division</span></div>
+      <div class="space-row"><div class="space-bar" style="width:48px;"></div><div class="space-meta">--space-2xl · 48px</div><span style="font-size:12px;color:var(--ink-soft);">Page horizontal padding</span></div>
+      <div class="space-row"><div class="space-bar" style="width:64px;"></div><div class="space-meta">--space-3xl · 64px</div><span style="font-size:12px;color:var(--ink-soft);">Section padding top/bottom</span></div>
+      <div class="space-row"><div class="space-bar" style="width:96px;"></div><div class="space-meta">--space-4xl · 96px</div><span style="font-size:12px;color:var(--ink-soft);">Hero top padding, major section breaks</span></div>
+    </div>
+  </section>
+
+  <!-- ══════════════ COMPONENTS ══════════════ -->
+  <section id="components">
+    <div class="section-header">
+      <div class="section-eyebrow">UI Library</div>
+      <div class="section-title">Components</div>
+      <div class="section-sub">Every component is designed to feel approachable, not demanding.</div>
+    </div>
+
+    <div class="sub-label">Buttons</div>
+    <div class="specimen">
+      <div class="flex-row" style="margin-bottom:var(--space-md);">
+        <button class="btn btn-primary">Save changes</button>
+        <button class="btn btn-secondary">Learn more</button>
+        <button class="btn btn-ghost">Cancel</button>
+        <button class="btn btn-gold">🎉 Copy prompt</button>
+      </div>
+      <div class="flex-row">
+        <button class="btn btn-primary" disabled>Disabled primary</button>
+        <button class="btn btn-secondary" disabled>Disabled secondary</button>
+      </div>
+    </div>
+
+    <div class="sub-label">Badges / Chips</div>
+    <div class="specimen">
+      <div class="flex-row">
+        <span class="badge badge-sage">✓ Saved</span>
+        <span class="badge badge-terra">→ Next step</span>
+        <span class="badge badge-gold">★ Great job</span>
+        <span class="badge badge-success">Complete</span>
+        <span class="badge badge-error">Needs attention</span>
+        <span class="badge badge-amber">⚠ Check first</span>
+      </div>
+    </div>
+
+    <div class="sub-label">Callout Boxes</div>
+    <div class="callout"><strong>Info:</strong> Sage callouts are for helpful context. Calm, informative, no pressure.</div>
+    <div class="callout callout-terra"><strong>Action needed:</strong> Terra callouts signal something to do. Warm, clear, not urgent.</div>
+    <div class="callout callout-gold"><strong>Nice work!</strong> Gold callouts are for wins only. Reserve for moments of success.</div>
+    <div class="callout callout-success"><strong>Saved!</strong> Success — brief, positive, then out of the way.</div>
+    <div class="callout callout-error" style="margin-bottom:var(--space-lg);"><strong>Something went wrong.</strong> Error messages should name the problem, not add to stress.</div>
+
+    <div class="sub-label">Input Fields</div>
+    <div class="specimen">
+      <div class="field-wrap">
+        <label class="field-label">Your name</label>
+        <input type="text" class="field-input" placeholder="How should Claude address you?" />
+        <div class="field-hint">This helps Claude personalize responses.</div>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">What do you need help with today?</label>
+        <input type="text" class="field-input error" value="grading my studdents" />
+        <div class="field-error-msg">Did you mean "students"? Tap to correct.</div>
+      </div>
+    </div>
+
+    <div class="sub-label">Step Component</div>
+    <div class="specimen">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><h4>Open a new conversation</h4><p>Tap the pencil icon. No setup needed — just start where you are.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><h4>Write what's in your head</h4><p>Don't polish it. Claude understands messy requests — that's the whole point.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><h4>Adjust as needed</h4><p>"Make it shorter." "Try again." "In a nicer tone." One-line edits work perfectly.</p></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Progress Indicator</div>
+    <div class="specimen">
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Getting started</span><span style="color:var(--sage-dark);font-family:var(--font-mono);font-size:11px;">3 / 5</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:60%;"></div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Reading the guide</span><span style="color:var(--state-success);font-family:var(--font-mono);font-size:11px;">5 / 5 ✓</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:100%;background:var(--state-success);"></div></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Accordion (progressive disclosure)</div>
+    <div class="accord">
+      <div class="accord-trigger">What can I actually ask Claude? <span class="accord-arrow">▾</span></div>
+    </div>
+    <details class="accord">
+      <summary class="accord-trigger">What is Cowork and do I need it? <span class="accord-arrow">▾</span></summary>
+      <div class="accord-body">You don't need Cowork to start. It's an optional desktop tool that lets Claude help with files on your computer — useful later, not required on day one. Think of it as "Claude, but in your folders."</div>
+    </details>
+    <div class="accord" style="margin-bottom:var(--space-lg);">
+      <div class="accord-trigger">I froze mid-prompt. What do I do? <span class="accord-arrow">▾</span></div>
+    </div>
+
+    <div class="sub-label">Full-Border Callout Variant</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Use when the callout needs equal visual presence on all sides — e.g. instruction blocks, seam boxes, important notices inside cards. The left-border callout above is for lightweight inline context.</p>
+    <div class="callout-full callout-full-sage" style="margin-bottom:8px;"><strong>ℹ Sage · info:</strong> Foundational context, notes, non-urgent helpful information.</div>
+    <div class="callout-full callout-full-terra" style="margin-bottom:8px;"><strong>→ Terra · action:</strong> Something to do. Clear, warm, not urgent. Step-required context.</div>
+    <div class="callout-full callout-full-gold" style="margin-bottom:8px;"><strong>★ Gold · win:</strong> Reserved for positive outcomes, tips that unlock more value.</div>
+    <div class="callout-full callout-full-amber" style="margin-bottom:var(--space-lg);"><strong>⚠ Amber · heads-up:</strong> Prerequisite notices, dependency warnings, things to check before proceeding.</div>
+
+    <div class="sub-label">TL;DR Strip</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Placed at the top of every accordion card body. Lets ADHD users immediately orient before deciding whether to read further. Never skip this on multi-step cards.</p>
+    <div class="tldr-strip" style="margin-bottom:var(--space-lg);">
+      <strong>TL;DR</strong>Sign up, complete your profile, copy your classroom link — that link is the critical thing to save from this section. You'll paste it into the next tool.
+    </div>
+
+    <div class="sub-label">Done-When Box</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Appears at the bottom of every major section. Defines the concrete exit condition so users know exactly when they can stop. Pairs with the Mark-Done button below.</p>
+    <div class="done-when" style="margin-bottom:var(--space-lg);">
+      <span class="done-when-icon">✅</span>
+      <div>
+        <span class="done-when-label">Done when</span>
+        <span class="done-when-text">You've run a test session, found content by CEFR level, and your classroom link is saved somewhere you can find it in 5 seconds.</span>
+      </div>
+    </div>
+
+    <div class="sub-label">Skip Box</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Purple dashed border signals "this section may not apply to you." Used to reduce anxiety for users who already have something set up, or who can legitimately skip ahead. Always leads with the condition for skipping.</p>
+    <div class="skip-box" style="margin-bottom:var(--space-lg);">
+      <span style="font-size:20px;flex-shrink:0;">⏭️</span>
+      <div>
+        <span class="skip-label">Already use Google regularly?</span>
+        <span class="skip-text">Just confirm the three things below are set up the right way. You don't need to redo anything — just verify.</span>
+      </div>
+    </div>
+
+    <div class="sub-label">Breathe Box (emotional moment)</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Used at document entry points and after stressful sections. Playfair Display italic. Never more than 3 lines. Purpose: de-escalate, re-centre, give permission to go slowly. Not decorative — every breathe box should have a specific job.</p>
+    <div class="breathe-box" style="margin-bottom:var(--space-lg);">
+      <strong>"You don't have to do this all today."</strong><br>
+      Set up one tool. Hit the Done When checkpoint. Stop there.<br>
+      Every section tells you exactly where to click and when you're finished.
+    </div>
+
+    <div class="sub-label">Card Color-Accent Top Bar</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">A 4px gradient stripe at the top of accordion cards. Provides at-a-glance color coding without repeating color in the card body. Sage = foundational/setup, Terra = action required, Gold = reward/growth, Amber = heads-up.</p>
+    <div class="specimen" style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:120px;background:var(--card);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-card);">
+        <div class="card-accent card-accent-sage"></div>
+        <div style="padding:12px 14px;font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--sage);">Sage · setup</div>
+      </div>
+      <div style="flex:1;min-width:120px;background:var(--card);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-card);">
+        <div class="card-accent card-accent-terra"></div>
+        <div style="padding:12px 14px;font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--terra);">Terra · action</div>
+      </div>
+      <div style="flex:1;min-width:120px;background:var(--card);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-card);">
+        <div class="card-accent card-accent-gold"></div>
+        <div style="padding:12px 14px;font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--gold);">Gold · reward</div>
+      </div>
+      <div style="flex:1;min-width:120px;background:var(--card);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-card);">
+        <div class="card-accent card-accent-amber"></div>
+        <div style="padding:12px 14px;font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--amber);">Amber · notice</div>
+      </div>
+    </div>
+
+    <div class="sub-label">Interactive Step (with checkbox)</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Extends the base step component with a circular checkbox on the left. Check = step done, title struck through, body dimmed. State stored in localStorage. Never auto-advance — user controls their own pace.</p>
+    <div class="specimen" style="margin-bottom:var(--space-lg);">
+      <div class="step" style="margin-bottom:var(--space-md);">
+        <button class="step-check-btn checked" aria-label="Step complete">✓</button>
+        <div class="step-num" style="opacity:0.4;">1</div>
+        <div class="step-body" style="text-decoration:line-through;opacity:0.55;"><h4>Sign up at learncube.com</h4><p>Go to learncube.com → Get Started → Virtual Classroom Pro.</p></div>
+      </div>
+      <div class="step">
+        <button class="step-check-btn" aria-label="Mark step complete"></button>
+        <div class="step-num">2</div>
+        <div class="step-body"><h4>Complete your instructor profile</h4><p>Name, photo, bio, timezone. Students see this — warm and professional.</p></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Mini Progress Bar (card-level)</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Appears above the step list inside accordion cards that have interactive checkboxes. Updates live as steps are checked. Label uses "X/N steps" format. Success green fill only — never gold or terra.</p>
+    <div class="specimen" style="margin-bottom:var(--space-lg);">
+      <div class="mini-prog">
+        <span class="mini-prog-lbl">3/5 steps</span>
+        <div class="mini-prog-track"><div class="mini-prog-bar" style="width:60%;"></div></div>
+      </div>
+      <div class="mini-prog">
+        <span class="mini-prog-lbl">5/5 steps</span>
+        <div class="mini-prog-track"><div class="mini-prog-bar" style="width:100%;"></div></div>
+      </div>
+    </div>
+
+    <div class="sub-label">Global Sticky Progress Bar</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Sits directly below the sticky nav (second sticky layer). Shows total section completion across the full document. Use <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">scroll-padding-top: [nav-height + bar-height]</code> on <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">html</code> to keep anchor scroll targets visible. Sage→gold gradient fill. Label updates to "X sections to go" or "Setup complete! 🎉".</p>
+    <div class="specimen" style="margin-bottom:var(--space-lg);">
+      <div class="global-prog-bar" style="border-radius:var(--radius-sm);">
+        <span class="global-prog-lbl">3 sections to go</span>
+        <div class="global-prog-track"><div class="global-prog-fill" style="width:50%;"></div></div>
+        <span class="global-prog-count">3/6</span>
+      </div>
+    </div>
+
+    <div class="sub-label">Mark-Done Button</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Placed immediately after the Done-When box. First click = confirm complete (stamp + confetti fires, card settles green). Second click = undo (hover turns red to signal destructive). Always reversible. Text changes to reflect state — never relabel as "Edit" or "Change".</p>
+    <div class="specimen" style="display:flex;gap:var(--space-md);flex-wrap:wrap;align-items:center;margin-bottom:var(--space-lg);">
+      <button class="btn-mark-done">✓ Mark this section done</button>
+      <button class="btn-mark-done done">↩ Unmark as done</button>
+    </div>
+
+    <div class="sub-label">Dependency Notice</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Injected at the top of cards that have prerequisites. Amber = prerequisite not yet met. Switches to success-green when the required section is marked done. Be specific — name the section(s) required and why (what information is needed from it).</p>
+    <div class="dep-notice" style="margin-bottom:8px;">
+      <span class="dep-notice-icon">⚠️</span>
+      <div><strong>Needs to be done first:</strong> LearnCube. Complete that section and mark it done before starting this one — you'll need your classroom link here.</div>
+    </div>
+    <div class="dep-notice met" style="margin-bottom:var(--space-lg);">
+      <span class="dep-notice-icon">✅</span>
+      <div><strong>Prerequisites complete:</strong> LearnCube is done. Good to go.</div>
+    </div>
+
+    <div class="sub-label">Stamp Badge (completion animation)</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:var(--space-md);">Appears on the card trigger header when a section is marked done. Spring overshoot animation (scale 0 → 1.18 → 1.0, rotate −3°). Persists visually — not a toast. Accompanies a localized confetti burst (see Patterns section). The badge + green card-top bar together form the completed card state.</p>
+    <div class="specimen" style="display:flex;align-items:center;gap:var(--space-md);margin-bottom:var(--space-lg);">
+      <span class="stamp-badge">✓ Done</span>
+      <span style="font-size:13px;color:var(--ink-soft);">Rendered on card trigger header, rotated −3°</span>
+    </div>
+
+    <div class="sub-label">Empty State</div>
+    <div class="empty-state">
+      <div class="icon">🌱</div>
+      <h3>Nothing here yet</h3>
+      <p>This is where your saved prompts will live. Start with one and see how it goes.</p>
+      <button class="btn btn-primary">Add your first prompt</button>
+    </div>
+  </section>
+
+  <!-- ══════════════ STATES ══════════════ -->
+  <section id="states">
+    <div class="section-header">
+      <div class="section-eyebrow">Interaction design</div>
+      <div class="section-title">State &amp; Feedback Colors</div>
+      <div class="section-sub">Every state is designed to inform — not to trigger anxiety. No flashing, no harsh red on white.</div>
+    </div>
+
+    <table class="ptable" style="margin-bottom:var(--space-lg);">
+      <thead><tr><th>State</th><th>Foreground</th><th>Background</th><th>ADHD design note</th></tr></thead>
+      <tbody>
+        <tr><td>:hover</td><td>brightness(1.06)</td><td>var(--sage-pale)</td><td>Subtle brightening — shows interactivity without surprise</td></tr>
+        <tr><td>:focus-visible</td><td>—</td><td>var(--focus-ring)</td><td>3px sage ring; visible but not jarring; keyboard users see it clearly</td></tr>
+        <tr><td>:active</td><td>brightness(.97)</td><td>—</td><td>Slight dim on press — tactile feedback</td></tr>
+        <tr><td>:disabled</td><td>--state-disabled-fg</td><td>--state-disabled-bg</td><td>Warm grey — "not right now" not "broken"</td></tr>
+        <tr><td>error</td><td>--state-error</td><td>--state-error-pale</td><td>Desaturated red; callout explains the fix, doesn't just flag</td></tr>
+        <tr><td>success</td><td>--state-success</td><td>--state-success-pale</td><td>Sage-adjacent green — continuity with calm palette</td></tr>
+        <tr><td>warning</td><td>--state-warning</td><td>--state-warning-pale</td><td>Warm amber — heads-up, not alarm; use sparingly</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════════ MOTION ══════════════ -->
+  <section id="motion">
+    <div class="section-header">
+      <div class="section-eyebrow">Animation &amp; transition</div>
+      <div class="section-title">Motion Tokens</div>
+      <div class="section-sub">Slow is calm. Fast is startling. Every interactive state should feel like a breath, not a jolt.</div>
+    </div>
+
+    <div class="code-wrap">
+      <pre><span class="cc">/* Motion tokens — use these everywhere, never raw ms values */</span>
+
+<span class="cv">--transition-quick</span>:  <span class="cv2">150ms ease</span>;          <span class="cc">/* :active press, icon swap — near-instant */</span>
+<span class="cv">--transition-base</span>:   <span class="cv2">250ms ease</span>;          <span class="cc">/* hover, focus, color change — standard */</span>
+<span class="cv">--transition-slow</span>:   <span class="cv2">400ms ease</span>;          <span class="cc">/* accordion, progress fill — deliberate */</span>
+<span class="cv">--transition-reveal</span>: <span class="cv2">350ms cubic-bezier(.16,1,.3,1)</span>; <span class="cc">/* page load reveals, card entrance */</span>
+
+<span class="cc">/* Usage examples */</span>
+.btn           { transition: filter <span class="cn">var(--transition-base)</span>, transform <span class="cn">var(--transition-quick)</span>; }
+.accord-arrow  { transition: transform <span class="cn">var(--transition-base)</span>; }
+.progress-fill { transition: width <span class="cn">var(--transition-slow)</span>; }
+.field-input   { transition: border-color <span class="cn">var(--transition-base)</span>, box-shadow <span class="cn">var(--transition-base)</span>; }
+
+<span class="cc">/* Respect reduced motion preferences */</span>
+<span class="ck">@media (prefers-reduced-motion: reduce)</span> {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}</pre>
+    </div>
+  </section>
+
+  <!-- ══════════════ CSS ══════════════ -->
+  <section id="css">
+    <div class="section-header">
+      <div class="section-eyebrow">Complete token set</div>
+      <div class="section-title">CSS Custom Properties — V2</div>
+      <div class="section-sub">Drop the entire block into any :root. Includes light and dark mode.</div>
+    </div>
+
+    <div class="code-wrap">
+      <pre><span class="cc">/* ════════════════════════════════════════════════════════════
+   UNIFIED DESIGN SYSTEM — V2
+   Aesthetic: Warm organic · Calm clarity · ADHD-conscious
+   Priority: Low overwhelm · Anxiety-safe · Broadly accessible
+   Google Fonts (one link):
+     Nunito:wght@400;600;700;800;900
+     DM+Sans:wght@300;400;500
+     DM+Mono:wght@400;500
+════════════════════════════════════════════════════════════ */</span>
+
+<span class="ck">:root</span> {
+
+  <span class="cc">/* ── Surfaces ──────────────────────────────────────────── */</span>
+  <span class="cv">--cream</span>:              <span class="cv2">#fdf8f2</span>; <span class="cc">/* page canvas — never pure white */</span>
+  <span class="cv">--card</span>:               <span class="cv2">#fffdf9</span>; <span class="cc">/* card / modal surface */</span>
+  <span class="cv">--card-hover</span>:         <span class="cv2">#faf5ed</span>; <span class="cc">/* card hover state */</span>
+  <span class="cv">--border</span>:             <span class="cv2">rgba(0,0,0,.08)</span>;
+  <span class="cv">--border-focus</span>:       <span class="cv2">rgba(94,145,128,.6)</span>;
+
+  <span class="cc">/* ── Ink ───────────────────────────────────────────────── */</span>
+  <span class="cv">--ink</span>:                <span class="cv2">#2d2d2d</span>; <span class="cc">/* 14.8:1 on cream — AAA */</span>
+  <span class="cv">--ink-mid</span>:            <span class="cv2">#5a5a5a</span>; <span class="cc">/*  6.5:1 on cream — AAA */</span>
+  <span class="cv">--ink-soft</span>:           <span class="cv2">#6b6b6b</span>; <span class="cc">/*  4.7:1 on cream — AA (floor) */</span>
+
+  <span class="cc">/* ── Sage — primary calm accent ────────────────────────── */</span>
+  <span class="cv">--sage</span>:               <span class="cv2">#5e9180</span>; <span class="cc">/* buttons, active — large text+ only */</span>
+  <span class="cv">--sage-dark</span>:          <span class="cv2">#3d6b5a</span>; <span class="cc">/* 5.8:1 — AA all text sizes */</span>
+  <span class="cv">--sage-light</span>:         <span class="cv2">#a8ccbf</span>; <span class="cc">/* badge, fill, tint */</span>
+  <span class="cv">--sage-pale</span>:          <span class="cv2">#eaf3f0</span>; <span class="cc">/* info callout, section bg */</span>
+
+  <span class="cc">/* ── Terra — warm action ───────────────────────────────── */</span>
+  <span class="cv">--terra</span>:              <span class="cv2">#c8714a</span>; <span class="cc">/* secondary CTAs, steps, icons */</span>
+  <span class="cv">--terra-dark</span>:         <span class="cv2">#9e4f2d</span>; <span class="cc">/* 5.2:1 — AA all sizes, for text */</span>
+  <span class="cv">--terra-pale</span>:         <span class="cv2">#fdf0e8</span>; <span class="cc">/* warm notice, action callout bg */</span>
+
+  <span class="cc">/* ── Gold — reward & positive ONLY ─────────────────────── */</span>
+  <span class="cv">--gold</span>:               <span class="cv2">#c49520</span>; <span class="cc">/* copy btn, celebrate — never warnings */</span>
+  <span class="cv">--gold-pale</span>:          <span class="cv2">#fdf5dc</span>; <span class="cc">/* tip surface, positive note bg */</span>
+
+  <span class="cc">/* ── States ────────────────────────────────────────────── */</span>
+  <span class="cv">--state-success</span>:      <span class="cv2">#4a8f6a</span>;
+  <span class="cv">--state-success-pale</span>: <span class="cv2">#edf7f1</span>;
+  <span class="cv">--state-error</span>:        <span class="cv2">#b84040</span>; <span class="cc">/* desaturated — calm, informative */</span>
+  <span class="cv">--state-error-pale</span>:   <span class="cv2">#fdecea</span>;
+  <span class="cv">--state-warning</span>:      <span class="cv2">#b87820</span>; <span class="cc">/* heads-up, not alarm */</span>
+  <span class="cv">--state-warning-pale</span>: <span class="cv2">#fdf3dc</span>;
+  <span class="cv">--state-disabled-fg</span>:  <span class="cv2">#a0a0a0</span>;
+  <span class="cv">--state-disabled-bg</span>:  <span class="cv2">#f0ece8</span>; <span class="cc">/* "not right now", not "broken" */</span>
+
+  <span class="cc">/* ── Focus ─────────────────────────────────────────────── */</span>
+  <span class="cv">--focus-ring</span>:       <span class="cv2">0 0 0 3px rgba(94,145,128,.35)</span>;
+  <span class="cv">--focus-ring-error</span>: <span class="cv2">0 0 0 3px rgba(184,64,64,.3)</span>;
+
+  <span class="cc">/* ── Typography ────────────────────────────────────────── */</span>
+  <span class="cv">--font-display</span>: <span class="cs">'Nunito'</span>, 'Helvetica Rounded', sans-serif; <span class="cc">/* headings, CTAs, nav */</span>
+  <span class="cv">--font-body</span>:    <span class="cs">'DM Sans'</span>, system-ui, sans-serif;           <span class="cc">/* all body copy */</span>
+  <span class="cv">--font-mono</span>:    <span class="cs">'DM Mono'</span>, 'Courier New', monospace;        <span class="cc">/* code & data only */</span>
+
+  <span class="cc">/* ── Spacing ───────────────────────────────────────────── */</span>
+  <span class="cv">--space-2xs</span>: <span class="cv2"> 4px</span>;
+  <span class="cv">--space-xs</span>:  <span class="cv2"> 8px</span>;
+  <span class="cv">--space-sm</span>:  <span class="cv2">12px</span>;
+  <span class="cv">--space-md</span>:  <span class="cv2">16px</span>;
+  <span class="cv">--space-lg</span>:  <span class="cv2">24px</span>;
+  <span class="cv">--space-xl</span>:  <span class="cv2">32px</span>;
+  <span class="cv">--space-2xl</span>: <span class="cv2">48px</span>;
+  <span class="cv">--space-3xl</span>: <span class="cv2">64px</span>;
+  <span class="cv">--space-4xl</span>: <span class="cv2">96px</span>;
+
+  <span class="cc">/* ── Radius ────────────────────────────────────────────── */</span>
+  <span class="cv">--radius-sm</span>:  <span class="cv2"> 6px</span>;
+  <span class="cv">--radius-md</span>:  <span class="cv2">10px</span>;
+  <span class="cv">--radius-lg</span>:  <span class="cv2">16px</span>;
+  <span class="cv">--radius-pill</span>:<span class="cv2">100px</span>;
+
+  <span class="cc">/* ── Motion ────────────────────────────────────────────── */</span>
+  <span class="cv">--transition-quick</span>:  <span class="cv2">150ms ease</span>;
+  <span class="cv">--transition-base</span>:   <span class="cv2">250ms ease</span>;
+  <span class="cv">--transition-slow</span>:   <span class="cv2">400ms ease</span>;
+  <span class="cv">--transition-reveal</span>: <span class="cv2">350ms cubic-bezier(.16,1,.3,1)</span>;
+
+  <span class="cc">/* ── Shadow ────────────────────────────────────────────── */</span>
+  <span class="cv">--shadow-card</span>:  <span class="cv2">0 1px 6px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.04)</span>;
+  <span class="cv">--shadow-raise</span>: <span class="cv2">0 4px 20px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.06)</span>;
+}
+
+<span class="cc">/* ── Dark mode overrides ────────────────────────────────── */</span>
+<span class="ck">@media (prefers-color-scheme: dark)</span> {
+  <span class="ck">:root</span> {
+    <span class="cv">--cream</span>:              <span class="cv2">#1c1a17</span>;
+    <span class="cv">--card</span>:               <span class="cv2">#231f1b</span>;
+    <span class="cv">--card-hover</span>:         <span class="cv2">#2a2520</span>;
+    <span class="cv">--border</span>:             <span class="cv2">rgba(255,255,255,.09)</span>;
+    <span class="cv">--ink</span>:                <span class="cv2">#f0ece4</span>;
+    <span class="cv">--ink-mid</span>:            <span class="cv2">#b8b0a4</span>;
+    <span class="cv">--ink-soft</span>:           <span class="cv2">#8a8278</span>;
+    <span class="cv">--sage</span>:               <span class="cv2">#7ab8a4</span>;
+    <span class="cv">--sage-dark</span>:          <span class="cv2">#a8d9c8</span>;
+    <span class="cv">--sage-pale</span>:          <span class="cv2">#1e3028</span>;
+    <span class="cv">--terra</span>:              <span class="cv2">#e0906a</span>;
+    <span class="cv">--terra-dark</span>:         <span class="cv2">#f0b090</span>;
+    <span class="cv">--terra-pale</span>:         <span class="cv2">#2e1e14</span>;
+    <span class="cv">--gold</span>:               <span class="cv2">#e8bc50</span>;
+    <span class="cv">--gold-pale</span>:          <span class="cv2">#2a2010</span>;
+    <span class="cv">--state-success-pale</span>: <span class="cv2">#162414</span>;
+    <span class="cv">--state-error-pale</span>:   <span class="cv2">#2a1010</span>;
+    <span class="cv">--state-warning-pale</span>: <span class="cv2">#281a04</span>;
+    <span class="cv">--state-disabled-fg</span>:  <span class="cv2">#5a5a5a</span>;
+    <span class="cv">--state-disabled-bg</span>:  <span class="cv2">#2a2520</span>;
+    <span class="cv">--shadow-card</span>:        <span class="cv2">0 1px 6px rgba(0,0,0,.4)</span>;
+    <span class="cv">--shadow-raise</span>:       <span class="cv2">0 4px 20px rgba(0,0,0,.5)</span>;
+  }
+}
+
+<span class="cc">/* ── Reduced motion ─────────────────────────────────────── */</span>
+<span class="ck">@media (prefers-reduced-motion: reduce)</span> {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+<span class="cc">/* ── Font loading ───────────────────────────────────────── */</span>
+<span class="cc">/* &lt;link href="https://fonts.googleapis.com/css2?
+   family=Nunito:wght@400;600;700;800;900&amp;
+   family=DM+Sans:wght@300;400;500&amp;
+   family=DM+Mono:wght@400;500&amp;
+   display=swap" rel="stylesheet" /&gt; */</span></pre>
+    </div>
+  </section>
+
+  <!-- ══════════════ PLATFORMS ══════════════ -->
+  <section id="platforms">
+    <div class="section-header">
+      <div class="section-eyebrow">Implementation</div>
+      <div class="section-title">Platform Mapping</div>
+      <div class="section-sub">How each token maps across web, iOS/Android, and Word/PDF document formats.</div>
+    </div>
+
+    <table class="ptable">
+      <thead><tr><th>Token</th><th>Web CSS</th><th>iOS / Android</th><th>DOCX / PDF</th></tr></thead>
+      <tbody>
+        <tr><td>--cream</td><td>html, body background</td><td>backgroundColor, UITableView bg</td><td>Page shading fill</td></tr>
+        <tr><td>--card</td><td>card / modal background</td><td>cellBackgroundColor</td><td>Table cell fill (lightest)</td></tr>
+        <tr><td>--ink</td><td>body, p, li color</td><td>UIColor.label override</td><td>Normal style font color</td></tr>
+        <tr><td>--sage</td><td>btn-primary bg, h2 color</td><td>tintColor (system-wide)</td><td>Heading 1–2 color</td></tr>
+        <tr><td>--sage-dark</td><td>linked text, active labels</td><td>Link color, tapped state</td><td>Hyperlink color</td></tr>
+        <tr><td>--terra</td><td>btn-secondary, step numbers</td><td>secondaryTint, badge bg</td><td>Heading 3 / callout border</td></tr>
+        <tr><td>--gold</td><td>copy-btn, celebrate badge</td><td>achievement tint</td><td>Pull-quote accent / tip border</td></tr>
+        <tr><td>--state-error</td><td>input error border, msg text</td><td>destructiveTint</td><td>Error callout left-border</td></tr>
+        <tr><td>--state-success</td><td>success badge, confirm msg</td><td>confirmationTint</td><td>Success callout left-border</td></tr>
+        <tr><td>--focus-ring</td><td>box-shadow on :focus-visible</td><td>UIView.layer.borderColor on focus</td><td>N/A</td></tr>
+        <tr><td>--font-display</td><td>h1–h4, .btn, nav links</td><td>UIFont(name:"Nunito-ExtraBold")</td><td>Heading 1–2: Nunito 800</td></tr>
+        <tr><td>--font-body</td><td>p, li, .field-input</td><td>UIFont(name:"DMSans-Regular")</td><td>Normal: DM Sans 400 (or Calibri fallback)</td></tr>
+        <tr><td>--font-mono</td><td>code, pre, data counters only</td><td>UIFont.monospacedSystemFont (fallback)</td><td>Code block: DM Mono 400</td></tr>
+        <tr><td>--space-lg / 2xl</td><td>card padding, page gutter</td><td>contentInset, cellPadding</td><td>Paragraph spacing, table cell padding</td></tr>
+        <tr><td>--amber</td><td>dep-notice border, heads-up callout</td><td>warningTint (never use gold for this)</td><td>Warning callout border</td></tr>
+        <tr><td>--state-success (progress)</td><td>step-check-btn.checked, mini-prog-bar, stamp-badge</td><td>completionTint</td><td>N/A</td></tr>
+        <tr><td>--transition-base</td><td>hover/focus transitions</td><td>UIView animation duration: 0.25s</td><td>N/A</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════════ PATTERNS ══════════════ -->
+  <section id="patterns">
+    <div class="section-header">
+      <div class="section-eyebrow">Compound Systems</div>
+      <div class="section-title">Patterns</div>
+      <div class="section-sub">How individual components combine into larger interaction systems. Follow the assembly order — each layer depends on the one below it.</div>
+    </div>
+
+    <div class="sub-label">Progress &amp; Completion System</div>
+    <p style="font-size:14px;color:var(--ink-mid);line-height:1.8;margin-bottom:var(--space-md);">A four-layer system that works together. Implement all four or none — partial implementation breaks the reward loop that makes it work for ADHD users.</p>
+    <div class="specimen" style="margin-bottom:var(--space-md);">
+      <div class="specimen-label">Assembly order</div>
+      <div class="step" style="margin-bottom:var(--space-md);">
+        <div class="step-num" style="background:var(--sage);">1</div>
+        <div class="step-body"><h4>Step checkboxes — micro-reward</h4><p>One checkbox per numbered step. Checking = immediate visual feedback (checked state + strikethrough). Updates the card-level mini progress bar. State stored to localStorage key per card+step.</p></div>
+      </div>
+      <div class="step" style="margin-bottom:var(--space-md);">
+        <div class="step-num" style="background:var(--sage);">2</div>
+        <div class="step-body"><h4>Mini progress bar — card momentum</h4><p>Shows X/N steps within the card. Sits above the step list. When all steps are checked, the Mark-Done button label changes to "🎉 All steps done — mark section complete?" — a natural nudge, not a forced transition.</p></div>
+      </div>
+      <div class="step" style="margin-bottom:var(--space-md);">
+        <div class="step-num" style="background:var(--sage);">3</div>
+        <div class="step-body"><h4>Mark-Done + stamp + confetti — section milestone</h4><p>User clicks Mark-Done → stamp badge animates onto card header → localized confetti burst from button position (canvas-confetti, brand colors: sage/gold/cream/terra) → card settles: top bar turns success-green, trigger background tints success-pale, stamp persists. Global progress bar advances.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--sage);">4</div>
+        <div class="step-body"><h4>Global progress bar — full journey view</h4><p>Always visible below sticky nav. As sections are marked done the sage→gold gradient fill advances. Label transitions: "X sections to go" → "Setup complete! 🎉" on final completion. Final completion triggers full-page bilateral confetti + celebration overlay (shown once per localStorage state, never again).</p></div>
+      </div>
+    </div>
+    <div class="callout callout-gold"><strong>Why this works for ADHD:</strong> Each layer provides a reward at a different time scale — step (seconds), card (minutes), global (session). The system never requires completing a full card before getting feedback. Even one checked step is rewarded. The celebration overlay fires once and is never shown again, preserving its emotional weight.</div>
+
+    <div class="sub-label" style="margin-top:var(--space-xl);">Completed Card State</div>
+    <p style="font-size:14px;color:var(--ink-mid);line-height:1.8;margin-bottom:var(--space-md);">When a card is marked done, four visual changes apply simultaneously. The card remains fully accessible — open/close still works, all content remains visible. Completion is cosmetic and reversible.</p>
+    <div class="specimen" style="margin-bottom:var(--space-lg);">
+      <div style="background:var(--state-success-pale);border-radius:var(--radius-md);overflow:hidden;border:1.5px solid #c4e8d4;">
+        <div style="height:4px;background:linear-gradient(90deg,var(--state-success),#c4e8d4);"></div>
+        <div style="display:flex;align-items:center;gap:var(--space-md);padding:var(--space-md) var(--space-lg);position:relative;">
+          <div style="width:50px;height:50px;border-radius:14px;background:var(--state-success-pale);display:flex;align-items:center;justify-content:center;font-size:22px;">🎓</div>
+          <div>
+            <div style="font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--state-success);">LearnCube — Your Classroom</div>
+            <div style="font-size:12px;font-weight:700;color:var(--ink-soft);">5 steps · your primary teaching platform</div>
+          </div>
+          <span class="stamp-badge" style="position:absolute;right:60px;top:50%;transform:translateY(-50%) rotate(-3deg);animation:none;">✓ Done</span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--ink-soft);margin-top:8px;line-height:1.7;">Changes on completion: (1) top bar → success gradient, (2) trigger bg → success-pale tint, (3) icon bg → success-pale, (4) title color → success, (5) stamp badge animates in.</div>
+    </div>
+
+    <div class="sub-label">localStorage Strategy</div>
+    <p style="font-size:14px;color:var(--ink-mid);line-height:1.8;margin-bottom:var(--space-md);">All progress state lives in a single versioned key (e.g. <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">myguide_v1</code>). Use a version suffix so schema changes don't corrupt existing user state — bump the suffix, old key is abandoned. Two sub-objects: <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">steps</code> (keyed <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">cardId|stepNum</code>) and <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">cards</code> (keyed <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">cardId</code>). Always wrap in try/catch — published artifact iframes may restrict storage access.</p>
+    <div style="margin-bottom:var(--space-lg);">
+      <div class="callout callout-terra">Always provide a <strong>Reset progress</strong> link — discreet, footer placement, behind a <code>confirm()</code> dialog. Users who accidentally mark things done need a recovery path, and power users re-running the guide appreciate the clean slate.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════ RULES ══════════════ -->
+  <section id="rules">
+    <div class="section-header">
+      <div class="section-eyebrow">Implementation</div>
+      <div class="section-title">Rules</div>
+      <div class="section-sub">Non-negotiable constraints derived from production failures. Each rule has a specific failure mode that motivated it.</div>
+    </div>
+
+    <div class="sub-label">Rule 1 — In-page navigation in published artifacts</div>
+    <div class="callout callout-terra" style="margin-bottom:var(--space-md);"><strong>Never use <code>&lt;a href="#section"&gt;</code> for in-page scrolling in claude.ai published artifacts.</strong></div>
+    <p style="font-size:14px;color:var(--ink-mid);line-height:1.8;margin-bottom:var(--space-md);"><strong>Failure mode:</strong> Published artifacts run inside a sandboxed <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">&lt;iframe&gt;</code>. The claude.ai parent page intercepts anchor click events that bubble up from inside that iframe. Any <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">&lt;a&gt;</code> click — even with a fragment-only <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">href="#..."</code> — is routed to the Claude prompt input instead of scrolling the page.</p>
+    <div class="specimen" style="margin-bottom:var(--space-lg);">
+      <div class="specimen-label">Fix — replace anchors with buttons</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);">
+        <div>
+          <div style="font-family:var(--font-display);font-size:10px;font-weight:800;color:var(--state-error);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">❌ Broken in published artifact</div>
+          <div style="background:#1a1714;border-radius:var(--radius-sm);padding:var(--space-md);font-family:var(--font-mono);font-size:12px;color:#c8c0b4;line-height:1.9;"><span style="color:#a8d9cf;">&lt;a</span> <span style="color:#e8c88a;">href</span>=<span style="color:#a8d8a0;">"#learncube"</span><span style="color:#a8d9cf;">&gt;</span><br>  LearnCube<br><span style="color:#a8d9cf;">&lt;/a&gt;</span></div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display);font-size:10px;font-weight:800;color:var(--state-success);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">✅ Works in published artifact</div>
+          <div style="background:#1a1714;border-radius:var(--radius-sm);padding:var(--space-md);font-family:var(--font-mono);font-size:12px;color:#c8c0b4;line-height:1.9;"><span style="color:#a8d9cf;">&lt;button</span> <span style="color:#e8c88a;">onclick</span>=<span style="color:#a8d8a0;">"document<br>.getElementById('learncube')<br>.scrollIntoView({behavior:<br>'smooth'})"</span><span style="color:#a8d9cf;">&gt;</span><br>  LearnCube<br><span style="color:#a8d9cf;">&lt;/button&gt;</span></div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--ink-soft);margin-top:var(--space-sm);">Note: <code style="font-family:var(--font-mono);font-size:11px;">href="https://..."</code> with <code style="font-family:var(--font-mono);font-size:11px;">target="_blank"</code> is unaffected — external links open correctly.</div>
+    </div>
+
+    <div class="sub-label">Rule 2 — JavaScript safety in embedded contexts</div>
+    <p style="font-size:14px;color:var(--ink-mid);line-height:1.8;margin-bottom:var(--space-md);">Iframe JS engines can use strict or non-standard parsing. A single syntax error in a <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">&lt;script&gt;</code> block kills the entire block — including unrelated functions like <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">toggle()</code> and <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">openCard()</code>.</p>
+    <div class="specimen" style="margin-bottom:var(--space-lg);">
+      <div class="specimen-label">Three specific rules</div>
+
+      <div style="margin-bottom:var(--space-md);">
+        <div style="font-family:var(--font-display);font-weight:800;font-size:14px;color:var(--ink);margin-bottom:4px;">1 · Always use <code style="font-family:var(--font-mono);font-size:12px;">catch(e)</code> — never bare <code style="font-family:var(--font-mono);font-size:12px;">catch {}</code></div>
+        <p style="font-size:13px;color:var(--ink-mid);margin-bottom:6px;">Optional catch binding (ES2019) is rejected by some iframe JS engines as a syntax error.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm);">
+          <div style="background:#1a1714;border-radius:var(--radius-sm);padding:var(--space-sm) var(--space-md);font-family:var(--font-mono);font-size:12px;color:#c8c0b4;"><span style="color:#f08080;">try { ... } catch { }</span><br><span style="color:#4a4438;">// ❌ ES2019 — may break</span></div>
+          <div style="background:#1a1714;border-radius:var(--radius-sm);padding:var(--space-sm) var(--space-md);font-family:var(--font-mono);font-size:12px;color:#c8c0b4;"><span style="color:#a8d8a0;">try { ... } catch(e) { }</span><br><span style="color:#4a4438;">// ✅ ES5 — always safe</span></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:var(--space-md);">
+        <div style="font-family:var(--font-display);font-weight:800;font-size:14px;color:var(--ink);margin-bottom:4px;">2 · Never put apostrophes inside single-quoted JS strings</div>
+        <p style="font-size:13px;color:var(--ink-mid);margin-bottom:6px;">An unescaped <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">'</code> inside a single-quoted string terminates the string early and breaks the entire script block. Affects curly/smart apostrophes too.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm);">
+          <div style="background:#1a1714;border-radius:var(--radius-sm);padding:var(--space-sm) var(--space-md);font-family:var(--font-mono);font-size:12px;color:#c8c0b4;"><span style="color:#f08080;">'You're good to go.'</span><br><span style="color:#4a4438;">// ❌ apostrophe breaks string</span></div>
+          <div style="background:#1a1714;border-radius:var(--radius-sm);padding:var(--space-sm) var(--space-md);font-family:var(--font-mono);font-size:12px;color:#c8c0b4;"><span style="color:#a8d8a0;">'You are good to go.'</span><br><span style="color:#a8d8a0;">"You're good to go."</span><br><span style="color:#4a4438;">// ✅ rephrase or use double quotes</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-family:var(--font-display);font-weight:800;font-size:14px;color:var(--ink);margin-bottom:4px;">3 · Never use the implicit global <code style="font-family:var(--font-mono);font-size:12px;">event</code> object</div>
+        <p style="font-size:13px;color:var(--ink-mid);margin-bottom:6px;">The implicit <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">event</code> object (used as <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">event.target</code> without passing it) is deprecated and unreliable in strict/sandbox contexts. Always pass the event or element explicitly.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm);">
+          <div style="background:#1a1714;border-radius:var(--radius-sm);padding:var(--space-sm) var(--space-md);font-family:var(--font-mono);font-size:12px;color:#c8c0b4;line-height:1.8;"><span style="color:#f08080;">function handle(type) {</span><br><span style="color:#f08080;">  event.target.classList</span><br><span style="color:#f08080;">    .add('active');</span><br><span style="color:#f08080;">}</span><br><br><span style="color:#e8c88a;">onclick="handle('x')"</span><br><span style="color:#4a4438;">// ❌ global event object</span></div>
+          <div style="background:#1a1714;border-radius:var(--radius-sm);padding:var(--space-sm) var(--space-md);font-family:var(--font-mono);font-size:12px;color:#c8c0b4;line-height:1.8;"><span style="color:#a8d8a0;">function handle(type, el) {</span><br><span style="color:#a8d8a0;">  el.classList</span><br><span style="color:#a8d8a0;">    .add('active');</span><br><span style="color:#a8d8a0;">}</span><br><br><span style="color:#e8c88a;">onclick="handle('x', this)"</span><br><span style="color:#4a4438;">// ✅ explicit this</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-label">Rule 3 — Backslash-escaping in HTML attributes</div>
+    <div class="callout callout-terra" style="margin-bottom:var(--space-md);"><strong>Never use <code>\"</code> inside HTML attributes.</strong> HTML parsers do not recognise backslash as an escape character in attribute values. Only <code>&amp;quot;</code> is valid.</div>
+    <p style="font-size:14px;color:var(--ink-mid);line-height:1.8;margin-bottom:var(--space-lg);">This often happens when Python string formatting generates HTML with escaped quotes. The resulting <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">onclick=\"fn()"</code> in the raw file is silently mis-parsed — the onclick handler is dead with no console error. Use single-quoted attribute values and double-quoted JS strings, or audit with <code style="font-family:var(--font-mono);font-size:12px;background:var(--cream);padding:1px 5px;border-radius:4px;">node --check</code> on extracted JS + Python html.parser on the HTML before shipping.</p>
+
+    <div class="sub-label">Validation Checklist (before publishing)</div>
+    <div class="specimen" style="margin-bottom:var(--space-lg);">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-mid);"><span style="color:var(--sage);font-weight:800;flex-shrink:0;">□</span> <span>Run <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">node --check extracted.js</code> on all inline script blocks — exit 0 required</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-mid);"><span style="color:var(--sage);font-weight:800;flex-shrink:0;">□</span> <span>Parse HTML with Python <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">html.parser</code> — zero unclosed tags, zero structural errors</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-mid);"><span style="color:var(--sage);font-weight:800;flex-shrink:0;">□</span> <span>Grep raw file for <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">\"</code> (backslash + double-quote) — zero allowed in attribute positions</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-mid);"><span style="color:var(--sage);font-weight:800;flex-shrink:0;">□</span> <span>Grep JS for bare <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">catch {</code> without binding — replace all with <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">catch(e)</code></span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-mid);"><span style="color:var(--sage);font-weight:800;flex-shrink:0;">□</span> <span>Grep for <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">&lt;a href="#</code> in markup — replace every internal anchor with <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">button onclick scrollIntoView</code></span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-mid);"><span style="color:var(--sage);font-weight:800;flex-shrink:0;">□</span> <span>Grep JS for <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">event.target</code> not in an event handler parameter — replace with <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">this</code> passed explicitly</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-mid);"><span style="color:var(--sage);font-weight:800;flex-shrink:0;">□</span> <span>Scan all JS string literals containing apostrophes — rephrase or switch to double-quote delimiters</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-mid);"><span style="color:var(--sage);font-weight:800;flex-shrink:0;">□</span> <span>All <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">getElementById</code> targets in JS exist as <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">id=</code> in HTML</span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-mid);"><span style="color:var(--sage);font-weight:800;flex-shrink:0;">□</span> <span>All <code style="font-family:var(--font-mono);font-size:11px;background:var(--cream);padding:1px 4px;border-radius:3px;">onclick</code> function names are defined in the script block</span></div>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+
+<!-- FOOTER -->
+<footer style="background:#1a1714;padding:var(--space-xl) var(--space-2xl);border-top:1px solid rgba(255,255,255,.05);text-align:center;">
+  <div style="font-family:var(--font-display);font-size:12px;color:#4a4438;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Unified Design System — V3</div>
+  <div style="font-family:var(--font-mono);font-size:10px;color:#3a3430;">Supersedes V2-Final · Updated with R1 patterns · March 2026</div>
+</footer>
+
+</body>
+</html>
