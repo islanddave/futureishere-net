@@ -2,7 +2,7 @@
 <!--
   ╔══════════════════════════════════════════════════════════════╗
   ║  CLAUDE HELPER PORTAL                                        ║
-  ║  Version : V1-20260310_027                                   ║
+  ║  Version : V1-20260310_028                                   ║
   ║  Updated : 2026-03-10                                        ║
   ╠══════════════════════════════════════════════════════════════╣
   ║  FILE REGISTRY                                               ║
@@ -20,13 +20,12 @@
   ║  03  Tasks       — 4 stub cards (.is-soon)                   ║
   ║  04  Quality     — 2 stub cards (.is-soon)                   ║
   ╠══════════════════════════════════════════════════════════════╣
-  ║  CHANGES IN _027                                             ║
-  ║  · Guide 01 display title → "Introduction to Claude         ║
-  ║    and CoWork" (href unchanged)                              ║
-  ║  · Nav brand now two-line: title + workspace subtitle        ║
-  ║  · header-eyebrow removed (moved to nav)                     ║
-  ║  · h1 <br> tags removed — flows naturally on desktop         ║
-  ║  · Removed "4 Sections" + "6 Core Techniques" stats          ║
+  ║  CHANGES IN _028                                             ║
+  ║  · Language switcher: EN / UA / ES with flags in nav         ║
+  ║  · PWA-aware: viewport-fit=cover, safe-area insets           ║
+  ║  · localStorage language persistence                         ║
+  ║  · Browser-language auto-detect on first load                ║
+  ║  · is-pwa body class + standalone CSS modifier               ║
   ╠══════════════════════════════════════════════════════════════╣
   ║  DEPLOY PATH                                                 ║
   ║  /Users/davenichols/AI/Claude/Instructions/index.html       ║
@@ -36,7 +35,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- viewport-fit=cover enables safe-area env() on notched iOS devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="color-scheme" content="only light" />
   <title>Claude Helper Portal</title>
 
@@ -54,7 +54,7 @@
   <style>
     /* ════════════════════════════════════════
        CLAUDE HELPER PORTAL — Unified Style Guide V3
-       V1-20260310_027
+       V1-20260310_028
     ════════════════════════════════════════ */
 
     :root { color-scheme: only light; }
@@ -118,12 +118,18 @@
 
       /* Taller nav to accommodate two-line brand */
       --nav-h: 62px;
+
+      /* PWA safe-area (defaults to 0 on non-notched devices) */
+      --safe-top:    env(safe-area-inset-top,    0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left:   env(safe-area-inset-left,   0px);
+      --safe-right:  env(safe-area-inset-right,  0px);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: calc(var(--nav-h) + 16px);
+      scroll-padding-top: calc(var(--nav-h) + var(--safe-top) + 16px);
     }
 
     body {
@@ -134,7 +140,15 @@
       font-size: 15px;
       line-height: 1.75;
       min-height: 100vh;
-      padding-top: var(--nav-h);
+      padding-top: calc(var(--nav-h) + var(--safe-top));
+      padding-left: var(--safe-left);
+      padding-right: var(--safe-right);
+    }
+
+    /* When running as installed PWA on iOS/Android */
+    body.is-pwa {
+      /* Bottom nav/home-bar clearance */
+      padding-bottom: var(--safe-bottom);
     }
 
     /* ════════════════════════════════════════
@@ -143,7 +157,9 @@
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      height: var(--nav-h);
+      /* Expand height to absorb status-bar safe area */
+      height: calc(var(--nav-h) + var(--safe-top));
+      padding-top: var(--safe-top);
       z-index: 300;
       background: var(--card);
       border-bottom: 1px solid var(--border);
@@ -154,10 +170,11 @@
       max-width: 1060px;
       margin: 0 auto;
       padding: 0 var(--space-3xl);
-      height: 100%;
+      height: var(--nav-h);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: var(--space-xs);
     }
 
     /* Two-line brand block */
@@ -209,6 +226,107 @@
       border-bottom-color: var(--sage);
     }
 
+    /* ════════════════════════════════════════
+       LANGUAGE PICKER
+    ════════════════════════════════════════ */
+    .lang-picker {
+      position: relative;
+      flex-shrink: 0;
+      margin-left: 4px;
+    }
+
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--cream);
+      border: 1px solid var(--border-solid);
+      border-radius: var(--radius-pill);
+      padding: 5px 10px 5px 8px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      font-weight: 500;
+      color: var(--ink-mid);
+      letter-spacing: .05em;
+      white-space: nowrap;
+      transition: background var(--transition-quick), border-color var(--transition-quick), color var(--transition-quick);
+      line-height: 1;
+    }
+    .lang-btn:hover {
+      background: var(--sage-pale);
+      border-color: var(--sage-light);
+      color: var(--sage-dark);
+    }
+    .lang-btn:focus-visible {
+      outline: 2px solid var(--sage);
+      outline-offset: 2px;
+    }
+
+    .lang-flag { font-size: .95rem; line-height: 1; display: block; }
+    .lang-code { letter-spacing: .08em; }
+    .lang-caret {
+      font-size: .5rem;
+      opacity: .5;
+      transition: transform var(--transition-quick);
+      display: block;
+    }
+    .lang-btn[aria-expanded="true"] .lang-caret { transform: rotate(180deg); }
+
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--card);
+      border: 1px solid var(--border-solid);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-raise);
+      min-width: 168px;
+      z-index: 400;
+      overflow: hidden;
+    }
+    .lang-dropdown.open {
+      display: block;
+      animation: fadeUp var(--transition-quick) ease both;
+    }
+
+    .lang-opt {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: .83rem;
+      color: var(--ink);
+      text-align: left;
+      transition: background var(--transition-quick);
+    }
+    .lang-opt:hover { background: var(--sage-pale); }
+    .lang-opt.active {
+      color: var(--sage-dark);
+      font-weight: 600;
+      background: var(--sage-pale);
+    }
+    .lang-opt-code {
+      font-family: var(--font-mono);
+      font-size: .58rem;
+      color: var(--ink-soft);
+      margin-left: auto;
+      letter-spacing: .1em;
+    }
+    .lang-opt.active .lang-opt-code { color: var(--sage-dark); }
+
+    /* Mobile: shrink to flag-only pill */
+    @media (max-width: 720px) {
+      .lang-code, .lang-caret { display: none; }
+      .lang-btn { padding: 6px 9px; }
+    }
+
     /* Hamburger — hidden on desktop */
     .hamburger {
       display: none;
@@ -236,7 +354,8 @@
     .mobile-menu {
       display: none;
       position: fixed;
-      top: var(--nav-h); left: 0; right: 0; bottom: 0;
+      top: calc(var(--nav-h) + var(--safe-top));
+      left: 0; right: 0; bottom: 0;
       background: var(--card);
       z-index: 299;
       flex-direction: column;
@@ -244,6 +363,7 @@
       padding: var(--space-md) var(--space-lg);
       gap: 2px;
       border-top: 1px solid var(--border);
+      padding-bottom: calc(var(--space-lg) + var(--safe-bottom));
     }
     .mobile-menu.open { display: flex; }
 
@@ -263,6 +383,45 @@
       color: var(--sage-dark);
       border-left-color: var(--sage);
     }
+
+    /* Mobile language section */
+    .mob-lang-section {
+      margin-top: auto;
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--border);
+    }
+
+    .mob-lang-label {
+      font-family: var(--font-mono);
+      font-size: .6rem;
+      color: var(--ink-soft);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 6px 18px 10px;
+    }
+
+    .mob-lang-row {
+      display: flex;
+      gap: 8px;
+      padding: 0 18px 4px;
+    }
+
+    .mob-lang-opt {
+      flex: 1;
+      background: var(--cream);
+      border: 1px solid var(--border-solid);
+      border-radius: var(--radius-md);
+      padding: 10px 6px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: .82rem;
+      color: var(--ink-mid);
+      text-align: center;
+      line-height: 1.3;
+      transition: background var(--transition-quick), border-color var(--transition-quick), color var(--transition-quick);
+    }
+    .mob-lang-opt:hover { background: var(--sage-pale); border-color: var(--sage-light); color: var(--sage-dark); }
+    .mob-lang-opt.active { background: var(--sage-pale); border-color: var(--sage); color: var(--sage-dark); font-weight: 700; }
 
     @media (max-width: 720px) {
       .nav-links { display: none; }
@@ -296,7 +455,6 @@
       position: relative; z-index: 1;
     }
 
-    /* h1 — no forced line breaks; flows naturally on desktop */
     h1 {
       font-family: var(--font-display);
       font-size: clamp(1.8rem, 4vw, 2.8rem);
@@ -907,15 +1065,39 @@
   <div class="nav-inner">
     <a class="nav-home" href="index.html">
       <span class="nav-title">Claude Helper Portal</span>
-      <span class="nav-sub">Claude Workspace &nbsp;/&nbsp; Documentation Portal</span>
+      <span class="nav-sub" data-i18n="nav.sub">Claude Workspace&nbsp;/&nbsp;Documentation Portal</span>
     </a>
     <div class="nav-links">
-      <a href="#guides">Published Guides</a>
-      <a href="#style-guide">Design Reference</a>
-      <a href="#prompting">Prompting</a>
-      <a href="#tasks">Task Guides</a>
-      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#guides"          data-i18n="nav.guides">Published Guides</a>
+      <a href="#style-guide"     data-i18n="nav.design">Design Reference</a>
+      <a href="#prompting"       data-i18n="nav.prompting">Prompting</a>
+      <a href="#tasks"           data-i18n="nav.tasks">Task Guides</a>
+      <a href="#troubleshooting" data-i18n="nav.troubleshoot">Troubleshooting</a>
     </div>
+
+    <!-- ── Language Picker ── -->
+    <div class="lang-picker" id="langPicker">
+      <button class="lang-btn" id="langBtn"
+              aria-label="Change language"
+              aria-expanded="false"
+              aria-haspopup="listbox">
+        <span class="lang-flag" id="langFlag">🇺🇸</span>
+        <span class="lang-code" id="langCode">EN</span>
+        <span class="lang-caret" aria-hidden="true">▾</span>
+      </button>
+      <div class="lang-dropdown" id="langDropdown" role="listbox" aria-label="Select language">
+        <button class="lang-opt active" data-lang="en" role="option">
+          🇺🇸 <span>English</span><span class="lang-opt-code">EN</span>
+        </button>
+        <button class="lang-opt" data-lang="uk" role="option">
+          🇺🇦 <span>Українська</span><span class="lang-opt-code">UA</span>
+        </button>
+        <button class="lang-opt" data-lang="es" role="option">
+          🇪🇸 <span>Español</span><span class="lang-opt-code">ES</span>
+        </button>
+      </div>
+    </div>
+
     <button class="hamburger" id="hamburger" aria-label="Open navigation menu">
       <span></span><span></span><span></span>
     </button>
@@ -924,26 +1106,35 @@
 
 <!-- ═══════════ MOBILE MENU ═══════════ -->
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-  <a href="#guides"          onclick="closeMobile()">Published Guides</a>
-  <a href="#style-guide"     onclick="closeMobile()">Design Reference</a>
-  <a href="#prompting"       onclick="closeMobile()">Prompting</a>
-  <a href="#tasks"           onclick="closeMobile()">Task Guides</a>
-  <a href="#troubleshooting" onclick="closeMobile()">Troubleshooting</a>
+  <a href="#guides"          data-i18n="nav.guides"       onclick="closeMobile()">Published Guides</a>
+  <a href="#style-guide"     data-i18n="nav.design"       onclick="closeMobile()">Design Reference</a>
+  <a href="#prompting"       data-i18n="nav.prompting"    onclick="closeMobile()">Prompting</a>
+  <a href="#tasks"           data-i18n="nav.tasks"        onclick="closeMobile()">Task Guides</a>
+  <a href="#troubleshooting" data-i18n="nav.troubleshoot" onclick="closeMobile()">Troubleshooting</a>
+
+  <!-- Mobile language chooser -->
+  <div class="mob-lang-section">
+    <div class="mob-lang-label">Language · Мова · Idioma</div>
+    <div class="mob-lang-row">
+      <button class="mob-lang-opt active" data-lang="en">🇺🇸<br>EN</button>
+      <button class="mob-lang-opt"        data-lang="uk">🇺🇦<br>UA</button>
+      <button class="mob-lang-opt"        data-lang="es">🇪🇸<br>ES</button>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════ HEADER ═══════════ -->
 <header>
   <div class="header-inner">
-    <!-- eyebrow removed — now lives in nav subtitle -->
-    <h1>Helper &amp; <em>Style Guide</em> Library</h1>
+    <h1 data-i18n-html="hero.h1">Helper &amp; <em>Style Guide Library</em></h1>
     <div class="header-stats">
       <div class="stat-item">
-        <div class="stat-num">5</div>
-        <div class="stat-label">Published Guides</div>
+        <div class="stat-num" data-i18n="stat.num.guides">5</div>
+        <div class="stat-label" data-i18n="stat.lbl.guides">Published Guides</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">Mar '26</div>
-        <div class="stat-label">Last Updated</div>
+        <div class="stat-num" data-i18n="stat.num.date">Mar '26</div>
+        <div class="stat-label" data-i18n="stat.lbl.date">Last Updated</div>
       </div>
     </div>
   </div>
@@ -955,14 +1146,14 @@
   <!-- ═══ AVAILABLE NOW ═══ -->
   <div class="available-now">
     <div class="avail-header">
-      <span class="avail-label">Available Now</span>
+      <span class="avail-label" data-i18n="avail.label">Available Now</span>
       <div class="avail-rainbow"></div>
       <div class="avail-soon">
-        <span class="avail-soon-label">Coming soon</span>
+        <span class="avail-soon-label" data-i18n="avail.soon-lbl">Coming soon</span>
         <div class="avail-soon-pills">
-          <span class="asp">Prompting</span>
-          <span class="asp">Task Guides</span>
-          <span class="asp">Quality</span>
+          <span class="asp" data-i18n="asp.prompting">Prompting</span>
+          <span class="asp" data-i18n="asp.tasks">Task Guides</span>
+          <span class="asp" data-i18n="asp.quality">Quality</span>
         </div>
       </div>
     </div>
@@ -1072,8 +1263,9 @@
   <section id="guides">
     <div class="section-head">
       <div class="section-num-block">01 /</div>
-      <h2>Published Guides
-        <small>Finished docs you can open right now — each a standalone interactive page</small>
+      <h2>
+        <span data-i18n="sec1.h2">Published Guides</span>
+        <small data-i18n="sec1.small">Finished docs you can open right now — each a standalone interactive page</small>
       </h2>
     </div>
 
@@ -1107,7 +1299,7 @@
           </div>
           <div class="gd-footer">
             <span class="gd-design">Cream &amp; sage palette · Nunito + Playfair Display · Accordion layout</span>
-            <a class="gd-cta" href="Claude_Onboarding_for_Overwhelmed_People.html" target="_blank">Open Guide →</a>
+            <a class="gd-cta" href="Claude_Onboarding_for_Overwhelmed_People.html" target="_blank" data-i18n="cta.open">Open Guide →</a>
           </div>
         </div>
       </div>
@@ -1140,7 +1332,7 @@
           </div>
           <div class="gd-footer">
             <span class="gd-design">V1 critique &amp; revision cycle · Collapsible HTML · V1 archived</span>
-            <a class="gd-cta" href="Claude_Organization_Guide.html" target="_blank">Open Guide →</a>
+            <a class="gd-cta" href="Claude_Organization_Guide.html" target="_blank" data-i18n="cta.open">Open Guide →</a>
           </div>
         </div>
       </div>
@@ -1172,7 +1364,7 @@
           </div>
           <div class="gd-footer">
             <span class="gd-design">Amber accent · Table-first layout · Printable cheatsheet format</span>
-            <a class="gd-cta" href="TokenEfficiency.html" target="_blank">Open Guide →</a>
+            <a class="gd-cta" href="TokenEfficiency.html" target="_blank" data-i18n="cta.open">Open Guide →</a>
           </div>
         </div>
       </div>
@@ -1203,7 +1395,7 @@
           </div>
           <div class="gd-footer">
             <span class="gd-design">Gold palette · FPLE branding · Setup-first structure</span>
-            <a class="gd-cta" href="FPLE_TeachingTools_SetupGuide_R1.html" target="_blank">Open Guide →</a>
+            <a class="gd-cta" href="FPLE_TeachingTools_SetupGuide_R1.html" target="_blank" data-i18n="cta.open">Open Guide →</a>
           </div>
         </div>
       </div>
@@ -1234,7 +1426,7 @@
           </div>
           <div class="gd-footer">
             <span class="gd-design">Word document · Terra accent · BridgeEnglish brand</span>
-            <a class="gd-cta" href="BridgeEnglish_Facebook_Guide.docx" target="_blank">Open Guide →</a>
+            <a class="gd-cta" href="BridgeEnglish_Facebook_Guide.docx" target="_blank" data-i18n="cta.open">Open Guide →</a>
           </div>
         </div>
       </div>
@@ -1246,8 +1438,9 @@
   <section id="style-guide">
     <div class="section-head">
       <div class="section-num-block">Ref /</div>
-      <h2>Design Reference
-        <small>Internal docs — the design system powering all guides in this project</small>
+      <h2>
+        <span data-i18n="secRef.h2">Design Reference</span>
+        <small data-i18n="secRef.small">Internal docs — the design system powering all guides in this project</small>
       </h2>
     </div>
 
@@ -1279,7 +1472,7 @@
           </div>
           <div class="gd-footer">
             <span class="gd-design">Cream canvas · Sage primary · Terra action · Gold reward · Amber accent</span>
-            <a class="gd-cta" href="Unified-Style-Guide-V3.html" target="_blank">Open Guide →</a>
+            <a class="gd-cta" href="Unified-Style-Guide-V3.html" target="_blank" data-i18n="cta.open">Open Guide →</a>
           </div>
         </div>
       </div>
@@ -1290,8 +1483,9 @@
   <section id="prompting">
     <div class="section-head">
       <div class="section-num-block">02 /</div>
-      <h2>Prompting Fundamentals
-        <small>Six techniques for getting better results from any conversation</small>
+      <h2>
+        <span data-i18n="sec2.h2">Prompting Fundamentals</span>
+        <small data-i18n="sec2.small">Six techniques for getting better results from any conversation</small>
       </h2>
     </div>
 
@@ -1300,37 +1494,37 @@
         <div class="card-type">Core Technique · 01</div>
         <h3>Be Clear &amp; Specific</h3>
         <p>Front-load context, state the task upfront, and break large requests into concrete steps. The single highest-leverage prompting habit.</p>
-        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+        <div class="card-footer"><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="card-arrow">→</span></div>
       </a>
       <a class="doc-card c-pine is-soon" href="javascript:void(0);">
         <div class="card-type">Core Technique · 02</div>
         <h3>Use Examples</h3>
         <p>Show Claude a sample of the format, tone, or style you want. A single reference output is worth a paragraph of abstract instructions.</p>
-        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+        <div class="card-footer"><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="card-arrow">→</span></div>
       </a>
       <a class="doc-card c-plum is-soon" href="javascript:void(0);">
         <div class="card-type">Core Technique · 03</div>
         <h3>Encourage Step-by-Step Thinking</h3>
         <p>Ask Claude to "think through this step-by-step." Surfaces better answers on complex, multi-variable problems.</p>
-        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+        <div class="card-footer"><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="card-arrow">→</span></div>
       </a>
       <a class="doc-card c-ochre is-soon" href="javascript:void(0);">
         <div class="card-type">Core Technique · 04</div>
         <h3>Iterative Refinement</h3>
         <p>Specify exactly what to adjust — tone, length, a specific paragraph — rather than asking Claude to generically "make it better."</p>
-        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+        <div class="card-footer"><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="card-arrow">→</span></div>
       </a>
       <a class="doc-card c-rust is-soon" href="javascript:void(0);">
         <div class="card-type">Core Technique · 05</div>
         <h3>Leverage Claude's Knowledge</h3>
         <p>Provide context on how you'll use the answer. Claude's responses become far more targeted when it understands the downstream purpose.</p>
-        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+        <div class="card-footer"><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="card-arrow">→</span></div>
       </a>
       <a class="doc-card c-pine is-soon" href="javascript:void(0);">
         <div class="card-type">Core Technique · 06</div>
         <h3>Role-Playing &amp; Personas</h3>
         <p>Assign expert roles — CFO, negotiation coach, senior marketer — to shift the depth and intelligence of responses dramatically.</p>
-        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+        <div class="card-footer"><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="card-arrow">→</span></div>
       </a>
     </div>
   </section>
@@ -1339,8 +1533,9 @@
   <section id="tasks">
     <div class="section-head">
       <div class="section-num-block">03 /</div>
-      <h2>Task-Specific Guides
-        <small>Applied prompting patterns for common work categories</small>
+      <h2>
+        <span data-i18n="sec3.h2">Task-Specific Guides</span>
+        <small data-i18n="sec3.small">Applied prompting patterns for common work categories</small>
       </h2>
     </div>
 
@@ -1348,22 +1543,22 @@
       <a class="task-card is-soon" href="javascript:void(0);">
         <div class="task-icon ti-rust">✍️</div>
         <div class="task-text"><h3>Content Creation</h3><p>Specify audience, define tone, provide an output structure. Covers blog posts, product copy, presentations, and emails.</p></div>
-        <div class="task-meta"><span class="pill p-rust">Writing</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div>
+        <div class="task-meta"><span class="pill p-rust">Writing</span><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="task-arrow">→</span></div>
       </a>
       <a class="task-card is-soon" href="javascript:void(0);">
         <div class="task-icon ti-pine">📄</div>
         <div class="task-text"><h3>Document Summary &amp; Q&amp;A</h3><p>Refer to docs by name, scope your summary carefully, and request citations — produces grounded, verifiable answers.</p></div>
-        <div class="task-meta"><span class="pill p-pine">Research</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div>
+        <div class="task-meta"><span class="pill p-pine">Research</span><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="task-arrow">→</span></div>
       </a>
       <a class="task-card is-soon" href="javascript:void(0);">
         <div class="task-icon ti-plum">📊</div>
         <div class="task-text"><h3>Data Analysis &amp; Visualization</h3><p>Specify the output format upfront — summary, KPIs, recommendations — and ask which chart types best communicate each finding.</p></div>
-        <div class="task-meta"><span class="pill p-plum">Analytics</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div>
+        <div class="task-meta"><span class="pill p-plum">Analytics</span><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="task-arrow">→</span></div>
       </a>
       <a class="task-card is-soon" href="javascript:void(0);">
         <div class="task-icon ti-ochre">💡</div>
         <div class="task-text"><h3>Brainstorming &amp; Ideation</h3><p>Give parameters — number of ideas, categories, format — so brainstorm outputs are structured and immediately usable.</p></div>
-        <div class="task-meta"><span class="pill p-ochre">Strategy</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div>
+        <div class="task-meta"><span class="pill p-ochre">Strategy</span><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="task-arrow">→</span></div>
       </a>
     </div>
   </section>
@@ -1372,8 +1567,9 @@
   <section id="troubleshooting">
     <div class="section-head">
       <div class="section-num-block">04 /</div>
-      <h2>Troubleshooting &amp; Quality
-        <small>When outputs are wrong, incomplete, or not quite right</small>
+      <h2>
+        <span data-i18n="sec4.h2">Troubleshooting &amp; Quality</span>
+        <small data-i18n="sec4.small">When outputs are wrong, incomplete, or not quite right</small>
       </h2>
     </div>
 
@@ -1382,13 +1578,13 @@
         <div class="card-type">Quality</div>
         <h3>Minimizing Hallucinations</h3>
         <p>Tell Claude to say "I don't know" when uncertain. Include all relevant context in every new conversation — there is no memory between sessions.</p>
-        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+        <div class="card-footer"><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="card-arrow">→</span></div>
       </a>
       <a class="doc-card c-plum is-soon" href="javascript:void(0);">
         <div class="card-type">Strategy</div>
         <h3>Complex Task Decomposition</h3>
         <p>When outputs miss steps or feel rushed, break the problem into a sequence of focused messages rather than one giant, overloaded prompt.</p>
-        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+        <div class="card-footer"><span class="pill p-soon" data-i18n="pill.soon">Coming Soon</span><span class="card-arrow">→</span></div>
       </a>
     </div>
   </section>
@@ -1400,18 +1596,238 @@
   <div class="footer-inner">
     <div class="footer-left">
       <h4>Claude Helper Portal</h4>
-      <p>5 published guides &nbsp;·&nbsp; Updated March 2026 &nbsp;·&nbsp; V1-20260310_027</p>
+      <p data-i18n-html="footer.copy">5 published guides &nbsp;·&nbsp; Updated March 2026 &nbsp;·&nbsp; V1-20260310_028</p>
     </div>
     <div class="footer-links">
-      <a href="#guides">Guides</a>
-      <a href="#prompting">Prompting</a>
-      <a href="#tasks">Tasks</a>
-      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#guides"          data-i18n="footer.guides">Guides</a>
+      <a href="#prompting"       data-i18n="footer.prompting">Prompting</a>
+      <a href="#tasks"           data-i18n="footer.tasks">Tasks</a>
+      <a href="#troubleshooting" data-i18n="footer.trouble">Troubleshooting</a>
     </div>
   </div>
 </footer>
 
 <script>
+  /* ════════════════════════════════════════
+     PWA DETECTION
+  ════════════════════════════════════════ */
+  (function () {
+    const standalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.navigator.standalone === true;
+    if (standalone) document.body.classList.add('is-pwa');
+  })();
+
+  /* ════════════════════════════════════════
+     TRANSLATIONS
+  ════════════════════════════════════════ */
+  const STRINGS = {
+    en: {
+      'nav.sub':          'Claude Workspace\u00a0/\u00a0Documentation Portal',
+      'nav.guides':       'Published Guides',
+      'nav.design':       'Design Reference',
+      'nav.prompting':    'Prompting',
+      'nav.tasks':        'Task Guides',
+      'nav.troubleshoot': 'Troubleshooting',
+      'hero.h1':          'Helper &amp; <em>Style Guide Library</em>',
+      'stat.num.guides':  '5',
+      'stat.lbl.guides':  'Published Guides',
+      'stat.num.date':    "Mar \u201926",
+      'stat.lbl.date':    'Last Updated',
+      'avail.label':      'Available Now',
+      'avail.soon-lbl':   'Coming soon',
+      'asp.prompting':    'Prompting',
+      'asp.tasks':        'Task Guides',
+      'asp.quality':      'Quality',
+      'sec1.h2':          'Published Guides',
+      'sec1.small':       'Finished docs you can open right now \u2014 each a standalone interactive page',
+      'secRef.h2':        'Design Reference',
+      'secRef.small':     'Internal docs \u2014 the design system powering all guides in this project',
+      'sec2.h2':          'Prompting Fundamentals',
+      'sec2.small':       'Six techniques for getting better results from any conversation',
+      'sec3.h2':          'Task-Specific Guides',
+      'sec3.small':       'Applied prompting patterns for common work categories',
+      'sec4.h2':          'Troubleshooting & Quality',
+      'sec4.small':       'When outputs are wrong, incomplete, or not quite right',
+      'cta.open':         'Open Guide \u2192',
+      'footer.copy':      '5 published guides &nbsp;\u00b7&nbsp; Updated March 2026 &nbsp;\u00b7&nbsp; V1-20260310_028',
+      'footer.guides':    'Guides',
+      'footer.prompting': 'Prompting',
+      'footer.tasks':     'Tasks',
+      'footer.trouble':   'Troubleshooting',
+      'pill.soon':        'Coming Soon',
+    },
+    uk: {
+      'nav.sub':          'Claude Workspace\u00a0/\u00a0\u041f\u043e\u0440\u0442\u0430\u043b \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0456\u0457',
+      'nav.guides':       '\u041f\u043e\u0441\u0456\u0431\u043d\u0438\u043a\u0438',
+      'nav.design':       '\u0414\u0438\u0437\u0430\u0439\u043d',
+      'nav.prompting':    '\u0417\u0430\u043f\u0438\u0442\u0438',
+      'nav.tasks':        '\u0417\u0430\u0432\u0434\u0430\u043d\u043d\u044f',
+      'nav.troubleshoot': '\u0414\u043e\u043f\u043e\u043c\u043e\u0433\u0430',
+      'hero.h1':          '\u041f\u043e\u0441\u0456\u0431\u043d\u0438\u043a\u0438 \u0442\u0430 <em>\u0431\u0456\u0431\u043b\u0456\u043e\u0442\u0435\u043a\u0430 \u0441\u0442\u0438\u043b\u0456\u0432</em>',
+      'stat.num.guides':  '5',
+      'stat.lbl.guides':  '\u041e\u043f\u0443\u0431\u043b\u0456\u043a\u043e\u0432\u0430\u043d\u0456 \u043f\u043e\u0441\u0456\u0431\u043d\u0438\u043a\u0438',
+      'stat.num.date':    "\u0411\u0435\u0440 \u201926",
+      'stat.lbl.date':    '\u041e\u0441\u0442\u0430\u043d\u043d\u0454 \u043e\u043d\u043e\u0432\u043b\u0435\u043d\u043d\u044f',
+      'avail.label':      '\u0414\u043e\u0441\u0442\u0443\u043f\u043d\u043e \u0437\u0430\u0440\u0430\u0437',
+      'avail.soon-lbl':   '\u041d\u0435\u0437\u0430\u0431\u0430\u0440\u043e\u043c',
+      'asp.prompting':    '\u0417\u0430\u043f\u0438\u0442\u0438',
+      'asp.tasks':        '\u0417\u0430\u0432\u0434\u0430\u043d\u043d\u044f',
+      'asp.quality':      '\u042f\u043a\u0456\u0441\u0442\u044c',
+      'sec1.h2':          '\u041e\u043f\u0443\u0431\u043b\u0456\u043a\u043e\u0432\u0430\u043d\u0456 \u043f\u043e\u0441\u0456\u0431\u043d\u0438\u043a\u0438',
+      'sec1.small':       '\u0413\u043e\u0442\u043e\u0432\u0456 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0438, \u044f\u043a\u0456 \u043c\u043e\u0436\u043d\u0430 \u0432\u0456\u0434\u043a\u0440\u0438\u0442\u0438 \u043f\u0440\u044f\u043c\u043e \u0437\u0430\u0440\u0430\u0437',
+      'secRef.h2':        '\u0414\u0438\u0437\u0430\u0439\u043d-\u0434\u043e\u0432\u0456\u0434\u043d\u0438\u043a',
+      'secRef.small':     '\u0412\u043d\u0443\u0442\u0440\u0456\u0448\u043d\u0456 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0438 \u2014 \u0434\u0438\u0437\u0430\u0439\u043d-\u0441\u0438\u0441\u0442\u0435\u043c\u0430 \u0434\u043b\u044f \u0432\u0441\u0456\u0445 \u043f\u043e\u0441\u0456\u0431\u043d\u0438\u043a\u0456\u0432',
+      'sec2.h2':          '\u041e\u0441\u043d\u043e\u0432\u0438 \u0437\u0430\u043f\u0438\u0442\u0456\u0432',
+      'sec2.small':       '\u0428\u0456\u0441\u0442\u044c \u0442\u0435\u0445\u043d\u0456\u043a \u0434\u043b\u044f \u043a\u0440\u0430\u0449\u0438\u0445 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0456\u0432 \u0443 \u0431\u0443\u0434\u044c-\u044f\u043a\u0456\u0439 \u0440\u043e\u0437\u043c\u043e\u0432\u0456',
+      'sec3.h2':          '\u0422\u0435\u043c\u0430\u0442\u0438\u0447\u043d\u0456 \u043f\u043e\u0441\u0456\u0431\u043d\u0438\u043a\u0438',
+      'sec3.small':       '\u041f\u0440\u0438\u043a\u043b\u0430\u0434\u043d\u0456 \u0448\u0430\u0431\u043b\u043e\u043d\u0438 \u0434\u043b\u044f \u0442\u0438\u043f\u043e\u0432\u0438\u0445 \u0440\u043e\u0431\u043e\u0447\u0438\u0445 \u0437\u0430\u0432\u0434\u0430\u043d\u044c',
+      'sec4.h2':          '\u0412\u0438\u0440\u0456\u0448\u0435\u043d\u043d\u044f \u043f\u0440\u043e\u0431\u043b\u0435\u043c \u0442\u0430 \u044f\u043a\u0456\u0441\u0442\u044c',
+      'sec4.small':       '\u041a\u043e\u043b\u0438 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0438 \u043d\u0435\u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u0456 \u0430\u0431\u043e \u043d\u0435\u043f\u043e\u0432\u043d\u0456',
+      'cta.open':         '\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 \u2192',
+      'footer.copy':      '5 \u043f\u043e\u0441\u0456\u0431\u043d\u0438\u043a\u0456\u0432 &nbsp;\u00b7&nbsp; \u041e\u043d\u043e\u0432\u043b\u0435\u043d\u043e \u0431\u0435\u0440\u0435\u0437\u0435\u043d\u044c 2026 &nbsp;\u00b7&nbsp; V1-20260310_028',
+      'footer.guides':    '\u041f\u043e\u0441\u0456\u0431\u043d\u0438\u043a\u0438',
+      'footer.prompting': '\u0417\u0430\u043f\u0438\u0442\u0438',
+      'footer.tasks':     '\u0417\u0430\u0432\u0434\u0430\u043d\u043d\u044f',
+      'footer.trouble':   '\u0414\u043e\u043f\u043e\u043c\u043e\u0433\u0430',
+      'pill.soon':        '\u041d\u0435\u0437\u0430\u0431\u0430\u0440\u043e\u043c',
+    },
+    es: {
+      'nav.sub':          'Claude Workspace\u00a0/\u00a0Portal de documentaci\u00f3n',
+      'nav.guides':       'Gu\u00edas publicadas',
+      'nav.design':       'Dise\u00f1o',
+      'nav.prompting':    'Prompts',
+      'nav.tasks':        'Tareas',
+      'nav.troubleshoot': 'Ayuda',
+      'hero.h1':          'Gu\u00edas y <em>biblioteca de estilos</em>',
+      'stat.num.guides':  '5',
+      'stat.lbl.guides':  'Gu\u00edas publicadas',
+      'stat.num.date':    "Mar \u201926",
+      'stat.lbl.date':    '\u00daltima actualizaci\u00f3n',
+      'avail.label':      'Disponible ahora',
+      'avail.soon-lbl':   'Pr\u00f3ximamente',
+      'asp.prompting':    'Prompts',
+      'asp.tasks':        'Tareas',
+      'asp.quality':      'Calidad',
+      'sec1.h2':          'Gu\u00edas publicadas',
+      'sec1.small':       'Documentos listos que puedes abrir ahora \u2014 p\u00e1ginas interactivas',
+      'secRef.h2':        'Referencia de dise\u00f1o',
+      'secRef.small':     'Documentos internos \u2014 el sistema de dise\u00f1o de todas las gu\u00edas',
+      'sec2.h2':          'Fundamentos de prompts',
+      'sec2.small':       'Seis t\u00e9cnicas para mejores resultados en cualquier conversaci\u00f3n',
+      'sec3.h2':          'Gu\u00edas por tarea',
+      'sec3.small':       'Patrones de prompts aplicados para categor\u00edas de trabajo comunes',
+      'sec4.h2':          'Soluci\u00f3n de problemas y calidad',
+      'sec4.small':       'Cuando las respuestas son incorrectas, incompletas o no del todo bien',
+      'cta.open':         'Abrir gu\u00eda \u2192',
+      'footer.copy':      '5 gu\u00edas publicadas &nbsp;\u00b7&nbsp; Actualizado marzo 2026 &nbsp;\u00b7&nbsp; V1-20260310_028',
+      'footer.guides':    'Gu\u00edas',
+      'footer.prompting': 'Prompts',
+      'footer.tasks':     'Tareas',
+      'footer.trouble':   'Ayuda',
+      'pill.soon':        'Pr\u00f3ximamente',
+    }
+  };
+
+  const LANG_META = {
+    en: { flag: '🇺🇸', code: 'EN', htmlLang: 'en', title: 'Claude Helper Portal' },
+    uk: { flag: '🇺🇦', code: 'UA', htmlLang: 'uk', title: 'Портал помічника Claude' },
+    es: { flag: '🇪🇸', code: 'ES', htmlLang: 'es', title: 'Portal de ayuda Claude' },
+  };
+
+  let currentLang = 'en';
+
+  function applyLang(lang) {
+    if (!STRINGS[lang]) return;
+    const s = STRINGS[lang];
+    const m = LANG_META[lang];
+
+    /* html lang attribute + page title */
+    document.documentElement.lang = m.htmlLang;
+    document.title = m.title;
+
+    /* textContent replacements */
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = s[el.dataset.i18n];
+      if (v !== undefined) el.textContent = v;
+    });
+
+    /* innerHTML replacements (for elements with embedded tags / entities) */
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const v = s[el.dataset.i18nHtml];
+      if (v !== undefined) el.innerHTML = v;
+    });
+
+    /* Active state on all option buttons */
+    document.querySelectorAll('.lang-opt, .mob-lang-opt').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    /* Update the picker button */
+    document.getElementById('langFlag').textContent = m.flag;
+    document.getElementById('langCode').textContent = m.code;
+
+    /* Persist */
+    try { localStorage.setItem('portal-lang', lang); } catch(e) {}
+
+    currentLang = lang;
+  }
+
+  /* ── Init: read saved preference, then browser language, fallback en ── */
+  (function initLang() {
+    let saved = 'en';
+    try { saved = localStorage.getItem('portal-lang') || 'en'; } catch(e) {}
+
+    if (STRINGS[saved]) {
+      currentLang = saved;
+    } else {
+      /* Auto-detect from browser */
+      const bLang = (navigator.language || 'en').split('-')[0].toLowerCase();
+      if (bLang === 'uk') currentLang = 'uk';
+      else if (bLang === 'es') currentLang = 'es';
+    }
+
+    applyLang(currentLang);
+  })();
+
+  /* ════════════════════════════════════════
+     LANG PICKER TOGGLE
+  ════════════════════════════════════════ */
+  const langBtn      = document.getElementById('langBtn');
+  const langDropdown = document.getElementById('langDropdown');
+
+  langBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = langDropdown.classList.toggle('open');
+    langBtn.setAttribute('aria-expanded', String(open));
+  });
+
+  document.querySelectorAll('.lang-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      applyLang(btn.dataset.lang);
+      langDropdown.classList.remove('open');
+      langBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  document.querySelectorAll('.mob-lang-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      applyLang(btn.dataset.lang);
+      closeMobile();
+    });
+  });
+
+  /* Close dropdown on outside click */
+  document.addEventListener('click', e => {
+    if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+      langDropdown.classList.remove('open');
+      langBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  /* ════════════════════════════════════════
+     HAMBURGER / MOBILE MENU
+  ════════════════════════════════════════ */
   const btn  = document.getElementById('hamburger');
   const menu = document.getElementById('mobile-menu');
 
@@ -1420,6 +1836,9 @@
     btn.classList.toggle('open', open);
     menu.setAttribute('aria-hidden', String(!open));
     document.body.style.overflow = open ? 'hidden' : '';
+    /* Close lang dropdown if mobile menu opens */
+    langDropdown.classList.remove('open');
+    langBtn.setAttribute('aria-expanded', 'false');
   });
 
   function closeMobile() {
@@ -1430,7 +1849,14 @@
   }
 
   menu.addEventListener('click', e => { if (e.target === menu) closeMobile(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobile(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeMobile();
+      langDropdown.classList.remove('open');
+      langBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
 </script>
 
 </body>
