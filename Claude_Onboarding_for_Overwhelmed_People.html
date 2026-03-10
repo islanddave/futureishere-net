@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Claude & Cowork Guide 🌿</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #fdf8f0;
+  --white: #fffcf7;
+  --sage: #6b9e78;
+  --sage-mid: #a8c9b0;
+  --sage-pale: #e8f3eb;
+  --terra: #c4724e;
+  --terra-mid: #e8ab92;
+  --terra-pale: #fceee7;
+  --sky: #5b8cb8;
+  --sky-pale: #e4eef7;
+  --gold: #c9903c;
+  --gold-pale: #fdf3dc;
+  --text: #2c2c2c;
+  --mid: #666;
+  --soft: #999;
+  --border: rgba(0,0,0,0.08);
+  --shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* NAV */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(253,248,240,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex; align-items: center; gap: 12px;
+  overflow-x: auto;
+}
+.nav-brand { font-weight: 900; font-size: 15px; color: var(--sage); white-space: nowrap; margin-right: 8px; }
+.nav-pill {
+  display: inline-block;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px; font-weight: 700;
+  color: var(--mid);
+  white-space: nowrap;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.nav-pill:hover { background: var(--sage-pale); color: var(--sage); border-color: var(--sage-mid); }
+
+/* HERO */
+.hero {
+  background: linear-gradient(160deg, #e8f3eb 0%, #fdf3dc 55%, #fceee7 100%);
+  padding: 64px 24px 52px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.hero::before, .hero::after {
+  content: ''; position: absolute; border-radius: 50%;
+  pointer-events: none;
+}
+.hero::before {
+  width: 320px; height: 320px;
+  top: -120px; right: -80px;
+  background: radial-gradient(circle, rgba(107,158,120,0.15) 0%, transparent 70%);
+}
+.hero::after {
+  width: 260px; height: 260px;
+  bottom: -80px; left: -60px;
+  background: radial-gradient(circle, rgba(196,114,78,0.13) 0%, transparent 70%);
+}
+.hero-eyebrow {
+  display: inline-block;
+  background: var(--white);
+  color: var(--sage);
+  font-weight: 800; font-size: 11px;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  padding: 6px 18px; border-radius: 20px;
+  border: 1.5px solid var(--sage-mid);
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 5vw, 46px);
+  font-weight: 700;
+  color: var(--text); line-height: 1.25;
+  margin-bottom: 18px;
+}
+.hero h1 em { color: var(--sage); font-style: italic; }
+.hero-sub {
+  font-size: 16px; color: var(--mid);
+  max-width: 540px; margin: 0 auto 32px;
+  line-height: 1.8;
+}
+.hero-chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.chip {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 24px; padding: 8px 18px;
+  font-size: 13px; font-weight: 700; color: var(--mid);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* BREATHE BOX */
+.breathe {
+  background: linear-gradient(135deg, var(--sage-pale), #f0f7f2);
+  border-left: 4px solid var(--sage);
+  border-radius: 14px;
+  padding: 22px 28px;
+  margin: 36px auto;
+  max-width: 680px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.8;
+  text-align: center;
+}
+.breathe strong { font-style: normal; color: var(--sage); }
+
+/* LAYOUT */
+.wrap { max-width: 760px; margin: 0 auto; padding: 8px 20px 64px; }
+
+.sec-label {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 11px; font-weight: 800;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--soft); margin: 52px 0 18px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ACCORDION CARDS */
+.card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.10); }
+.card-top {
+  height: 4px;
+  width: 100%;
+}
+.t-sage { background: linear-gradient(90deg, var(--sage), var(--sage-mid)); }
+.t-terra { background: linear-gradient(90deg, var(--terra), var(--terra-mid)); }
+.t-sky  { background: linear-gradient(90deg, var(--sky), #8ab4d8); }
+.t-gold { background: linear-gradient(90deg, var(--gold), #e4b96a); }
+
+.card-trigger {
+  display: flex; align-items: center; gap: 16px;
+  padding: 22px 24px;
+  cursor: pointer;
+  user-select: none;
+}
+.cicon {
+  width: 50px; height: 50px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.i-sage { background: var(--sage-pale); }
+.i-terra { background: var(--terra-pale); }
+.i-sky  { background: var(--sky-pale); }
+.i-gold { background: var(--gold-pale); }
+
+.ctitle { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+.csub   { font-size: 12px; font-weight: 700; color: var(--soft); }
+.carrow {
+  margin-left: auto; font-size: 22px; color: var(--soft);
+  flex-shrink: 0; transition: transform 0.3s ease;
+  line-height: 1;
+}
+.card.open .carrow { transform: rotate(45deg); }
+.card-body {
+  display: none;
+  padding: 0 24px 26px;
+  border-top: 1px solid var(--border);
+  margin-top: 0;
+  animation: slideIn 0.25s ease;
+}
+.card.open .card-body { display: block; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* BODY CONTENT */
+.prose { font-size: 15px; color: var(--mid); line-height: 1.8; margin: 16px 0 14px; }
+.prose strong { color: var(--text); font-weight: 800; }
+
+.mini-head {
+  font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--soft); margin: 20px 0 10px;
+}
+
+.items { display: flex; flex-direction: column; gap: 9px; }
+.item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 12px; padding: 13px 16px;
+}
+.item-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.item-title { font-weight: 800; font-size: 14px; color: var(--text); display: block; margin-bottom: 2px; }
+.item-desc  { font-size: 13px; color: var(--mid); line-height: 1.6; }
+
+.prompt {
+  border-radius: 12px; padding: 14px 18px;
+  margin-bottom: 10px; border: 1.5px solid transparent;
+}
+.p-sage { background: var(--sage-pale); border-color: var(--sage-mid); }
+.p-terra { background: var(--terra-pale); border-color: var(--terra-mid); }
+.p-sky  { background: var(--sky-pale); border-color: #a8c8e8; }
+.p-gold { background: var(--gold-pale); border-color: #e0c070; }
+.prompt-tag {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 2px; margin-bottom: 6px; display: block;
+}
+.pt-sage  { color: var(--sage); }
+.pt-terra { color: var(--terra); }
+.pt-sky   { color: var(--sky); }
+.pt-gold  { color: var(--gold); }
+.prompt-copy {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 14px;
+  color: var(--text); line-height: 1.7;
+}
+.copy-btn {
+  display: inline-block;
+  margin-top: 8px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 11px; font-weight: 700;
+  color: var(--mid); cursor: pointer;
+  transition: all 0.15s;
+}
+.copy-btn:hover { background: var(--sage-pale); color: var(--sage); }
+.copy-btn.copied { color: var(--sage); }
+
+.callout {
+  border-radius: 14px; padding: 20px 22px;
+  text-align: center; margin: 16px 0;
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 15px;
+  color: var(--text); line-height: 1.8;
+}
+.callout strong { font-style: normal; font-weight: 700; }
+.co-gold { background: var(--gold-pale); border: 1.5px solid #e0c070; }
+.co-sage { background: var(--sage-pale); border: 1.5px solid var(--sage-mid); }
+.co-terra { background: var(--terra-pale); border: 1.5px solid var(--terra-mid); }
+
+.steps { display: flex; flex-direction: column; gap: 12px; margin: 14px 0; }
+.step { display: flex; gap: 14px; align-items: flex-start; }
+.step-n {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 13px; color: white; flex-shrink: 0;
+  margin-top: 2px;
+}
+.sn-sage { background: var(--sage); }
+.sn-terra { background: var(--terra); }
+.sn-sky  { background: var(--sky); }
+.sn-gold { background: var(--gold); }
+.step-t { font-weight: 800; font-size: 14px; color: var(--text); display: block; margin-bottom: 2px; }
+.step-d { font-size: 13px; color: var(--mid); line-height: 1.6; }
+
+/* QUICK WINS GRID */
+.qgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+@media (max-width: 480px) { .qgrid { grid-template-columns: 1fr; } }
+.qcard {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 18px 16px; text-align: center;
+}
+.qcard .qi { font-size: 26px; margin-bottom: 8px; }
+.qcard .qt { font-weight: 800; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+.qcard .qd { font-size: 12px; color: var(--soft); line-height: 1.5; }
+
+/* TAGS */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tag {
+  display: inline-block; border-radius: 16px;
+  padding: 3px 12px; font-size: 11px; font-weight: 700;
+}
+.tg-sage  { background: var(--sage-pale); color: var(--sage); border: 1px solid var(--sage-mid); }
+.tg-terra { background: var(--terra-pale); color: var(--terra); border: 1px solid var(--terra-mid); }
+.tg-sky   { background: var(--sky-pale); color: var(--sky); border: 1px solid #a8c8e8; }
+.tg-gold  { background: var(--gold-pale); color: var(--gold); border: 1px solid #e0c070; }
+
+/* FOOTER */
+footer {
+  background: var(--sage-pale);
+  border-top: 1.5px solid var(--sage-mid);
+  padding: 40px 24px;
+  text-align: center;
+}
+footer p { font-size: 14px; color: var(--mid); line-height: 1.9; }
+footer .big { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--sage); margin-bottom: 10px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <span class="nav-brand">🌿 Your Claude Guide</span>
+  <a class="nav-pill" href="#basics">What is Claude?</a>
+  <a class="nav-pill" href="#cowork">Cowork</a>
+  <a class="nav-pill" href="#esl">ESL Lessons</a>
+  <a class="nav-pill" href="#adhd">ADHD Help</a>
+  <a class="nav-pill" href="#prompts">Prompt Starters</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">✨ Made just for you</div>
+  <h1>Hello! Let's learn<br><em>Claude & Cowork</em><br>together — gently.</h1>
+  <p class="hero-sub">You're a brilliant ESL teacher. Claude is your new calm, patient, never-judgmental AI assistant. This guide will show you exactly what's possible — one small step at a time.</p>
+  <div class="hero-chips">
+    <div class="chip">🧠 ADHD-Friendly</div>
+    <div class="chip">👩‍🏫 ESL Teacher Life</div>
+    <div class="chip">🏠 Work From Home</div>
+    <div class="chip">💚 Zero Pressure</div>
+    <div class="chip">📋 Copy-Paste Prompts</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="breathe">
+    <strong>"You don't need to learn everything today."</strong><br>
+    Open one card. Try one prompt. That's more than enough.
+  </div>
+
+  <!-- ─── BASICS ─── -->
+  <div class="sec-label" id="basics">🌱 The basics — what is Claude?</div>
+
+  <div class="card" id="c1">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c1')">
+      <div class="cicon i-sage">💬</div>
+      <div>
+        <div class="ctitle">What is Claude?</div>
+        <div class="csub">The honest 60-second explanation</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">Claude is an <strong>AI assistant made by Anthropic</strong>. You talk to it by typing (or pasting text), and it responds. Think of it as a calm, endlessly patient colleague who lives in your browser.</p>
+      <div class="mini-head">Why it's different from Googling something</div>
+      <div class="items">
+        <div class="item"><span class="item-icon">💬</span><div><span class="item-title">It has a conversation with you</span><span class="item-desc">Not a list of links — actual back-and-forth. Ask it to explain differently. Ask it again. It never gets frustrated.</span></div></div>
+        <div class="item"><span class="item-icon">✍️</span><div><span class="item-title">It creates things for you</span><span class="item-desc">Lesson plans, emails, feedback, schedules, summaries — it writes them, you edit (or just use them).</span></div></div>
+        <div class="item"><span class="item-icon">🧠</span><div><span class="item-title">It thinks with you</span><span class="item-desc">Stuck? Overwhelmed? Tell Claude what's going on and ask what to do first. It's great at untangling messy situations.</span></div></div>
+        <div class="item"><span class="item-icon">🚫</span><div><span class="item-title">It never judges you</span><span class="item-desc">Messy grammar, half-finished thoughts, repeating yourself — it doesn't care. It just helps.</span></div></div>
+      </div>
+      <div class="callout co-sage" style="margin-top:18px;">
+        You access Claude at <strong>claude.ai</strong> — just sign in and start typing. That's it.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="c2">
+    <div class="card-top t-terra"></div>
+    <div class="card-trigger" onclick="toggle('c2')">
+      <div class="cicon i-terra">🏠</div>
+      <div>
+        <div class="ctitle">What is Cowork?</div>
+        <div class="csub">Claude's extra set of hands for your computer</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">Claude (the chat) is your <strong>thinking partner</strong>. Cowork is a <strong>desktop app</strong> that lets Claude actually do things on your computer — not just talk about them.</p>
+      <div class="mini-head">What Cowork can do for you</div>
+      <div class="items">
+        <div class="item"><span class="item-icon">📁</span><div><span class="item-title">Work with files & folders</span><span class="item-desc">Got a messy downloads folder? Cowork can help you sort, rename, and organize files automatically.</span></div></div>
+        <div class="item"><span class="item-icon">📄</span><div><span class="item-title">Read & rewrite your documents</span><span class="item-desc">Paste a lesson plan in, ask Claude to improve it, get it back in seconds.</span></div></div>
+        <div class="item"><span class="item-icon">🔗</span><div><span class="item-title">Connect to Google Drive, Gmail & Calendar</span><span class="item-desc">Claude can read your schedule, help draft emails, and find documents — all in one place.</span></div></div>
+        <div class="item"><span class="item-icon">🔁</span><div><span class="item-title">Automate repetitive tasks</span><span class="item-desc">Things you do the same way every week? Cowork can help you set those up once and run them automatically.</span></div></div>
+      </div>
+      <div class="callout co-terra" style="margin-top:18px;">
+        <strong>Simple version:</strong> Claude (chat) = your brain buddy. Cowork = your digital assistant who handles the boring stuff.
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── COWORK ─── -->
+  <div class="sec-label" id="cowork">🔗 Getting started with Cowork</div>
+
+  <div class="card" id="c3">
+    <div class="card-top t-sky"></div>
+    <div class="card-trigger" onclick="toggle('c3')">
+      <div class="cicon i-sky">🚀</div>
+      <div>
+        <div class="ctitle">Your First Steps in Cowork</div>
+        <div class="csub">Start here — don't skip this one</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">Cowork is currently available as a <strong>beta desktop app</strong>. Here's how to approach it without overwhelm:</p>
+      <div class="steps">
+        <div class="step"><div class="step-n sn-sky">1</div><div><span class="step-t">Install & open Cowork</span><span class="step-d">Download the app, open it. Don't worry about connecting anything yet — just look around.</span></div></div>
+        <div class="step"><div class="step-n sn-sky">2</div><div><span class="step-t">Connect Google Drive first</span><span class="step-d">This one connection unlocks the most useful stuff for teachers — your lesson files, materials, and notes.</span></div></div>
+        <div class="step"><div class="step-n sn-sky">3</div><div><span class="step-t">Try one small task</span><span class="step-d">Ask it to "find my newest lesson plan document." That's it. One thing, then stop and celebrate.</span></div></div>
+        <div class="step"><div class="step-n sn-sky">4</div><div><span class="step-t">Connect Gmail next time</span><span class="step-d">When you're comfortable, connect Gmail so Claude can help draft and organize your student emails.</span></div></div>
+      </div>
+      <div class="callout co-sage">
+        <strong>ADHD tip:</strong> Don't try to set up everything in one sitting. One connection per day is the perfect pace.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="c4">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c4')">
+      <div class="cicon i-gold">⚡</div>
+      <div>
+        <div class="ctitle">What to Do in Cowork (ESL Edition)</div>
+        <div class="csub">Real tasks, real results</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">Once Cowork is connected to your apps, here are things you can literally just <strong>ask it to do</strong>:</p>
+      <div class="qgrid">
+        <div class="qcard"><div class="qi">📂</div><div class="qt">Organize lesson files</div><div class="qd">"Sort my Drive folder by level: beginner, intermediate, advanced"</div></div>
+        <div class="qcard"><div class="qi">📅</div><div class="qt">Check your calendar</div><div class="qd">"What lessons do I have tomorrow and when?"</div></div>
+        <div class="qcard"><div class="qi">📧</div><div class="qt">Draft student emails</div><div class="qd">"Write a lesson recap email for today's class with Maria"</div></div>
+        <div class="qcard"><div class="qi">🗂️</div><div class="qt">Find lost documents</div><div class="qd">"Find my B2 grammar worksheet — I made it last month"</div></div>
+        <div class="qcard"><div class="qi">📝</div><div class="qt">Create weekly plans</div><div class="qd">"Make a weekly schedule template for 4 students at different levels"</div></div>
+        <div class="qcard"><div class="qi">🔔</div><div class="qt">Set up reminders</div><div class="qd">"Remind me every Sunday night to prep Monday lessons"</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ESL TEACHER ─── -->
+  <div class="sec-label" id="esl">👩‍🏫 ESL teacher superpowers</div>
+
+  <div class="card" id="c5">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c5')">
+      <div class="cicon i-sage">📚</div>
+      <div>
+        <div class="ctitle">Lesson Planning — Fast</div>
+        <div class="csub">Never stare at a blank page again</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">Describe your student, the level, and the topic. Claude does the rest. You don't need perfect language — just tell it what you need like you'd tell a colleague.</p>
+      <div class="mini-head">Copy-paste these prompts ↓</div>
+      <div class="prompt p-sage">
+        <span class="prompt-tag pt-sage">📋 Full lesson plan</span>
+        <div class="prompt-copy">"Create a 45-minute ESL lesson for B1 adult learners on the topic of making phone calls at work. Include a warm-up, vocabulary list, a speaking activity, and a short homework task."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="prompt p-sage">
+        <span class="prompt-tag pt-sage">💡 When you're stuck for ideas</span>
+        <div class="prompt-copy">"I'm teaching intermediate adult learners who struggle with small talk. Give me 5 fun activity ideas I can run on Zoom. Keep them simple and low-prep."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="prompt p-sage">
+        <span class="prompt-tag pt-sage">📅 Weekly plan — multiple levels</span>
+        <div class="prompt-copy">"I'm teaching beginner, intermediate, and advanced students this week. Help me plan a different focus for each day Monday to Friday. Keep each day's plan to 3 bullet points max."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="c6">
+    <div class="card-top t-terra"></div>
+    <div class="card-trigger" onclick="toggle('c6')">
+      <div class="cicon i-terra">✍️</div>
+      <div>
+        <div class="ctitle">Student Feedback & Grading</div>
+        <div class="csub">The task that swallows your afternoons</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">Paste a student's writing into Claude. Ask for feedback. Done. You can review and adjust it — but the hard part is handled.</p>
+      <div class="prompt p-terra">
+        <span class="prompt-tag pt-terra">📝 Quick written feedback</span>
+        <div class="prompt-copy">"Here is a paragraph written by my B2 student. Please give 3 positive comments and 3 gentle suggestions for improvement, written in encouraging language suitable for an adult learner: [paste text here]"</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="prompt p-terra">
+        <span class="prompt-tag pt-terra">🗂️ Reusable feedback template</span>
+        <div class="prompt-copy">"Create a reusable written feedback template I can use for student essays. Include sections for grammar, vocabulary, fluency, and end with a personal encouragement note."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="prompt p-terra">
+        <span class="prompt-tag pt-terra">🎙️ Speaking class notes</span>
+        <div class="prompt-copy">"I'm going to paste my rough notes from a speaking class. Please turn them into a short, professional student progress note I can send to the learner. Notes: [paste notes]"</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="c7">
+    <div class="card-top t-sky"></div>
+    <div class="card-trigger" onclick="toggle('c7')">
+      <div class="cicon i-sky">📧</div>
+      <div>
+        <div class="ctitle">Emails & Admin</div>
+        <div class="csub">Write less, communicate better</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">Writing emails when your brain is scattered is <strong>exhausting</strong>. Give Claude the basic idea — it'll write the actual email. You just change the name and send.</p>
+      <div class="prompt p-sky">
+        <span class="prompt-tag pt-sky">👩‍👧 Parent update email</span>
+        <div class="prompt-copy">"Write a warm, professional email to a student's parent explaining that their child is progressing well but would benefit from practicing speaking more between lessons."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="prompt p-sky">
+        <span class="prompt-tag pt-sky">🔄 Rescheduling (no guilt!)</span>
+        <div class="prompt-copy">"Write a short, friendly message to a student rescheduling tomorrow's lesson to Thursday at the same time. Be warm but brief — 3 sentences max."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="prompt p-sky">
+        <span class="prompt-tag pt-sky">💰 Invoice reminder</span>
+        <div class="prompt-copy">"Write a friendly invoice reminder for a student who hasn't paid for last month's lessons. Keep the tone warm and non-confrontational. Just a nudge, not a demand."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ADHD ─── -->
+  <div class="sec-label" id="adhd">🧠 Claude as your ADHD support system</div>
+
+  <div class="card" id="c8">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c8')">
+      <div class="cicon i-gold">🗂️</div>
+      <div>
+        <div class="ctitle">The Brain Dump Method</div>
+        <div class="csub">For when everything is loud in your head</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">ADHD often means having <strong>everything in your head at once</strong>, then none of it when you need it. Brain dumping into Claude is one of the most useful things you can do.</p>
+      <div class="steps">
+        <div class="step"><div class="step-n sn-gold">1</div><div><span class="step-t">Open Claude. Type everything. Messy is perfect.</span><span class="step-d">Don't organize it. Don't worry about spelling. Just pour it out — tasks, worries, half-ideas, all of it.</span></div></div>
+        <div class="step"><div class="step-n sn-gold">2</div><div><span class="step-t">Ask Claude to sort it</span><span class="step-d">"Turn this into a prioritized to-do list. Put the most urgent things at the top. Label anything that can wait until next week."</span></div></div>
+        <div class="step"><div class="step-n sn-gold">3</div><div><span class="step-t">Ask for just today's list</span><span class="step-d">"From that list, what are the 3 most important things I should do today only? Nothing else."</span></div></div>
+      </div>
+      <div class="prompt p-gold" style="margin-top:16px;">
+        <span class="prompt-tag pt-gold">🌅 Perfect for Monday mornings</span>
+        <div class="prompt-copy">"Here's everything on my plate this week: [dump your list here]. Can you help me figure out what to tackle first and build a simple plan for each day? I have ADHD and get overwhelmed easily — please keep each day's list to 3 things max."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="c9">
+    <div class="card-top t-sage"></div>
+    <div class="card-trigger" onclick="toggle('c9')">
+      <div class="cicon i-sage">⏰</div>
+      <div>
+        <div class="ctitle">Time Blindness Help</div>
+        <div class="csub">Making invisible time visible</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">Time blindness is real — and exhausting. Claude can help you build <strong>realistic schedules</strong> that include buffer time, transitions, and breaks.</p>
+      <div class="prompt p-sage">
+        <span class="prompt-tag pt-sage">⏱️ Realistic daily schedule</span>
+        <div class="prompt-copy">"I need to prepare 2 lesson plans, send 4 student emails, and grade 6 written assignments today. How long will each actually take? Build me a realistic schedule with a lunch break and a mid-afternoon rest. I have ADHD so please include transition time between tasks."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="prompt p-sage">
+        <span class="prompt-tag pt-sage">🌅 Morning routine builder</span>
+        <div class="prompt-copy">"Help me build a realistic morning routine from waking up at 8am to being ready to teach at 9:30am. I have ADHD, I'm not naturally a morning person, and I tend to get distracted. Keep the steps short and achievable."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="callout co-sage">
+        You can <strong>tell Claude you have ADHD</strong> — it will adjust its suggestions to be more realistic and ADHD-friendly. No explanation needed, no judgment.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="c10">
+    <div class="card-top t-terra"></div>
+    <div class="card-trigger" onclick="toggle('c10')">
+      <div class="cicon i-terra">🌀</div>
+      <div>
+        <div class="ctitle">Task Paralysis & Overwhelm</div>
+        <div class="csub">When you can't start anything</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">Some days starting anything feels impossible. Claude is exceptionally good at helping you <strong>break things into tiny steps</strong> — small enough that the first one is obvious.</p>
+      <div class="prompt p-terra">
+        <span class="prompt-tag pt-terra">🧱 Break it into tiny steps</span>
+        <div class="prompt-copy">"I need to [describe task] but I can't seem to start. I have ADHD and I'm feeling overwhelmed. Can you break this down into the smallest possible steps — like, step 1 should take less than 2 minutes?"</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="prompt p-terra">
+        <span class="prompt-tag pt-terra">🤝 Body double mode</span>
+        <div class="prompt-copy">"I need to get [task] done in the next 30 minutes. Can you stay with me through it? Tell me what to do first, then check in with me after I do it."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+      <div class="prompt p-terra">
+        <span class="prompt-tag pt-terra">😮‍💨 The "I'm scattered" reset</span>
+        <div class="prompt-copy">"I'm scattered, stressed, and don't know what to do first. My brain feels full. Here's everything I'm juggling: [list things]. Please help me slow down and identify ONE thing to do right now."</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── PROMPT STARTERS ─── -->
+  <div class="sec-label" id="prompts">🎯 Quick-start prompt ideas</div>
+
+  <div class="card" id="c11">
+    <div class="card-top t-sky"></div>
+    <div class="card-trigger" onclick="toggle('c11')">
+      <div class="cicon i-sky">✨</div>
+      <div>
+        <div class="ctitle">30 Prompts to Try Right Now</div>
+        <div class="csub">Pick one. Just one. Start there.</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <p class="prose">These work in Claude chat without needing Cowork. Just paste any of these in and adjust the details.</p>
+
+      <div class="mini-head" style="margin-top:14px;">📚 Teaching</div>
+      <div class="tags">
+        <span class="tag tg-sage">"Make a vocabulary quiz for B1 students on the topic of travel"</span>
+        <span class="tag tg-sage">"Suggest 3 real-world speaking topics for a shy adult learner"</span>
+        <span class="tag tg-sage">"Explain the difference between present perfect and simple past in plain English"</span>
+        <span class="tag tg-sage">"Create a fill-in-the-blank exercise using common phrasal verbs"</span>
+        <span class="tag tg-sage">"Write a short reading passage about [topic] for intermediate students"</span>
+      </div>
+
+      <div class="mini-head" style="margin-top:18px;">🗂️ Organization</div>
+      <div class="tags">
+        <span class="tag tg-gold">"Turn my messy notes into a clean weekly plan"</span>
+        <span class="tag tg-gold">"Summarize this document in 5 bullet points"</span>
+        <span class="tag tg-gold">"Help me make a simple student tracker spreadsheet template"</span>
+        <span class="tag tg-gold">"Write a checklist for setting up an online ESL lesson"</span>
+        <span class="tag tg-gold">"Create a simple invoice template for private tutoring"</span>
+      </div>
+
+      <div class="mini-head" style="margin-top:18px;">🧠 ADHD-specific</div>
+      <div class="tags">
+        <span class="tag tg-terra">"Remind me of 3 things I should do before logging off today"</span>
+        <span class="tag tg-terra">"I only have 20 minutes. What's the most important task I should focus on?"</span>
+        <span class="tag tg-terra">"Break this task into steps I can do in under 5 minutes each"</span>
+        <span class="tag tg-terra">"Simplify this document — I need the key points only"</span>
+        <span class="tag tg-terra">"Write this more simply — I can't focus on long paragraphs right now"</span>
+      </div>
+
+      <div class="mini-head" style="margin-top:18px;">😊 Personal & Wellness</div>
+      <div class="tags">
+        <span class="tag tg-sky">"I'm feeling burned out. What are 5 small things I could do to recharge today?"</span>
+        <span class="tag tg-sky">"Give me a 10-minute wind-down routine for after work"</span>
+        <span class="tag tg-sky">"Help me set a gentle boundary with a student who messages outside hours"</span>
+        <span class="tag tg-sky">"I need to say no to a request. Help me write it kindly."</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="c12">
+    <div class="card-top t-gold"></div>
+    <div class="card-trigger" onclick="toggle('c12')">
+      <div class="cicon i-gold">💛</div>
+      <div>
+        <div class="ctitle">Your Permission Slip</div>
+        <div class="csub">Read this one whenever you need it</div>
+      </div>
+      <div class="carrow">+</div>
+    </div>
+    <div class="card-body">
+      <div class="callout co-gold">
+        You are allowed to use Claude <strong>imperfectly.</strong><br>
+        You're allowed to type messy sentences.<br>
+        You're allowed to ask the same thing twice.<br>
+        You're allowed to use only one feature and ignore the rest.<br><br>
+        <strong>There is no wrong way to ask for help.</strong>
+      </div>
+      <div class="items">
+        <div class="item"><span class="item-icon">✅</span><div><span class="item-title">You don't need to use Cowork to benefit from Claude</span><span class="item-desc">The chat alone is incredibly powerful. Start there.</span></div></div>
+        <div class="item"><span class="item-icon">✅</span><div><span class="item-title">You don't need to use perfect English with Claude</span><span class="item-desc">It understands you even when you're having a foggy day.</span></div></div>
+        <div class="item"><span class="item-icon">✅</span><div><span class="item-title">You can say "that's not quite right, try again"</span><span class="item-desc">Claude is happy to try differently. It doesn't take it personally.</span></div></div>
+        <div class="item"><span class="item-icon">✅</span><div><span class="item-title">You can take this as slow as you need to</span><span class="item-desc">One new thing per week is a great pace. Seriously.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="big">You've got this. 🌿</p>
+  <p>Made with care for an ESL teacher who's learning something new.<br>
+  Explore at your own pace. There's no test. There's no deadline.<br>
+  Just you, a patient AI, and a lot less stress on the horizon.</p>
+</footer>
+
+<script>
+function toggle(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('open');
+}
+
+function copyPrompt(btn) {
+  const text = btn.previousElementSibling.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

@@ -24,7 +24,7 @@
   ║  FILE                                        DISPLAY NAME   ║
   ║  ─────────────────────────────────────────   ────────────── ║
   ║  Claude_Onboarding_for_Overwhelmed_People     Your Claude & Cowork Guide
-  ║  Claude_Organization_Guide_V5                 Organizing Claude — Your Friendly Guide (V5, current)
+  ║  Claude_Organization_Guide                    Organizing Claude — Your Friendly Guide (current)
   ║  FPLE_TeachingTools_SetupGuide_R1             FPLE Teaching Tools — Setup Guide · Release 1
   ║  BridgeEnglish_Facebook_Guide                 For People Learning English — Facebook Guide (.docx)
   ║  Unified-Style-Guide-V3                       Unified Style Guide — V3
@@ -37,6 +37,9 @@
   ║  Portal-Foundation-V1-20260307_001            Claude Helper Portal — V1 Snapshot (archived)
   ║  Unified-Style-Guide-V2-Final                 Unified Style Guide — V2 (archived)
   ╠══════════════════════════════════════════════════════════════╣
+  ║  NOTE: Claude_Onboarding_for_Overwhelmed_People.html not yet
+  ║  present in directory — link is correct, file needed
+  ╠══════════════════════════════════════════════════════════════╣
   ║  DO NOT add new documents to index without explicit instruction
   ╚══════════════════════════════════════════════════════════════╝
 -->
@@ -46,7 +49,7 @@
     /* ════════════════════════════════════════════
        CLAUDE HELPER PORTAL — Light Theme (forced)
        Built on Unified Style Guide V3 tokens
-       V1-20260309.017
+       V1-20260309.018
     ════════════════════════════════════════════ */
     :root {
       --cream:#ffffff; --card:#ffffff; --card-hover:#f7fbf9;
@@ -136,8 +139,6 @@
     @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(104,168,148,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(104,168,148,0)}}
     .avail-count{font-family:var(--font-mono);font-size:.65rem;color:var(--ink-soft)}
     .avail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px}
-
-    /* Available Now cards — left colored border matching large guide cards */
     .avail-card{background:white;border:1px solid rgba(0,0,0,.06);border-left:none;border-radius:var(--radius-md);padding:14px 16px 12px 18px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:5px;position:relative;overflow:hidden;transition:transform var(--transition-quick),box-shadow var(--transition-quick);box-shadow:var(--shadow-card)}
     .avail-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;border-radius:var(--radius-md) 0 0 var(--radius-md)}
     .avail-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-raise)}
@@ -146,7 +147,6 @@
     .avail-card-gold::before{background:linear-gradient(180deg,var(--gold),#e8c85a)}
     .avail-card-amber::before{background:linear-gradient(180deg,var(--amber),var(--amber-mid))}
     .avail-card-terra::before{background:linear-gradient(180deg,var(--terra),#e8a07a)}
-
     .avail-type{font-family:var(--font-mono);font-size:.58rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em}
     .avail-title{font-family:var(--font-display);font-size:.86rem;font-weight:800;color:var(--ink);line-height:1.3;flex:1}
     .avail-arrow{font-size:.72rem;font-family:var(--font-mono);color:var(--border-solid);margin-top:6px;transition:color var(--transition-quick),transform var(--transition-quick)}
@@ -336,8 +336,8 @@
         <div class="avail-title">Your Claude &amp; Cowork Guide</div>
         <div class="avail-arrow">Open →</div>
       </a>
-      <a class="avail-card avail-card-plum" href="Claude_Organization_Guide_V5.html" target="_blank" rel="noopener noreferrer">
-        <div class="avail-type">Organization · V5 Current</div>
+      <a class="avail-card avail-card-plum" href="Claude_Organization_Guide.html" target="_blank" rel="noopener noreferrer">
+        <div class="avail-type">Organization · Current</div>
         <div class="avail-title">Organizing Claude — Your Friendly Guide</div>
         <div class="avail-arrow">Open →</div>
       </a>
@@ -391,11 +391,11 @@
         <div class="gd-stripe gd-plum"></div>
         <div class="gd-body">
           <div class="gd-top">
-            <div class="gd-meta"><span class="card-type">Guide 02</span><div class="gd-badges"><span class="pill p-live">● Live</span><span class="pill p-plum">V5 · Latest</span><span class="pill p-muted">Organization</span><span class="pill p-muted">Workflow</span></div></div>
-            <code class="gd-filename">Claude_Organization_Guide_V5.html</code>
+            <div class="gd-meta"><span class="card-type">Guide 02</span><div class="gd-badges"><span class="pill p-live">● Live</span><span class="pill p-plum">Current</span><span class="pill p-muted">Organization</span><span class="pill p-muted">Workflow</span></div></div>
+            <code class="gd-filename">Claude_Organization_Guide.html</code>
           </div>
           <h3 class="gd-title">Organizing Claude — Your Friendly Guide</h3>
-          <p class="gd-desc">For active Claude users juggling multiple hobby and work projects. Covers the full system — from structuring chats to snapshotting designs. V5 is the current canonical version.</p>
+          <p class="gd-desc">For active Claude users juggling multiple hobby and work projects. Covers the full system — from structuring chats to snapshotting designs.</p>
           <div class="gd-features">
             <div class="gd-feature">How to structure chats, projects, and documents efficiently</div>
             <div class="gd-feature">Creating and using style guides across projects</div>
@@ -404,7 +404,7 @@
             <div class="gd-feature">Google Drive upload walkthrough — Mac &amp; Windows specific</div>
             <div class="gd-feature">Collapsible sections throughout; V1 &amp; V2 archived</div>
           </div>
-          <div class="gd-footer"><span class="gd-design">Sage + Playfair Display · Accordion layout · V5 current</span><a class="gd-cta" href="Claude_Organization_Guide_V5.html" target="_blank" rel="noopener noreferrer">Open Guide →</a></div>
+          <div class="gd-footer"><span class="gd-design">Sage + Playfair Display · Accordion layout · Current</span><a class="gd-cta" href="Claude_Organization_Guide.html" target="_blank" rel="noopener noreferrer">Open Guide →</a></div>
         </div>
       </div>
 
@@ -529,7 +529,7 @@
       <div class="guide-detail-card"><div class="gd-stripe" style="background:var(--ink-soft)"></div><div class="gd-body"><div class="gd-top"><div class="gd-meta"><span class="card-type">Portal · Previous</span><div class="gd-badges"><span class="pill p-muted">Archived</span><span class="pill p-muted">V1-20260307</span></div></div><code class="gd-filename">Portal-Foundation.html</code></div><h3 class="gd-title">Claude Helper Portal — Foundation</h3><p class="gd-desc">Pre-rename portal build. Superseded by index.html.</p><div class="gd-footer"><span class="gd-design">Warm gradient hero · Unified Style V2</span><a class="gd-cta" href="Portal-Foundation.html" target="_blank" rel="noopener noreferrer" style="background:var(--ink-soft)">Open →</a></div></div></div>
       <div class="guide-detail-card"><div class="gd-stripe" style="background:var(--ink-soft)"></div><div class="gd-body"><div class="gd-top"><div class="gd-meta"><span class="card-type">Portal · Snapshot</span><div class="gd-badges"><span class="pill p-muted">Archived</span><span class="pill p-muted">001</span></div></div><code class="gd-filename">Portal-Foundation-V1-20260307_001.html</code></div><h3 class="gd-title">Claude Helper Portal — V1 Snapshot</h3><p class="gd-desc">First versioned snapshot. Retained as rollback point.</p><div class="gd-footer"><span class="gd-design">First versioned build</span><a class="gd-cta" href="Portal-Foundation-V1-20260307_001.html" target="_blank" rel="noopener noreferrer" style="background:var(--ink-soft)">Open →</a></div></div></div>
       <div class="guide-detail-card"><div class="gd-stripe" style="background:var(--ink-soft)"></div><div class="gd-body"><div class="gd-top"><div class="gd-meta"><span class="card-type">Design System · Previous</span><div class="gd-badges"><span class="pill p-muted">Archived</span><span class="pill p-muted">V2 Final</span></div></div><code class="gd-filename">Unified-Style-Guide-V2-Final.html</code></div><h3 class="gd-title">Unified Style Guide — V2</h3><p class="gd-desc">Previous design system. Superseded by V3.</p><div class="gd-footer"><span class="gd-design">13 tokens · V2 Final</span><a class="gd-cta" href="Unified-Style-Guide-V2-Final.html" target="_blank" rel="noopener noreferrer" style="background:var(--ink-soft)">Open →</a></div></div></div>
-      <div class="guide-detail-card"><div class="gd-stripe" style="background:var(--ink-soft)"></div><div class="gd-body"><div class="gd-top"><div class="gd-meta"><span class="card-type">Guide · Previous</span><div class="gd-badges"><span class="pill p-muted">Archived</span><span class="pill p-muted">Release V2</span></div></div><code class="gd-filename">Organizing_Claude_Guide_Release_V2.html</code></div><h3 class="gd-title">Organizing Claude — Release V2</h3><p class="gd-desc">Second release. Superseded by V5 (current).</p><div class="gd-footer"><span class="gd-design">Release V2 · Superseded by V5</span><a class="gd-cta" href="Organizing_Claude_Guide_Release_V2.html" target="_blank" rel="noopener noreferrer" style="background:var(--ink-soft)">Open →</a></div></div></div>
+      <div class="guide-detail-card"><div class="gd-stripe" style="background:var(--ink-soft)"></div><div class="gd-body"><div class="gd-top"><div class="gd-meta"><span class="card-type">Guide · Previous</span><div class="gd-badges"><span class="pill p-muted">Archived</span><span class="pill p-muted">Release V2</span></div></div><code class="gd-filename">Organizing_Claude_Guide_Release_V2.html</code></div><h3 class="gd-title">Organizing Claude — Release V2</h3><p class="gd-desc">Second release. Superseded by current version.</p><div class="gd-footer"><span class="gd-design">Release V2 · Superseded by current</span><a class="gd-cta" href="Organizing_Claude_Guide_Release_V2.html" target="_blank" rel="noopener noreferrer" style="background:var(--ink-soft)">Open →</a></div></div></div>
     </div>
   </section>
 
@@ -539,7 +539,7 @@
   <div class="footer-inner">
     <div class="footer-left">
       <h4>Claude Helper Portal</h4>
-      <p>Internal documentation &nbsp;·&nbsp; 4 published guides &nbsp;·&nbsp; Updated March 2026 &nbsp;·&nbsp; V1-20260309.017</p>
+      <p>Internal documentation &nbsp;·&nbsp; 4 published guides &nbsp;·&nbsp; Updated March 2026 &nbsp;·&nbsp; V1-20260309.018</p>
     </div>
     <div class="footer-links">
       <a href="#guides">Guides</a>
