@@ -1,379 +1,1101 @@
 <!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  CLAUDE HELPER PORTAL                                        ║
+  ║  Version : V1-20260310_027                                   ║
+  ║  Updated : 2026-03-10                                        ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  FILE REGISTRY                                               ║
+  ║  01  Claude_Onboarding_for_Overwhelmed_People.html  ● Live  ║
+  ║  02  Claude_Organization_Guide.html                 ● Live  ║
+  ║  03  TokenEfficiency.html                           ● Live  ║
+  ║  04  FPLE_TeachingTools_SetupGuide_R1.html          ● Live  ║
+  ║  05  BridgeEnglish_Facebook_Guide.docx              ● Live  ║
+  ║  Ref  Unified-Style-Guide-V3.html                   ● Live  ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  SECTIONS                                                    ║
+  ║  01  Guides      — 5 published detail cards                  ║
+  ║  Ref Design Ref  — 1 card (Unified Style Guide V3)           ║
+  ║  02  Prompting   — 6 stub cards (.is-soon)                   ║
+  ║  03  Tasks       — 4 stub cards (.is-soon)                   ║
+  ║  04  Quality     — 2 stub cards (.is-soon)                   ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  CHANGES IN _027                                             ║
+  ║  · Guide 01 display title → "Introduction to Claude         ║
+  ║    and CoWork" (href unchanged)                              ║
+  ║  · Nav brand now two-line: title + workspace subtitle        ║
+  ║  · header-eyebrow removed (moved to nav)                     ║
+  ║  · h1 <br> tags removed — flows naturally on desktop         ║
+  ║  · Removed "4 Sections" + "6 Core Techniques" stats          ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  DEPLOY PATH                                                 ║
+  ║  /Users/davenichols/AI/Claude/Instructions/index.html       ║
+  ║  → Netlify (push pending)                                    ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="only light" />
   <title>Claude Helper Portal</title>
-  <meta name="theme-color" content="#68a894" />
+
+  <!-- PWA / mobile-app meta -->
+  <meta name="theme-color" content="#fffdf9" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Claude Portal" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="application-name" content="Claude Helper Portal" />
-  <meta name="description" content="Personal AI documentation and guide library — Dave Nichols" />
-  <link rel="manifest" id="pwa-manifest" />
-  <meta property="og:title" content="Claude Helper Portal" />
-  <meta property="og:description" content="Personal AI documentation and guide library" />
-  <meta property="og:type" content="website" />
 
-<!--
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  DOCUMENT REGISTRY — update display names here as needed    ║
-  ║  index.html must be re-saved whenever any file is touched   ║
-  ╠══════════════════════════════════════════════════════════════╣
-  ║  FILE                                        DISPLAY NAME   ║
-  ║  ─────────────────────────────────────────   ────────────── ║
-  ║  Claude_Onboarding_for_Overwhelmed_People     Your Claude & Cowork Guide
-  ║  Claude_Organization_Guide                    Organizing Claude — Your Friendly Guide (current)
-  ║  FPLE_TeachingTools_SetupGuide_R1             FPLE Teaching Tools — Setup Guide · Release 1
-  ║  BridgeEnglish_Facebook_Guide                 For People Learning English — Facebook Guide (.docx)
-  ║  Unified-Style-Guide-V3                       Unified Style Guide — V3
-  ║  Claude_prompting_guide                       Claude Prompting Guide
-  ╠══════════════════════════════════════════════════════════════╣
-  ║  ARCHIVE                                                     ║
-  ║  Organizing_Claude_Guide_Release_V1           Organizing Claude — Release V1 (archived)
-  ║  Organizing_Claude_Guide_Release_V2           Organizing Claude — Release V2 (archived)
-  ║  Portal-Foundation                            Claude Helper Portal — Foundation (archived)
-  ║  Portal-Foundation-V1-20260307_001            Claude Helper Portal — V1 Snapshot (archived)
-  ║  Unified-Style-Guide-V2-Final                 Unified Style Guide — V2 (archived)
-  ╠══════════════════════════════════════════════════════════════╣
-  ║  NOTE: Claude_Onboarding_for_Overwhelmed_People.html not yet
-  ║  present in directory — link is correct, file needed
-  ╠══════════════════════════════════════════════════════════════╣
-  ║  DO NOT add new documents to index without explicit instruction
-  ╚══════════════════════════════════════════════════════════════╝
--->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
 
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
   <style>
-    /* ════════════════════════════════════════════
-       CLAUDE HELPER PORTAL — Light Theme (forced)
-       Built on Unified Style Guide V3 tokens
-       V1-20260309.018
-    ════════════════════════════════════════════ */
+    /* ════════════════════════════════════════
+       CLAUDE HELPER PORTAL — Unified Style Guide V3
+       V1-20260310_027
+    ════════════════════════════════════════ */
+
+    :root { color-scheme: only light; }
+
     :root {
-      --cream:#ffffff; --card:#ffffff; --card-hover:#f7fbf9;
-      --border:rgba(0,0,0,.06); --border-solid:#e4eae8;
-      --ink:#1a2b26; --ink-mid:#456058; --ink-soft:#7a9890;
-      --sage:#68a894; --sage-dark:#3d7a68; --sage-light:#b0d8cc; --sage-pale:#f0f9f6;
-      --terra:#d4845e; --terra-dark:#a05838; --terra-pale:#fef5f0;
-      --gold:#cfa030; --gold-pale:#fdfaee;
-      --amber:#c49030; --amber-dark:#8a6818; --amber-mid:#ecd8a0; --amber-pale:#fdfaee;
-      --plum:#7050a0; --plum-light:#c0a8e8; --plum-pale:#f8f4ff;
-      --state-success:#3d8a62; --state-success-pale:#edf7f1;
-      --state-error:#b84040; --state-error-pale:#fdecea;
-      --state-disabled-fg:#a8b8b4; --state-disabled-bg:#f0f4f2;
-      --focus-ring:0 0 0 3px rgba(104,168,148,.3);
-      --border-focus:rgba(104,168,148,.5);
-      --font-display:'Nunito','Helvetica Rounded',sans-serif;
-      --font-body:'DM Sans',system-ui,sans-serif;
-      --font-mono:'DM Mono','Courier New',monospace;
-      --space-2xs:4px; --space-xs:8px; --space-sm:12px; --space-md:16px;
-      --space-lg:24px; --space-xl:32px; --space-2xl:48px; --space-3xl:64px; --space-4xl:96px;
-      --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-pill:100px;
-      --shadow-card:0 1px 3px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.03);
-      --shadow-raise:0 4px 18px rgba(0,0,0,.09),0 1px 4px rgba(0,0,0,.04);
-      --shadow-nav:0 1px 0 rgba(0,0,0,.06),0 2px 12px rgba(0,0,0,.04);
-      --transition-quick:150ms ease; --transition-base:250ms ease;
-      --transition-slow:400ms ease; --transition-reveal:350ms cubic-bezier(.16,1,.3,1);
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth;color-scheme:only light;background:#ffffff}
-    body{background:#ffffff;color:#1a2b26;font-family:var(--font-body);font-size:15px;line-height:1.75;min-height:100vh}
+      --cream:        #fdf8f2;
+      --card:         #fffdf9;
+      --card-hover:   #faf5ed;
+      --border:       rgba(0,0,0,.08);
+      --border-solid: #e0d8cc;
 
-    /* ── NAV ── */
-    nav{position:sticky;top:0;z-index:200;background:#ffffff;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:var(--shadow-nav)}
-    .nav-inner{max-width:1160px;margin:0 auto;padding:0 var(--space-xl);display:flex;align-items:center;justify-content:space-between;height:68px;gap:20px}
-    .nav-brand{display:flex;align-items:center;gap:11px;flex-shrink:0;text-decoration:none;transition:opacity var(--transition-quick)}
-    .nav-brand:hover{opacity:.8}
-    .nav-logo-dot{width:13px;height:13px;background:var(--sage);border-radius:50%;flex-shrink:0;box-shadow:0 0 0 3px rgba(104,168,148,.2);transition:box-shadow var(--transition-base)}
-    .nav-brand:hover .nav-logo-dot{box-shadow:0 0 0 5px rgba(104,168,148,.25)}
-    .nav-brand-text{display:flex;flex-direction:column;gap:2px}
-    .nav-brand-name{font-family:var(--font-display);font-size:1.05rem;font-weight:900;color:var(--ink);letter-spacing:-.015em;line-height:1}
-    .nav-brand-sub{font-family:var(--font-mono);font-size:.6rem;font-weight:400;color:var(--ink-soft);letter-spacing:.07em;text-transform:uppercase;line-height:1}
-    .nav-links{display:flex;gap:2px;align-items:center}
-    .nav-links a{font-family:var(--font-display);font-size:.9rem;font-weight:700;color:var(--ink-mid);text-decoration:none;padding:8px 16px;border-radius:var(--radius-pill);border:1.5px solid transparent;white-space:nowrap;transition:all var(--transition-quick);letter-spacing:.01em}
-    .nav-link-guides:hover{background:var(--sage-pale);color:var(--sage-dark);border-color:rgba(104,168,148,.3)}
-    .nav-link-design:hover{background:var(--terra-pale);color:var(--terra-dark);border-color:rgba(212,132,94,.3)}
-    .nav-link-prompt:hover{background:var(--plum-pale);color:var(--plum);border-color:rgba(112,80,160,.25)}
-    .nav-link-tasks:hover{background:var(--gold-pale);color:#7a5c10;border-color:rgba(207,160,48,.3)}
-    .nav-link-trouble:hover{background:var(--terra-pale);color:var(--terra-dark);border-color:rgba(212,132,94,.25)}
-    .nav-link-archive:hover{background:#f2f4f3;color:var(--ink-mid);border-color:rgba(0,0,0,.12)}
-    .nav-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:10px;background:none;border:1.5px solid var(--border-solid);cursor:pointer;border-radius:var(--radius-md);flex-shrink:0;transition:background var(--transition-quick),border-color var(--transition-quick)}
-    .nav-hamburger:hover{background:var(--sage-pale);border-color:rgba(104,168,148,.3)}
-    .nav-hamburger span{display:block;height:2px;width:20px;background:var(--ink-mid);border-radius:2px;transition:transform var(--transition-base),opacity var(--transition-quick)}
-    nav.nav-open .nav-hamburger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-    nav.nav-open .nav-hamburger span:nth-child(2){opacity:0;transform:scaleX(0)}
-    nav.nav-open .nav-hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-    .nav-drawer{display:none;position:absolute;top:100%;left:0;right:0;background:#ffffff;border-top:1px solid var(--border-solid);box-shadow:0 12px 32px rgba(0,0,0,.10);padding:8px 16px 16px;flex-direction:column;gap:2px}
-    nav.nav-open .nav-drawer{display:flex}
-    .nav-drawer-label{font-family:var(--font-mono);font-size:.62rem;font-weight:400;color:var(--ink-soft);letter-spacing:.1em;text-transform:uppercase;padding:10px 12px 6px}
-    .nav-drawer a{font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--ink-mid);text-decoration:none;padding:0 12px;min-height:52px;display:flex;align-items:center;border-radius:var(--radius-md);border-left:3px solid transparent;transition:background var(--transition-quick),color var(--transition-quick),border-color var(--transition-quick)}
-    .nav-drawer .nd-guides:hover,.nav-drawer .nd-guides:active{background:var(--sage-pale);color:var(--sage-dark);border-left-color:var(--sage)}
-    .nav-drawer .nd-design:hover,.nav-drawer .nd-design:active{background:var(--terra-pale);color:var(--terra-dark);border-left-color:var(--terra)}
-    .nav-drawer .nd-prompt:hover,.nav-drawer .nd-prompt:active{background:var(--plum-pale);color:var(--plum);border-left-color:var(--plum)}
-    .nav-drawer .nd-tasks:hover,.nav-drawer .nd-tasks:active{background:var(--gold-pale);color:#7a5c10;border-left-color:var(--gold)}
-    .nav-drawer .nd-trouble:hover,.nav-drawer .nd-trouble:active{background:var(--terra-pale);color:var(--terra-dark);border-left-color:var(--terra)}
-    .nav-drawer .nd-archive:hover,.nav-drawer .nd-archive:active{background:#f4f6f5;color:var(--ink);border-left-color:var(--ink-soft)}
+      --ink:          #2d2d2d;
+      --ink-mid:      #5a5a5a;
+      --ink-soft:     #6b6b6b;
 
-    /* HEADER */
-    header{background:linear-gradient(135deg,#f0faf7 0%,#fdfcf5 55%,#fef6f1 100%);border-bottom:1px solid var(--border-solid);position:relative;overflow:hidden}
-    header::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(104,168,148,.10) 0%,transparent 65%);pointer-events:none}
-    header::after{content:'';position:absolute;bottom:-40px;left:15%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(207,160,48,.07) 0%,transparent 65%);pointer-events:none}
-    .header-inner{max-width:1060px;margin:0 auto;padding:var(--space-2xl) var(--space-xl) 0;display:grid;grid-template-columns:1fr 280px;gap:var(--space-3xl);align-items:end;position:relative;z-index:1}
-    .header-left{padding-bottom:var(--space-2xl)}
-    h1{font-family:var(--font-display);font-size:clamp(2.2rem,5vw,3.4rem);font-weight:900;line-height:1.08;color:var(--ink);letter-spacing:-.025em;margin-bottom:12px}
-    h1 em{font-style:normal;color:var(--sage-dark)}
-    .header-tagline{font-family:var(--font-body);font-size:.9rem;font-weight:300;color:var(--ink-mid);line-height:1.6;max-width:420px}
-    .header-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-solid);border:1px solid var(--border-solid);border-radius:var(--radius-lg) var(--radius-lg) 0 0;overflow:hidden;align-self:end}
-    .stat-item{background:white;padding:20px 22px}
-    .stat-num{font-family:var(--font-display);font-size:1.6rem;font-weight:900;color:var(--sage-dark);line-height:1}
-    .stat-label{font-family:var(--font-mono);font-size:.62rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em;margin-top:5px}
+      --sage:         #5e9180;
+      --sage-dark:    #3d6b5a;
+      --sage-light:   #a8ccbf;
+      --sage-pale:    #eaf3f0;
 
-    /* AVAILABLE NOW */
-    .avail-strip{background:linear-gradient(135deg,var(--sage-pale) 0%,#f8fffe 100%);border:1px solid rgba(104,168,148,.2);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-xl) var(--space-xl);margin-bottom:var(--space-2xl);position:relative;overflow:hidden}
-    .avail-strip::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sage) 0%,var(--gold) 30%,var(--terra) 60%,var(--plum) 100%);border-radius:var(--radius-lg) var(--radius-lg) 0 0}
-    .avail-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-md)}
-    .avail-eyebrow{font-family:var(--font-display);font-size:.78rem;font-weight:900;color:var(--sage-dark);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:9px}
-    .avail-pulse{width:9px;height:9px;background:var(--sage);border-radius:50%;animation:pulse 2.4s ease-in-out infinite}
-    @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(104,168,148,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(104,168,148,0)}}
-    .avail-count{font-family:var(--font-mono);font-size:.65rem;color:var(--ink-soft)}
-    .avail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px}
-    .avail-card{background:white;border:1px solid rgba(0,0,0,.06);border-left:none;border-radius:var(--radius-md);padding:14px 16px 12px 18px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:5px;position:relative;overflow:hidden;transition:transform var(--transition-quick),box-shadow var(--transition-quick);box-shadow:var(--shadow-card)}
-    .avail-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;border-radius:var(--radius-md) 0 0 var(--radius-md)}
-    .avail-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-raise)}
-    .avail-card-sage::before{background:linear-gradient(180deg,var(--sage-dark),var(--sage-light))}
-    .avail-card-plum::before{background:linear-gradient(180deg,var(--plum),var(--plum-light))}
-    .avail-card-gold::before{background:linear-gradient(180deg,var(--gold),#e8c85a)}
-    .avail-card-amber::before{background:linear-gradient(180deg,var(--amber),var(--amber-mid))}
-    .avail-card-terra::before{background:linear-gradient(180deg,var(--terra),#e8a07a)}
-    .avail-type{font-family:var(--font-mono);font-size:.58rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em}
-    .avail-title{font-family:var(--font-display);font-size:.86rem;font-weight:800;color:var(--ink);line-height:1.3;flex:1}
-    .avail-arrow{font-size:.72rem;font-family:var(--font-mono);color:var(--border-solid);margin-top:6px;transition:color var(--transition-quick),transform var(--transition-quick)}
-    .avail-card:hover .avail-arrow{color:var(--sage);transform:translateX(3px)}
+      --terra:        #c8714a;
+      --terra-dark:   #9e4f2d;
+      --terra-pale:   #fdf0e8;
 
-    /* MAIN */
-    main{max-width:1060px;margin:0 auto;padding:var(--space-3xl) var(--space-xl) var(--space-3xl)}
-    section{margin-bottom:var(--space-3xl)}
-    .section-head{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;margin-bottom:var(--space-lg)}
-    .section-num-block{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.16em;color:var(--terra);text-transform:uppercase;padding-top:5px;text-align:right}
-    .section-head h2{font-family:var(--font-display);font-size:1.35rem;font-weight:900;color:var(--ink);line-height:1.2;border-bottom:1px solid var(--border);padding-bottom:12px}
-    .section-head h2 small{display:block;font-family:var(--font-body);font-size:.8rem;font-weight:400;color:var(--ink-soft);margin-top:4px}
-    .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-    .cards-grid-2{grid-template-columns:repeat(auto-fill,minmax(380px,1fr))}
-    .doc-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:22px 20px 18px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;box-shadow:var(--shadow-card);transition:box-shadow var(--transition-base),transform var(--transition-quick)}
-    .doc-card:hover{box-shadow:var(--shadow-raise);transform:translateY(-2px)}
-    .doc-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius-md) var(--radius-md) 0 0}
-    .c-rust::after{background:linear-gradient(90deg,var(--terra),#e8a07a)} .c-pine::after{background:linear-gradient(90deg,var(--sage-dark),var(--sage-light))}
-    .c-plum::after{background:linear-gradient(90deg,var(--plum),var(--plum-light))} .c-ochre::after{background:linear-gradient(90deg,var(--gold),#e8c85a)}
-    .card-type{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft)}
-    .doc-card h3{font-family:var(--font-display);font-size:1rem;font-weight:800;line-height:1.3;color:var(--ink)}
-    .doc-card p{font-size:.82rem;color:var(--ink-soft);line-height:1.6;flex:1}
-    .card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-top:10px;border-top:1px solid var(--border)}
-    .pill{font-family:var(--font-display);font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:var(--radius-pill);letter-spacing:.04em}
-    .p-rust{background:var(--terra-pale);color:var(--terra-dark)} .p-pine{background:var(--sage-pale);color:var(--sage-dark)}
-    .p-plum{background:var(--plum-pale);color:var(--plum)} .p-ochre{background:var(--gold-pale);color:#8a6010}
-    .p-amber{background:var(--amber-pale);color:var(--amber-dark)} .p-muted{background:#f4f6f5;color:var(--ink-soft);border:1px solid var(--border)}
-    .p-live{background:var(--state-success-pale);color:var(--state-success);font-weight:700} .p-soon{background:#f4f6f5;color:var(--ink-soft);border:1px solid var(--border)}
-    .doc-card.is-soon,.task-card.is-soon{opacity:.45;cursor:default;pointer-events:none}
-    .doc-card.is-soon .card-arrow,.task-card.is-soon .task-arrow{display:none}
-    .card-arrow{font-size:.78rem;color:var(--border-solid);transition:color var(--transition-base),transform var(--transition-quick)}
-    .doc-card:hover .card-arrow{color:var(--terra);transform:translateX(4px)}
-    .tasks-list{display:flex;flex-direction:column;gap:8px}
-    .task-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:18px 22px;text-decoration:none;color:var(--ink);display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:16px;box-shadow:var(--shadow-card);transition:box-shadow var(--transition-base),transform var(--transition-quick)}
-    .task-card:hover{box-shadow:var(--shadow-raise);transform:translateY(-2px)}
-    .task-icon{width:44px;height:44px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
-    .ti-rust{background:var(--terra-pale)} .ti-pine{background:var(--sage-pale)} .ti-plum{background:var(--plum-pale)} .ti-ochre{background:var(--gold-pale)}
-    .task-text h3{font-family:var(--font-display);font-size:.95rem;font-weight:700;margin-bottom:2px;color:var(--ink)}
-    .task-text p{font-size:.8rem;color:var(--ink-soft);line-height:1.5}
-    .task-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
-    .task-arrow{font-size:.75rem;color:var(--border-solid);transition:color var(--transition-base),transform var(--transition-quick)}
-    .task-card:hover .task-arrow{color:var(--terra);transform:translateX(3px)}
-    .placeholder-note{background:#f8faf9;border:1.5px dashed var(--border-solid);border-radius:var(--radius-md);padding:12px 16px;font-size:.8rem;color:var(--ink-soft);margin-top:10px;display:flex;align-items:center;gap:10px}
-    .guide-detail-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;display:grid;grid-template-columns:4px 1fr;box-shadow:var(--shadow-card);transition:box-shadow var(--transition-base)}
-    .guide-detail-card:hover{box-shadow:var(--shadow-raise)}
-    .gd-pine{background:linear-gradient(180deg,var(--sage-dark),var(--sage-light))} .gd-plum{background:linear-gradient(180deg,var(--plum),var(--plum-light))}
-    .gd-terra{background:linear-gradient(180deg,var(--terra),#e8a07a)} .gd-ochre{background:linear-gradient(180deg,var(--gold),#e0c070)}
-    .gd-amber{background:linear-gradient(180deg,var(--amber),var(--amber-mid))}
-    .gd-body{padding:22px 24px 20px}
-    .gd-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:8px;flex-wrap:wrap}
-    .gd-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap} .gd-badges{display:flex;gap:5px;flex-wrap:wrap}
-    .gd-filename{font-family:var(--font-mono);font-size:.63rem;color:var(--ink-soft);background:#f4f7f6;padding:3px 9px;border-radius:var(--radius-sm);border:1px solid var(--border);white-space:nowrap;flex-shrink:0}
-    .gd-title{font-family:var(--font-display);font-size:1.1rem;font-weight:800;color:var(--ink);margin-bottom:6px;line-height:1.25}
-    .gd-desc{font-size:.84rem;color:var(--ink-mid);line-height:1.65;margin-bottom:14px;max-width:680px}
-    .gd-features{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:5px 18px;margin-bottom:14px}
-    .gd-feature{font-size:.79rem;color:var(--ink-mid);padding-left:13px;position:relative;line-height:1.5}
-    .gd-feature::before{content:'–';position:absolute;left:0;color:var(--sage-light)}
-    .gd-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-top:12px;border-top:1px solid var(--border)}
-    .gd-design{font-family:var(--font-mono);font-size:.62rem;color:var(--ink-soft);letter-spacing:.04em}
-    .gd-cta{display:inline-flex;align-items:center;gap:6px;background:var(--sage);color:#fff;font-family:var(--font-display);font-size:.78rem;font-weight:700;padding:8px 18px;border-radius:var(--radius-pill);text-decoration:none;transition:filter var(--transition-base),transform var(--transition-quick),box-shadow var(--transition-base)}
-    .gd-cta:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:var(--shadow-raise)}
-    #archive .guide-detail-card{opacity:.68;filter:grayscale(.4);transition:opacity var(--transition-base),filter var(--transition-base)}
-    #archive .guide-detail-card:hover{opacity:1;filter:grayscale(0)}
-    #archive .section-num-block{color:var(--ink-soft)}
+      --gold:         #c49520;
+      --gold-pale:    #fdf5dc;
 
-    /* FOOTER */
-    footer{background:var(--ink);padding:0 var(--space-xl)}
-    footer::before{content:'';display:block;height:3px;background:linear-gradient(90deg,var(--terra),var(--gold),var(--sage-light),var(--plum-light))}
-    .footer-inner{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:24px 0;gap:28px}
-    .footer-left h4{font-family:var(--font-display);font-size:.9rem;font-weight:800;color:rgba(255,255,255,.4);margin-bottom:3px}
-    .footer-left p{font-family:var(--font-mono);font-size:.65rem;color:rgba(255,255,255,.2);letter-spacing:.07em}
-    .footer-links{display:flex;gap:20px}
-    .footer-links a{font-family:var(--font-mono);font-size:.65rem;color:rgba(255,255,255,.28);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color var(--transition-base)}
-    .footer-links a:hover{color:var(--sage-light)}
+      --amber:        #d4820a;
+      --amber-pale:   #fef3e2;
 
-    /* ANIMATIONS */
-    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-    .avail-strip{animation:fadeUp var(--transition-slow) .05s ease both}
-    section:nth-child(1){animation:fadeUp var(--transition-slow) .10s ease both}
-    section:nth-child(2){animation:fadeUp var(--transition-slow) .16s ease both}
-    section:nth-child(3){animation:fadeUp var(--transition-slow) .22s ease both}
-    section:nth-child(4){animation:fadeUp var(--transition-slow) .28s ease both}
+      --plum:         #5c3a82;
+      --plum-light:   #b898e0;
+      --plum-pale:    #f3eefb;
 
-    /* FORCE LIGHT */
-    @media(prefers-color-scheme:dark){
-      html,body{background:#ffffff!important;color:#1a2b26!important}
-      :root{
-        --cream:#ffffff!important; --card:#ffffff!important; --card-hover:#f7fbf9!important;
-        --border:rgba(0,0,0,.06)!important; --border-solid:#e4eae8!important;
-        --ink:#1a2b26!important; --ink-mid:#456058!important; --ink-soft:#7a9890!important;
-        --sage-pale:#f0f9f6!important; --terra-pale:#fef5f0!important;
-        --gold-pale:#fdfaee!important; --amber-pale:#fdfaee!important; --plum-pale:#f8f4ff!important;
-        --state-success-pale:#edf7f1!important;
-        --shadow-card:0 1px 3px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.03)!important;
-        --shadow-raise:0 4px 18px rgba(0,0,0,.09),0 1px 4px rgba(0,0,0,.04)!important;
-        --shadow-nav:0 1px 0 rgba(0,0,0,.06),0 2px 12px rgba(0,0,0,.04)!important;
-      }
-      nav{background:#ffffff!important}
-      .nav-drawer{background:#ffffff!important}
-      header{background:linear-gradient(135deg,#f0faf7 0%,#fdfcf5 55%,#fef6f1 100%)!important}
-      .stat-item{background:white!important}
-      .avail-card{background:white!important}
-      .doc-card,.task-card,.guide-detail-card{background:#ffffff!important}
-      .placeholder-note{background:#f8faf9!important}
-      .gd-filename{background:#f4f7f6!important}
+      --state-success:      #4a8f6a;
+      --state-success-pale: #edf7f1;
+
+      --font-display: 'Nunito', 'Helvetica Rounded', sans-serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+      --font-mono:    'DM Mono', 'Courier New', monospace;
+
+      --space-xs:  8px;
+      --space-sm:  12px;
+      --space-md:  16px;
+      --space-lg:  24px;
+      --space-xl:  32px;
+      --space-2xl: 48px;
+      --space-3xl: 64px;
+
+      --radius-sm:   6px;
+      --radius-md:   10px;
+      --radius-lg:   16px;
+      --radius-pill: 100px;
+
+      --shadow-card:  0 1px 6px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.04);
+      --shadow-raise: 0 4px 20px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.06);
+
+      --transition-quick: 150ms ease;
+      --transition-base:  250ms ease;
+      --transition-slow:  400ms ease;
+
+      /* Taller nav to accommodate two-line brand */
+      --nav-h: 62px;
     }
 
-    /* RESPONSIVE */
-    @media(max-width:760px){.nav-links{display:none}.nav-hamburger{display:flex}}
-    @media(max-width:860px){
-      .header-inner{grid-template-columns:1fr;padding-bottom:0}
-      .header-left{padding-bottom:0}
-      .header-stats{border-radius:0;border-left:none;border-right:none;margin:0 calc(-1 * var(--space-xl));border-top:1px solid var(--border-solid)}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--nav-h) + 16px);
     }
-    @media(max-width:700px){
-      main,footer{padding-left:var(--space-lg);padding-right:var(--space-lg)}
-      .nav-inner{padding:0 var(--space-lg)}
-      .header-inner{padding:var(--space-xl) var(--space-lg) 0}
-      .header-stats{margin:0 calc(-1 * var(--space-lg))}
-      h1{font-size:clamp(1.9rem,7vw,2.4rem)}
-      .avail-grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr))}
-      .task-card{grid-template-columns:44px 1fr}
-      .task-meta{display:none}
-      .footer-inner{flex-direction:column;align-items:flex-start}
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.75;
+      min-height: 100vh;
+      padding-top: var(--nav-h);
+    }
+
+    /* ════════════════════════════════════════
+       NAV — fixed top, two-line brand
+    ════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 300;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 0 var(--border), 0 2px 12px rgba(0,0,0,.05);
+    }
+
+    .nav-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 var(--space-3xl);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Two-line brand block */
+    .nav-home {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-decoration: none;
+      padding: 10px 0;
+      transition: opacity var(--transition-base);
+      flex-shrink: 0;
+    }
+    .nav-home:hover { opacity: .8; }
+
+    .nav-title {
+      font-family: var(--font-display);
+      font-size: .85rem;
+      font-weight: 800;
+      color: var(--sage-dark);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .nav-sub {
+      font-family: var(--font-mono);
+      font-size: .6rem;
+      font-weight: 400;
+      color: var(--ink-soft);
+      letter-spacing: .06em;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .nav-links { display: flex; }
+
+    .nav-links a {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      text-decoration: none;
+      padding: 14px 14px;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color var(--transition-base), border-color var(--transition-base);
+    }
+    .nav-links a:hover {
+      color: var(--sage);
+      border-bottom-color: var(--sage);
+    }
+
+    /* Hamburger — hidden on desktop */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px 4px;
+      margin-right: -4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--ink-mid);
+      border-radius: 2px;
+      transition: transform var(--transition-base), opacity var(--transition-base), background var(--transition-quick);
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile full-screen menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h); left: 0; right: 0; bottom: 0;
+      background: var(--card);
+      z-index: 299;
+      flex-direction: column;
+      align-items: stretch;
+      padding: var(--space-md) var(--space-lg);
+      gap: 2px;
+      border-top: 1px solid var(--border);
+    }
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      border-left: 3px solid transparent;
+      transition: background var(--transition-quick), color var(--transition-base), border-color var(--transition-quick);
+    }
+    .mobile-menu a:hover {
+      background: var(--sage-pale);
+      color: var(--sage-dark);
+      border-left-color: var(--sage);
+    }
+
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-inner { padding: 0 var(--space-lg); }
+    }
+
+    /* ════════════════════════════════════════
+       HEADER / HERO
+    ════════════════════════════════════════ */
+    header {
+      background: linear-gradient(150deg, var(--sage-pale) 0%, var(--gold-pale) 55%, var(--terra-pale) 100%);
+      padding: var(--space-3xl) var(--space-3xl) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -60px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(94,145,128,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+
+    /* h1 — no forced line breaks; flows naturally on desktop */
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--ink);
+      padding-bottom: var(--space-xl);
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--sage-dark);
+    }
+
+    .header-stats {
+      display: flex;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-item {
+      padding: 18px 28px;
+      border-right: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--sage-dark);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-top: 4px;
+    }
+
+    /* ════════════════════════════════════════
+       MAIN
+    ════════════════════════════════════════ */
+    main {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--space-3xl) var(--space-3xl);
+      position: relative; z-index: 1;
+    }
+
+    section { margin-bottom: var(--space-3xl); }
+
+    /* ── SECTION HEAD ── */
+    .section-head {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 14px;
+      align-items: start;
+      margin-bottom: var(--space-lg);
+    }
+
+    .section-num-block {
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      letter-spacing: .16em;
+      color: var(--terra);
+      text-transform: uppercase;
+      padding-top: 5px;
+      text-align: right;
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.2;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .section-head h2 small {
+      display: block;
+      font-family: var(--font-body);
+      font-size: .8rem;
+      font-weight: 400;
+      color: var(--ink-soft);
+      margin-top: 4px;
+    }
+
+    /* ════════════════════════════════════════
+       AVAILABLE NOW — mini guide cards
+    ════════════════════════════════════════ */
+    .available-now { margin-bottom: var(--space-2xl); }
+
+    .avail-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .avail-label {
+      font-family: var(--font-mono);
+      font-size: .63rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      padding-right: 14px;
+      border-right: 1px solid var(--border-solid);
+      flex-shrink: 0;
+    }
+
+    .avail-rainbow {
+      flex: 1;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg,
+        var(--terra) 0%, var(--gold) 25%, var(--sage) 50%,
+        var(--plum) 75%, var(--amber) 100%);
+      min-width: 40px;
+    }
+
+    .avail-soon { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+
+    .avail-soon-label {
+      font-family: var(--font-mono);
+      font-size: .6rem;
+      color: var(--ink-soft);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .avail-soon-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    .asp {
+      font-family: var(--font-mono);
+      font-size: .6rem;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--cream);
+      color: var(--ink-soft);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .avail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .avail-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 4px 1fr;
+      box-shadow: var(--shadow-card);
+      text-decoration: none;
+      color: var(--ink);
+      transition: box-shadow var(--transition-base), transform var(--transition-quick);
+    }
+    .avail-card:hover { box-shadow: var(--shadow-raise); transform: translateY(-2px); }
+
+    .ac-body {
+      padding: 14px 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ac-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+    .ac-eyebrow {
+      font-family: var(--font-mono);
+      font-size: .58rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .ac-num {
+      font-family: var(--font-mono);
+      font-size: .58rem;
+      color: var(--terra);
+      letter-spacing: .08em;
+      flex-shrink: 0;
+    }
+
+    .ac-title {
+      font-family: var(--font-display);
+      font-size: .9rem;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--ink);
+      flex: 1;
+    }
+
+    .ac-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 8px;
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+    }
+
+    .ac-arrow {
+      font-size: .72rem;
+      color: var(--border-solid);
+      transition: color var(--transition-base), transform var(--transition-quick);
+    }
+    .avail-card:hover .ac-arrow { color: var(--terra); transform: translateX(3px); }
+
+    /* ════════════════════════════════════════
+       STRIPE COLORS
+    ════════════════════════════════════════ */
+    .gd-pine   { background: linear-gradient(180deg, var(--sage-dark), var(--sage-light)); }
+    .gd-plum   { background: linear-gradient(180deg, var(--plum), var(--plum-light)); }
+    .gd-terra  { background: linear-gradient(180deg, var(--terra), #e8a07a); }
+    .gd-ochre  { background: linear-gradient(180deg, var(--gold), #e8c85a); }
+    .gd-amber  { background: linear-gradient(180deg, var(--amber), #f0b060); }
+
+    /* ════════════════════════════════════════
+       PILLS / BADGES
+    ════════════════════════════════════════ */
+    .pill {
+      font-family: var(--font-display);
+      font-size: .65rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      letter-spacing: .04em;
+    }
+
+    .p-rust   { background: var(--terra-pale);  color: var(--terra-dark); }
+    .p-pine   { background: var(--sage-pale);   color: var(--sage-dark); }
+    .p-plum   { background: var(--plum-pale);   color: var(--plum); }
+    .p-ochre  { background: var(--gold-pale);   color: #8a6010; }
+    .p-amber  { background: var(--amber-pale);  color: #7a4000; }
+    .p-muted  { background: var(--cream);       color: var(--ink-soft); border: 1px solid var(--border); }
+    .p-live   { background: var(--state-success-pale); color: var(--state-success); font-weight: 700; }
+    .p-soon   { background: var(--cream); color: var(--ink-soft); border: 1px solid var(--border); }
+
+    /* ════════════════════════════════════════
+       GUIDE DETAIL CARDS
+    ════════════════════════════════════════ */
+    .tasks-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .guide-detail-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 4px 1fr;
+      box-shadow: var(--shadow-card);
+      transition: box-shadow var(--transition-base);
+    }
+    .guide-detail-card:hover { box-shadow: var(--shadow-raise); }
+
+    .gd-body { padding: 22px 24px 20px; }
+
+    .gd-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .gd-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .gd-badges { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    .gd-filename {
+      font-family: var(--font-mono);
+      font-size: .63rem;
+      color: var(--ink-soft);
+      background: var(--cream);
+      padding: 3px 9px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .gd-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+
+    .gd-desc {
+      font-size: .84rem;
+      color: var(--ink-mid);
+      line-height: 1.65;
+      margin-bottom: 14px;
+      max-width: 680px;
+    }
+
+    .gd-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 5px 18px;
+      margin-bottom: 14px;
+    }
+
+    .gd-feature {
+      font-size: .79rem;
+      color: var(--ink-mid);
+      padding-left: 13px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .gd-feature::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--sage-light);
+    }
+
+    .gd-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .gd-design {
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      color: var(--ink-soft);
+      letter-spacing: .04em;
+    }
+
+    .gd-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--sage);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: .78rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      transition: filter var(--transition-base), transform var(--transition-quick), box-shadow var(--transition-base);
+    }
+    .gd-cta:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: var(--shadow-raise); }
+
+    .card-type {
+      font-family: var(--font-mono);
+      font-size: .6rem;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    /* ════════════════════════════════════════
+       STUB CARDS
+    ════════════════════════════════════════ */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .cards-grid-2 { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
+
+    .doc-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px 20px 18px;
+      text-decoration: none;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: box-shadow var(--transition-base), transform var(--transition-quick);
+    }
+
+    .doc-card:hover { box-shadow: var(--shadow-raise); transform: translateY(-2px); }
+
+    .doc-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .c-rust::after  { background: linear-gradient(90deg, var(--terra), #e8a07a); }
+    .c-pine::after  { background: linear-gradient(90deg, var(--sage-dark), var(--sage-light)); }
+    .c-plum::after  { background: linear-gradient(90deg, var(--plum), var(--plum-light)); }
+    .c-ochre::after { background: linear-gradient(90deg, var(--gold), #e8c85a); }
+
+    .doc-card h3 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+
+    .doc-card p {
+      font-size: .82rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .doc-card.is-soon,
+    .task-card.is-soon { opacity: .48; cursor: default; pointer-events: none; }
+    .doc-card.is-soon .card-arrow,
+    .task-card.is-soon .task-arrow { display: none; }
+
+    .card-arrow {
+      font-size: .78rem;
+      color: var(--border-solid);
+      transition: color var(--transition-base), transform var(--transition-quick);
+    }
+    .doc-card:hover .card-arrow { color: var(--terra); transform: translateX(4px); }
+
+    /* ════════════════════════════════════════
+       TASK LIST
+    ════════════════════════════════════════ */
+    .task-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+      text-decoration: none;
+      color: var(--ink);
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow-card);
+      transition: box-shadow var(--transition-base), transform var(--transition-quick);
+    }
+    .task-card:hover { box-shadow: var(--shadow-raise); transform: translateY(-2px); }
+
+    .task-icon {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .ti-rust  { background: var(--terra-pale); }
+    .ti-pine  { background: var(--sage-pale); }
+    .ti-plum  { background: var(--plum-pale); }
+    .ti-ochre { background: var(--gold-pale); }
+
+    .task-text h3 {
+      font-family: var(--font-display);
+      font-size: .95rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+      color: var(--ink);
+    }
+
+    .task-text p { font-size: .8rem; color: var(--ink-soft); line-height: 1.5; }
+
+    .task-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .task-arrow {
+      font-size: .75rem;
+      color: var(--border-solid);
+      transition: color var(--transition-base), transform var(--transition-quick);
+    }
+    .task-card:hover .task-arrow { color: var(--terra); transform: translateX(3px); }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    footer {
+      background: var(--ink);
+      padding: 0 var(--space-3xl);
+    }
+
+    footer::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, var(--terra), var(--gold), var(--sage-light), var(--plum-light));
+    }
+
+    .footer-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      gap: 28px;
+    }
+
+    .footer-left h4 {
+      font-family: var(--font-display);
+      font-size: .9rem;
+      font-weight: 800;
+      color: rgba(255,255,255,.45);
+      margin-bottom: 3px;
+    }
+
+    .footer-left p {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      color: rgba(255,255,255,.22);
+      letter-spacing: .07em;
+    }
+
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      color: rgba(255,255,255,.3);
+      text-decoration: none;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color var(--transition-base);
+    }
+    .footer-links a:hover { color: var(--sage-light); }
+
+    /* ════════════════════════════════════════
+       ANIMATIONS
+    ════════════════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .available-now       { animation: fadeUp var(--transition-slow) ease both; }
+    section:nth-child(1) { animation: fadeUp var(--transition-slow) .07s ease both; }
+    section:nth-child(2) { animation: fadeUp var(--transition-slow) .14s ease both; }
+    section:nth-child(3) { animation: fadeUp var(--transition-slow) .21s ease both; }
+    section:nth-child(4) { animation: fadeUp var(--transition-slow) .28s ease both; }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .avail-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .avail-grid { grid-template-columns: 1fr; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 800px) {
+      header, main, footer { padding-left: var(--space-lg); padding-right: var(--space-lg); }
+      .task-card { grid-template-columns: 42px 1fr; }
+      .task-meta { display: none; }
+      .header-stats { flex-wrap: wrap; }
+      .stat-item { padding: 14px 20px; }
+      .gd-features { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .gd-filename { display: none; }
+      .nav-sub { display: none; }
     }
   </style>
 </head>
 <body>
 
-<nav id="site-nav">
+<!-- ═══════════ NAV — fixed top, two-line brand ═══════════ -->
+<nav>
   <div class="nav-inner">
-    <a class="nav-brand" href="#">
-      <span class="nav-logo-dot"></span>
-      <span class="nav-brand-text">
-        <span class="nav-brand-name">Claude Helper Portal</span>
-        <span class="nav-brand-sub">Workspace · Docs</span>
-      </span>
+    <a class="nav-home" href="index.html">
+      <span class="nav-title">Claude Helper Portal</span>
+      <span class="nav-sub">Claude Workspace &nbsp;/&nbsp; Documentation Portal</span>
     </a>
     <div class="nav-links">
-      <a href="#guides"          class="nav-link-guides">Guides</a>
-      <a href="#style-guide"     class="nav-link-design">Design Ref</a>
-      <a href="#prompting"       class="nav-link-prompt">Prompting</a>
-      <a href="#tasks"           class="nav-link-tasks">Tasks</a>
-      <a href="#troubleshooting" class="nav-link-trouble">Quality</a>
-      <a href="#archive"         class="nav-link-archive">Archive</a>
+      <a href="#guides">Published Guides</a>
+      <a href="#style-guide">Design Reference</a>
+      <a href="#prompting">Prompting</a>
+      <a href="#tasks">Task Guides</a>
+      <a href="#troubleshooting">Troubleshooting</a>
     </div>
-    <button class="nav-hamburger" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <button class="hamburger" id="hamburger" aria-label="Open navigation menu">
       <span></span><span></span><span></span>
     </button>
   </div>
-  <div class="nav-drawer" id="nav-drawer">
-    <span class="nav-drawer-label">Navigate</span>
-    <a href="#guides"          class="nd-guides"  onclick="closeNav()">Guides</a>
-    <a href="#style-guide"     class="nd-design"  onclick="closeNav()">Design Ref</a>
-    <a href="#prompting"       class="nd-prompt"  onclick="closeNav()">Prompting</a>
-    <a href="#tasks"           class="nd-tasks"   onclick="closeNav()">Tasks</a>
-    <a href="#troubleshooting" class="nd-trouble" onclick="closeNav()">Quality</a>
-    <a href="#archive"         class="nd-archive" onclick="closeNav()">Archive</a>
-  </div>
 </nav>
 
+<!-- ═══════════ MOBILE MENU ═══════════ -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="#guides"          onclick="closeMobile()">Published Guides</a>
+  <a href="#style-guide"     onclick="closeMobile()">Design Reference</a>
+  <a href="#prompting"       onclick="closeMobile()">Prompting</a>
+  <a href="#tasks"           onclick="closeMobile()">Task Guides</a>
+  <a href="#troubleshooting" onclick="closeMobile()">Troubleshooting</a>
+</div>
+
+<!-- ═══════════ HEADER ═══════════ -->
 <header>
   <div class="header-inner">
-    <div class="header-left">
-      <h1>Helper &amp; <em>Style Guide</em> Library</h1>
-      <p class="header-tagline">Personal AI guide collection — built ADHD-friendly, designed to open one thing and close the tab.</p>
-    </div>
+    <!-- eyebrow removed — now lives in nav subtitle -->
+    <h1>Helper &amp; <em>Style Guide</em> Library</h1>
     <div class="header-stats">
-      <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Published Guides</div></div>
-      <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Sections</div></div>
-      <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Techniques</div></div>
-      <div class="stat-item"><div class="stat-num">Mar '26</div><div class="stat-label">Last Updated</div></div>
+      <div class="stat-item">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Published Guides</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">Mar '26</div>
+        <div class="stat-label">Last Updated</div>
+      </div>
     </div>
   </div>
 </header>
 
+<!-- ═══════════ MAIN ═══════════ -->
 <main>
 
-  <div class="avail-strip">
+  <!-- ═══ AVAILABLE NOW ═══ -->
+  <div class="available-now">
     <div class="avail-header">
-      <span class="avail-eyebrow"><span class="avail-pulse"></span>Available Now</span>
-      <span class="avail-count">5 guides ready to open</span>
+      <span class="avail-label">Available Now</span>
+      <div class="avail-rainbow"></div>
+      <div class="avail-soon">
+        <span class="avail-soon-label">Coming soon</span>
+        <div class="avail-soon-pills">
+          <span class="asp">Prompting</span>
+          <span class="asp">Task Guides</span>
+          <span class="asp">Quality</span>
+        </div>
+      </div>
     </div>
+
     <div class="avail-grid">
-      <a class="avail-card avail-card-sage" href="Claude_Onboarding_for_Overwhelmed_People.html" target="_blank" rel="noopener noreferrer">
-        <div class="avail-type">Onboarding · ADHD-Friendly</div>
-        <div class="avail-title">Your Claude &amp; Cowork Guide</div>
-        <div class="avail-arrow">Open →</div>
+
+      <!-- 01 Introduction to Claude and CoWork -->
+      <a class="avail-card" href="Claude_Onboarding_for_Overwhelmed_People.html" target="_blank">
+        <div class="gd-stripe gd-pine"></div>
+        <div class="ac-body">
+          <div class="ac-top">
+            <span class="ac-eyebrow">Guide</span>
+            <span class="ac-num">01 /</span>
+          </div>
+          <div class="ac-title">Introduction to Claude and CoWork</div>
+          <div class="ac-footer">
+            <span class="pill p-pine" style="font-size:.6rem;padding:2px 8px;">ADHD-Friendly</span>
+            <span class="ac-arrow">→</span>
+          </div>
+        </div>
       </a>
-      <a class="avail-card avail-card-plum" href="Claude_Organization_Guide.html" target="_blank" rel="noopener noreferrer">
-        <div class="avail-type">Organization · Current</div>
-        <div class="avail-title">Organizing Claude — Your Friendly Guide</div>
-        <div class="avail-arrow">Open →</div>
+
+      <!-- 02 Organizing Claude -->
+      <a class="avail-card" href="Claude_Organization_Guide.html" target="_blank">
+        <div class="gd-stripe gd-plum"></div>
+        <div class="ac-body">
+          <div class="ac-top">
+            <span class="ac-eyebrow">Guide</span>
+            <span class="ac-num">02 /</span>
+          </div>
+          <div class="ac-title">Organizing Claude: Chats, Projects &amp; Documents</div>
+          <div class="ac-footer">
+            <span class="pill p-plum" style="font-size:.6rem;padding:2px 8px;">Organization</span>
+            <span class="ac-arrow">→</span>
+          </div>
+        </div>
       </a>
-      <a class="avail-card avail-card-gold" href="FPLE_TeachingTools_SetupGuide_R1.html" target="_blank" rel="noopener noreferrer">
-        <div class="avail-type">Teaching · Setup Guide</div>
-        <div class="avail-title">FPLE Teaching Tools — Setup Guide</div>
-        <div class="avail-arrow">Open →</div>
+
+      <!-- 03 Prompt Efficiency -->
+      <a class="avail-card" href="TokenEfficiency.html" target="_blank">
+        <div class="gd-stripe gd-amber"></div>
+        <div class="ac-body">
+          <div class="ac-top">
+            <span class="ac-eyebrow">Guide</span>
+            <span class="ac-num">03 /</span>
+          </div>
+          <div class="ac-title">Prompt Efficiency — Quick Reference</div>
+          <div class="ac-footer">
+            <span class="pill p-amber" style="font-size:.6rem;padding:2px 8px;">Efficiency</span>
+            <span class="ac-arrow">→</span>
+          </div>
+        </div>
       </a>
-      <a class="avail-card avail-card-amber" href="BridgeEnglish_Facebook_Guide.docx" download>
-        <div class="avail-type">Social · Word Doc</div>
-        <div class="avail-title">For People Learning English — Facebook Guide</div>
-        <div class="avail-arrow">Download →</div>
+
+      <!-- 04 FPLE Teaching Tools -->
+      <a class="avail-card" href="FPLE_TeachingTools_SetupGuide_R1.html" target="_blank">
+        <div class="gd-stripe gd-ochre"></div>
+        <div class="ac-body">
+          <div class="ac-top">
+            <span class="ac-eyebrow">Guide</span>
+            <span class="ac-num">04 /</span>
+          </div>
+          <div class="ac-title">FPLE Teaching Tools — Setup Guide</div>
+          <div class="ac-footer">
+            <span class="pill p-ochre" style="font-size:.6rem;padding:2px 8px;">ESL Tools</span>
+            <span class="ac-arrow">→</span>
+          </div>
+        </div>
       </a>
-      <a class="avail-card avail-card-terra" href="Unified-Style-Guide-V3.html" target="_blank" rel="noopener noreferrer">
-        <div class="avail-type">Design System · Internal</div>
-        <div class="avail-title">Unified Style Guide — V3</div>
-        <div class="avail-arrow">Open →</div>
+
+      <!-- 05 BridgeEnglish Facebook -->
+      <a class="avail-card" href="BridgeEnglish_Facebook_Guide.docx" target="_blank">
+        <div class="gd-stripe gd-terra"></div>
+        <div class="ac-body">
+          <div class="ac-top">
+            <span class="ac-eyebrow">Guide</span>
+            <span class="ac-num">05 /</span>
+          </div>
+          <div class="ac-title">BridgeEnglish Facebook Guide</div>
+          <div class="ac-footer">
+            <span class="pill p-rust" style="font-size:.6rem;padding:2px 8px;">Social Media</span>
+            <span class="ac-arrow">→</span>
+          </div>
+        </div>
       </a>
+
+      <!-- Ref Style Guide -->
+      <a class="avail-card" href="Unified-Style-Guide-V3.html" target="_blank">
+        <div class="gd-stripe gd-terra"></div>
+        <div class="ac-body">
+          <div class="ac-top">
+            <span class="ac-eyebrow">Design Ref</span>
+            <span class="ac-num">V3 /</span>
+          </div>
+          <div class="ac-title">Unified Style Guide V3</div>
+          <div class="ac-footer">
+            <span class="pill p-rust" style="font-size:.6rem;padding:2px 8px;">Internal</span>
+            <span class="ac-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
     </div>
   </div>
 
+  <!-- ═══ 01 · PUBLISHED GUIDES ═══ -->
   <section id="guides">
     <div class="section-head">
       <div class="section-num-block">01 /</div>
-      <h2>Published Guides<small>Finished docs you can open right now — each a standalone interactive page</small></h2>
+      <h2>Published Guides
+        <small>Finished docs you can open right now — each a standalone interactive page</small>
+      </h2>
     </div>
+
     <div class="tasks-list">
 
+      <!-- GUIDE 01 -->
       <div class="guide-detail-card">
         <div class="gd-stripe gd-pine"></div>
         <div class="gd-body">
           <div class="gd-top">
-            <div class="gd-meta"><span class="card-type">Guide 01</span><div class="gd-badges"><span class="pill p-live">● Live</span><span class="pill p-pine">ADHD-Friendly</span><span class="pill p-muted">ESL</span><span class="pill p-muted">Cowork</span><span class="pill p-amber">⚠ File needed locally</span></div></div>
+            <div class="gd-meta">
+              <span class="card-type">Guide 01</span>
+              <div class="gd-badges">
+                <span class="pill p-live">● Live</span>
+                <span class="pill p-pine">ADHD-Friendly</span>
+                <span class="pill p-muted">ESL</span>
+                <span class="pill p-muted">Cowork</span>
+              </div>
+            </div>
             <code class="gd-filename">Claude_Onboarding_for_Overwhelmed_People.html</code>
           </div>
-          <h3 class="gd-title">Your Claude &amp; Cowork Guide</h3>
+          <h3 class="gd-title">Introduction to Claude and CoWork</h3>
           <p class="gd-desc">Built for an ESL instructor with moderate ADHD who works from home. Warm, zero-pressure, and designed so she can open one card today and close the tab — that's enough.</p>
           <div class="gd-features">
             <div class="gd-feature">12 expandable accordion cards — page never overwhelms</div>
@@ -383,18 +1105,30 @@
             <div class="gd-feature">30 categorized prompts with one-click copy buttons</div>
             <div class="gd-feature">Permission Slip card for hard days</div>
           </div>
-          <div class="gd-footer"><span class="gd-design">Cream &amp; sage palette · Nunito + Playfair Display · Accordion layout</span><a class="gd-cta" href="Claude_Onboarding_for_Overwhelmed_People.html" target="_blank" rel="noopener noreferrer">Open Guide →</a></div>
+          <div class="gd-footer">
+            <span class="gd-design">Cream &amp; sage palette · Nunito + Playfair Display · Accordion layout</span>
+            <a class="gd-cta" href="Claude_Onboarding_for_Overwhelmed_People.html" target="_blank">Open Guide →</a>
+          </div>
         </div>
       </div>
 
+      <!-- GUIDE 02 -->
       <div class="guide-detail-card">
         <div class="gd-stripe gd-plum"></div>
         <div class="gd-body">
           <div class="gd-top">
-            <div class="gd-meta"><span class="card-type">Guide 02</span><div class="gd-badges"><span class="pill p-live">● Live</span><span class="pill p-plum">Current</span><span class="pill p-muted">Organization</span><span class="pill p-muted">Workflow</span></div></div>
+            <div class="gd-meta">
+              <span class="card-type">Guide 02</span>
+              <div class="gd-badges">
+                <span class="pill p-live">● Live</span>
+                <span class="pill p-plum">Release V2</span>
+                <span class="pill p-muted">Organization</span>
+                <span class="pill p-muted">Workflow</span>
+              </div>
+            </div>
             <code class="gd-filename">Claude_Organization_Guide.html</code>
           </div>
-          <h3 class="gd-title">Organizing Claude — Your Friendly Guide</h3>
+          <h3 class="gd-title">Organizing Claude: Chats, Projects &amp; Documents</h3>
           <p class="gd-desc">For active Claude users juggling multiple hobby and work projects. Covers the full system — from structuring chats to snapshotting designs.</p>
           <div class="gd-features">
             <div class="gd-feature">How to structure chats, projects, and documents efficiently</div>
@@ -402,65 +1136,135 @@
             <div class="gd-feature">Snapshotting designs and templates from generated docs</div>
             <div class="gd-feature">Token efficiency section + quick-reference cheatsheet table</div>
             <div class="gd-feature">Google Drive upload walkthrough — Mac &amp; Windows specific</div>
-            <div class="gd-feature">Collapsible sections throughout; V1 &amp; V2 archived</div>
+            <div class="gd-feature">Collapsible sections throughout; V1 also available</div>
           </div>
-          <div class="gd-footer"><span class="gd-design">Sage + Playfair Display · Accordion layout · Current</span><a class="gd-cta" href="Claude_Organization_Guide.html" target="_blank" rel="noopener noreferrer">Open Guide →</a></div>
+          <div class="gd-footer">
+            <span class="gd-design">V1 critique &amp; revision cycle · Collapsible HTML · V1 archived</span>
+            <a class="gd-cta" href="Claude_Organization_Guide.html" target="_blank">Open Guide →</a>
+          </div>
         </div>
       </div>
 
-      <div class="guide-detail-card">
-        <div class="gd-stripe gd-ochre"></div>
-        <div class="gd-body">
-          <div class="gd-top">
-            <div class="gd-meta"><span class="card-type">Guide 03</span><div class="gd-badges"><span class="pill p-live">● Live</span><span class="pill p-ochre">Release 1</span><span class="pill p-muted">Teaching</span><span class="pill p-muted">Setup</span></div></div>
-            <code class="gd-filename">FPLE_TeachingTools_SetupGuide_R1.html</code>
-          </div>
-          <h3 class="gd-title">FPLE Teaching Tools — Setup Guide</h3>
-          <p class="gd-desc">Step-by-step onboarding for ESL educators setting up their full teaching stack: LearnCube virtual classroom, Acuity scheduling, Claude AI assistant, and Google Workspace — with interactive progress tracking built in.</p>
-          <div class="gd-features">
-            <div class="gd-feature">Four tools covered: LearnCube, Acuity, Claude, Google Workspace</div>
-            <div class="gd-feature">Prerequisite dependency system — cards unlock in order</div>
-            <div class="gd-feature">Per-step checkboxes with mini progress bars per section</div>
-            <div class="gd-feature">Global progress bar across all 6 setup sections</div>
-            <div class="gd-feature">30-day launch plan with week-by-week milestones</div>
-            <div class="gd-feature">Confetti celebration on full completion 🎉</div>
-          </div>
-          <div class="gd-footer"><span class="gd-design">Sage + Playfair Display · Progress system V9 · localStorage save</span><a class="gd-cta" href="FPLE_TeachingTools_SetupGuide_R1.html" target="_blank" rel="noopener noreferrer" style="background:var(--gold)">Open Guide →</a></div>
-        </div>
-      </div>
-
+      <!-- GUIDE 03 — Prompt Efficiency -->
       <div class="guide-detail-card">
         <div class="gd-stripe gd-amber"></div>
         <div class="gd-body">
           <div class="gd-top">
-            <div class="gd-meta"><span class="card-type">Guide 04</span><div class="gd-badges"><span class="pill p-live">● Live</span><span class="pill p-amber">Word Doc</span><span class="pill p-muted">Social</span><span class="pill p-muted">Facebook</span></div></div>
+            <div class="gd-meta">
+              <span class="card-type">Guide 03</span>
+              <div class="gd-badges">
+                <span class="pill p-live">● Live</span>
+                <span class="pill p-amber">Efficiency</span>
+                <span class="pill p-muted">Tokens</span>
+                <span class="pill p-muted">Cheatsheet</span>
+              </div>
+            </div>
+            <code class="gd-filename">TokenEfficiency.html</code>
+          </div>
+          <h3 class="gd-title">Prompt Efficiency — Quick Reference</h3>
+          <p class="gd-desc">A focused cheatsheet for keeping Claude sessions lean. Covers what burns tokens, how to front-load context, when to start a new chat, and the patterns that consistently waste budget.</p>
+          <div class="gd-features">
+            <div class="gd-feature">What costs tokens and what doesn't — at a glance</div>
+            <div class="gd-feature">Front-loading context the right way</div>
+            <div class="gd-feature">When to continue vs. start a fresh chat</div>
+            <div class="gd-feature">Common token-burning anti-patterns with fixes</div>
+            <div class="gd-feature">Quick-reference table format — scan in under 60 seconds</div>
+          </div>
+          <div class="gd-footer">
+            <span class="gd-design">Amber accent · Table-first layout · Printable cheatsheet format</span>
+            <a class="gd-cta" href="TokenEfficiency.html" target="_blank">Open Guide →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- GUIDE 04 — FPLE -->
+      <div class="guide-detail-card">
+        <div class="gd-stripe gd-ochre"></div>
+        <div class="gd-body">
+          <div class="gd-top">
+            <div class="gd-meta">
+              <span class="card-type">Guide 04</span>
+              <div class="gd-badges">
+                <span class="pill p-live">● Live</span>
+                <span class="pill p-ochre">ESL Tools</span>
+                <span class="pill p-muted">Setup</span>
+                <span class="pill p-muted">R1</span>
+              </div>
+            </div>
+            <code class="gd-filename">FPLE_TeachingTools_SetupGuide_R1.html</code>
+          </div>
+          <h3 class="gd-title">FPLE Teaching Tools — Setup Guide</h3>
+          <p class="gd-desc">Step-by-step onboarding guide for FPLE instructors adopting Claude and Cowork in their teaching workflow. Covers account setup, classroom integration, and day-one prompts.</p>
+          <div class="gd-features">
+            <div class="gd-feature">Account setup walkthrough for Claude and Cowork</div>
+            <div class="gd-feature">Classroom integration patterns for ESL instruction</div>
+            <div class="gd-feature">Day-one prompt templates for immediate use</div>
+            <div class="gd-feature">Designed for non-technical instructors</div>
+          </div>
+          <div class="gd-footer">
+            <span class="gd-design">Gold palette · FPLE branding · Setup-first structure</span>
+            <a class="gd-cta" href="FPLE_TeachingTools_SetupGuide_R1.html" target="_blank">Open Guide →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- GUIDE 05 — BridgeEnglish -->
+      <div class="guide-detail-card">
+        <div class="gd-stripe gd-terra"></div>
+        <div class="gd-body">
+          <div class="gd-top">
+            <div class="gd-meta">
+              <span class="card-type">Guide 05</span>
+              <div class="gd-badges">
+                <span class="pill p-live">● Live</span>
+                <span class="pill p-rust">Social Media</span>
+                <span class="pill p-muted">Facebook</span>
+                <span class="pill p-muted">BridgeEnglish</span>
+              </div>
+            </div>
             <code class="gd-filename">BridgeEnglish_Facebook_Guide.docx</code>
           </div>
-          <h3 class="gd-title">For People Learning English — Facebook Guide</h3>
-          <p class="gd-desc">Facebook marketing and community guide for For People Learning English. Word document — download to open in your preferred editor.</p>
+          <h3 class="gd-title">BridgeEnglish Facebook Guide</h3>
+          <p class="gd-desc">Content strategy and posting guide for the BridgeEnglish Facebook presence. Covers voice, post formats, scheduling cadence, and engagement prompts tailored for language learners.</p>
           <div class="gd-features">
-            <div class="gd-feature">Social media guidance for the For People Learning English brand</div>
-            <div class="gd-feature">Word .docx format — editable and printable</div>
+            <div class="gd-feature">Brand voice and tone guidelines for Facebook</div>
+            <div class="gd-feature">Post format templates: tips, polls, stories, event promos</div>
+            <div class="gd-feature">Scheduling cadence and optimal posting times</div>
+            <div class="gd-feature">Engagement prompt library for language learners</div>
           </div>
-          <div class="gd-footer"><span class="gd-design">Microsoft Word · .docx · Download to open</span><a class="gd-cta" href="BridgeEnglish_Facebook_Guide.docx" download style="background:var(--amber)">Download →</a></div>
+          <div class="gd-footer">
+            <span class="gd-design">Word document · Terra accent · BridgeEnglish brand</span>
+            <a class="gd-cta" href="BridgeEnglish_Facebook_Guide.docx" target="_blank">Open Guide →</a>
+          </div>
         </div>
       </div>
 
     </div>
-    <div class="placeholder-note"><span>📎</span><span>New guides appear here as they're built.</span></div>
   </section>
 
+  <!-- ═══ Ref · DESIGN REFERENCE ═══ -->
   <section id="style-guide">
     <div class="section-head">
       <div class="section-num-block">Ref /</div>
-      <h2>Design Reference<small>Internal docs — the design system powering all guides in this project</small></h2>
+      <h2>Design Reference
+        <small>Internal docs — the design system powering all guides in this project</small>
+      </h2>
     </div>
+
     <div class="tasks-list">
       <div class="guide-detail-card">
         <div class="gd-stripe gd-terra"></div>
         <div class="gd-body">
           <div class="gd-top">
-            <div class="gd-meta"><span class="card-type">Design System</span><div class="gd-badges"><span class="pill p-live">● Live</span><span class="pill p-rust">Internal</span><span class="pill p-muted">Reference</span><span class="pill p-muted">V3 Current</span></div></div>
+            <div class="gd-meta">
+              <span class="card-type">Design System</span>
+              <div class="gd-badges">
+                <span class="pill p-live">● Live</span>
+                <span class="pill p-rust">Internal</span>
+                <span class="pill p-muted">Reference</span>
+                <span class="pill p-muted">V3 Final</span>
+              </div>
+            </div>
             <code class="gd-filename">Unified-Style-Guide-V3.html</code>
           </div>
           <h3 class="gd-title">Unified Style Guide — V3</h3>
@@ -470,114 +1274,164 @@
             <div class="gd-feature">Typography: Nunito display, DM Sans body, DM Mono labels</div>
             <div class="gd-feature">Full spacing scale, radius scale, motion tokens</div>
             <div class="gd-feature">Component library: buttons, badges, callouts, accordions, inputs, steps</div>
-            <div class="gd-feature">Dark mode token overrides built in</div>
+            <div class="gd-feature">Light mode forced — color-scheme: only light</div>
             <div class="gd-feature">Platform usage table — when to apply each component</div>
           </div>
-          <div class="gd-footer"><span class="gd-design">Cream canvas · Sage primary · Terra action · Gold reward · Dark mode ready</span><a class="gd-cta" href="Unified-Style-Guide-V3.html" target="_blank" rel="noopener noreferrer">Open Guide →</a></div>
+          <div class="gd-footer">
+            <span class="gd-design">Cream canvas · Sage primary · Terra action · Gold reward · Amber accent</span>
+            <a class="gd-cta" href="Unified-Style-Guide-V3.html" target="_blank">Open Guide →</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ═══ 02 · PROMPTING FUNDAMENTALS ═══ -->
   <section id="prompting">
     <div class="section-head">
       <div class="section-num-block">02 /</div>
-      <h2>Prompting Fundamentals<small>Six techniques for getting better results from any conversation</small></h2>
+      <h2>Prompting Fundamentals
+        <small>Six techniques for getting better results from any conversation</small>
+      </h2>
     </div>
-    <div class="placeholder-note" style="margin-bottom:16px"><span>📄</span><span>A prompting reference doc is available now — <a href="Claude_prompting_guide.md" style="color:var(--sage-dark);font-weight:600">Claude_prompting_guide.md</a>. Full interactive guide cards coming soon.</span></div>
+
     <div class="cards-grid">
-      <a class="doc-card c-rust is-soon" href="#"><div class="card-type">Core Technique · 01</div><h3>Be Clear &amp; Specific</h3><p>Front-load context, state the task upfront, and break large requests into concrete steps.</p><div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div></a>
-      <a class="doc-card c-pine is-soon" href="#"><div class="card-type">Core Technique · 02</div><h3>Use Examples</h3><p>Show Claude a sample of the format, tone, or style you want. A single reference output is worth a paragraph of abstract instructions.</p><div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div></a>
-      <a class="doc-card c-plum is-soon" href="#"><div class="card-type">Core Technique · 03</div><h3>Encourage Step-by-Step Thinking</h3><p>Ask Claude to "think through this step-by-step." Surfaces better answers on complex problems.</p><div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div></a>
-      <a class="doc-card c-ochre is-soon" href="#"><div class="card-type">Core Technique · 04</div><h3>Iterative Refinement</h3><p>Specify exactly what to adjust — tone, length, a specific paragraph — rather than asking to "make it better."</p><div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div></a>
-      <a class="doc-card c-rust is-soon" href="#"><div class="card-type">Core Technique · 05</div><h3>Leverage Claude's Knowledge</h3><p>Provide context on how you'll use the answer. Claude's responses become far more targeted with downstream purpose.</p><div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div></a>
-      <a class="doc-card c-pine is-soon" href="#"><div class="card-type">Core Technique · 06</div><h3>Role-Playing &amp; Personas</h3><p>Assign expert roles — CFO, negotiation coach, senior marketer — to shift the depth and intelligence of responses.</p><div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div></a>
+      <a class="doc-card c-rust is-soon" href="javascript:void(0);">
+        <div class="card-type">Core Technique · 01</div>
+        <h3>Be Clear &amp; Specific</h3>
+        <p>Front-load context, state the task upfront, and break large requests into concrete steps. The single highest-leverage prompting habit.</p>
+        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+      </a>
+      <a class="doc-card c-pine is-soon" href="javascript:void(0);">
+        <div class="card-type">Core Technique · 02</div>
+        <h3>Use Examples</h3>
+        <p>Show Claude a sample of the format, tone, or style you want. A single reference output is worth a paragraph of abstract instructions.</p>
+        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+      </a>
+      <a class="doc-card c-plum is-soon" href="javascript:void(0);">
+        <div class="card-type">Core Technique · 03</div>
+        <h3>Encourage Step-by-Step Thinking</h3>
+        <p>Ask Claude to "think through this step-by-step." Surfaces better answers on complex, multi-variable problems.</p>
+        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+      </a>
+      <a class="doc-card c-ochre is-soon" href="javascript:void(0);">
+        <div class="card-type">Core Technique · 04</div>
+        <h3>Iterative Refinement</h3>
+        <p>Specify exactly what to adjust — tone, length, a specific paragraph — rather than asking Claude to generically "make it better."</p>
+        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+      </a>
+      <a class="doc-card c-rust is-soon" href="javascript:void(0);">
+        <div class="card-type">Core Technique · 05</div>
+        <h3>Leverage Claude's Knowledge</h3>
+        <p>Provide context on how you'll use the answer. Claude's responses become far more targeted when it understands the downstream purpose.</p>
+        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+      </a>
+      <a class="doc-card c-pine is-soon" href="javascript:void(0);">
+        <div class="card-type">Core Technique · 06</div>
+        <h3>Role-Playing &amp; Personas</h3>
+        <p>Assign expert roles — CFO, negotiation coach, senior marketer — to shift the depth and intelligence of responses dramatically.</p>
+        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+      </a>
     </div>
   </section>
 
+  <!-- ═══ 03 · TASK GUIDES ═══ -->
   <section id="tasks">
     <div class="section-head">
       <div class="section-num-block">03 /</div>
-      <h2>Task-Specific Guides<small>Applied prompting patterns for common work categories</small></h2>
+      <h2>Task-Specific Guides
+        <small>Applied prompting patterns for common work categories</small>
+      </h2>
     </div>
+
     <div class="tasks-list">
-      <a class="task-card is-soon" href="#"><div class="task-icon ti-rust">✍️</div><div class="task-text"><h3>Content Creation</h3><p>Specify audience, define tone, provide an output structure. Covers blog posts, product copy, presentations, and emails.</p></div><div class="task-meta"><span class="pill p-rust">Writing</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div></a>
-      <a class="task-card is-soon" href="#"><div class="task-icon ti-pine">📄</div><div class="task-text"><h3>Document Summary &amp; Q&amp;A</h3><p>Refer to docs by name, scope your summary carefully, and request citations.</p></div><div class="task-meta"><span class="pill p-pine">Research</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div></a>
-      <a class="task-card is-soon" href="#"><div class="task-icon ti-plum">📊</div><div class="task-text"><h3>Data Analysis &amp; Visualization</h3><p>Specify the output format upfront — summary, KPIs, recommendations.</p></div><div class="task-meta"><span class="pill p-plum">Analytics</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div></a>
-      <a class="task-card is-soon" href="#"><div class="task-icon ti-ochre">💡</div><div class="task-text"><h3>Brainstorming &amp; Ideation</h3><p>Give parameters — number of ideas, categories, format — so outputs are structured and immediately usable.</p></div><div class="task-meta"><span class="pill p-ochre">Strategy</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div></a>
+      <a class="task-card is-soon" href="javascript:void(0);">
+        <div class="task-icon ti-rust">✍️</div>
+        <div class="task-text"><h3>Content Creation</h3><p>Specify audience, define tone, provide an output structure. Covers blog posts, product copy, presentations, and emails.</p></div>
+        <div class="task-meta"><span class="pill p-rust">Writing</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div>
+      </a>
+      <a class="task-card is-soon" href="javascript:void(0);">
+        <div class="task-icon ti-pine">📄</div>
+        <div class="task-text"><h3>Document Summary &amp; Q&amp;A</h3><p>Refer to docs by name, scope your summary carefully, and request citations — produces grounded, verifiable answers.</p></div>
+        <div class="task-meta"><span class="pill p-pine">Research</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div>
+      </a>
+      <a class="task-card is-soon" href="javascript:void(0);">
+        <div class="task-icon ti-plum">📊</div>
+        <div class="task-text"><h3>Data Analysis &amp; Visualization</h3><p>Specify the output format upfront — summary, KPIs, recommendations — and ask which chart types best communicate each finding.</p></div>
+        <div class="task-meta"><span class="pill p-plum">Analytics</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div>
+      </a>
+      <a class="task-card is-soon" href="javascript:void(0);">
+        <div class="task-icon ti-ochre">💡</div>
+        <div class="task-text"><h3>Brainstorming &amp; Ideation</h3><p>Give parameters — number of ideas, categories, format — so brainstorm outputs are structured and immediately usable.</p></div>
+        <div class="task-meta"><span class="pill p-ochre">Strategy</span><span class="pill p-soon">Coming Soon</span><span class="task-arrow">→</span></div>
+      </a>
     </div>
   </section>
 
+  <!-- ═══ 04 · TROUBLESHOOTING ═══ -->
   <section id="troubleshooting">
     <div class="section-head">
       <div class="section-num-block">04 /</div>
-      <h2>Troubleshooting &amp; Quality<small>When outputs are wrong, incomplete, or not quite right</small></h2>
+      <h2>Troubleshooting &amp; Quality
+        <small>When outputs are wrong, incomplete, or not quite right</small>
+      </h2>
     </div>
-    <div class="cards-grid cards-grid-2">
-      <a class="doc-card c-pine is-soon" href="#"><div class="card-type">Quality</div><h3>Minimizing Hallucinations</h3><p>Tell Claude to say "I don't know" when uncertain. Include all relevant context in every new conversation.</p><div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div></a>
-      <a class="doc-card c-plum is-soon" href="#"><div class="card-type">Strategy</div><h3>Complex Task Decomposition</h3><p>When outputs miss steps or feel rushed, break the problem into a sequence of focused messages.</p><div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div></a>
-    </div>
-  </section>
 
-  <section id="archive">
-    <div class="section-head">
-      <div class="section-num-block">Arc /</div>
-      <h2>Archive<small>Previous versions and superseded files — kept for reference</small></h2>
-    </div>
-    <div class="tasks-list">
-      <div class="guide-detail-card"><div class="gd-stripe" style="background:var(--ink-soft)"></div><div class="gd-body"><div class="gd-top"><div class="gd-meta"><span class="card-type">Guide · Previous</span><div class="gd-badges"><span class="pill p-muted">Archived</span><span class="pill p-muted">Release V1</span></div></div><code class="gd-filename">Organizing_Claude_Guide_Release_V1.html</code></div><h3 class="gd-title">Organizing Claude — Release V1</h3><p class="gd-desc">First public release. Superseded by V2.</p><div class="gd-footer"><span class="gd-design">Release V1 · Superseded by V2</span><a class="gd-cta" href="Organizing_Claude_Guide_Release_V1.html" target="_blank" rel="noopener noreferrer" style="background:var(--ink-soft)">Open →</a></div></div></div>
-      <div class="guide-detail-card"><div class="gd-stripe" style="background:var(--ink-soft)"></div><div class="gd-body"><div class="gd-top"><div class="gd-meta"><span class="card-type">Portal · Previous</span><div class="gd-badges"><span class="pill p-muted">Archived</span><span class="pill p-muted">V1-20260307</span></div></div><code class="gd-filename">Portal-Foundation.html</code></div><h3 class="gd-title">Claude Helper Portal — Foundation</h3><p class="gd-desc">Pre-rename portal build. Superseded by index.html.</p><div class="gd-footer"><span class="gd-design">Warm gradient hero · Unified Style V2</span><a class="gd-cta" href="Portal-Foundation.html" target="_blank" rel="noopener noreferrer" style="background:var(--ink-soft)">Open →</a></div></div></div>
-      <div class="guide-detail-card"><div class="gd-stripe" style="background:var(--ink-soft)"></div><div class="gd-body"><div class="gd-top"><div class="gd-meta"><span class="card-type">Portal · Snapshot</span><div class="gd-badges"><span class="pill p-muted">Archived</span><span class="pill p-muted">001</span></div></div><code class="gd-filename">Portal-Foundation-V1-20260307_001.html</code></div><h3 class="gd-title">Claude Helper Portal — V1 Snapshot</h3><p class="gd-desc">First versioned snapshot. Retained as rollback point.</p><div class="gd-footer"><span class="gd-design">First versioned build</span><a class="gd-cta" href="Portal-Foundation-V1-20260307_001.html" target="_blank" rel="noopener noreferrer" style="background:var(--ink-soft)">Open →</a></div></div></div>
-      <div class="guide-detail-card"><div class="gd-stripe" style="background:var(--ink-soft)"></div><div class="gd-body"><div class="gd-top"><div class="gd-meta"><span class="card-type">Design System · Previous</span><div class="gd-badges"><span class="pill p-muted">Archived</span><span class="pill p-muted">V2 Final</span></div></div><code class="gd-filename">Unified-Style-Guide-V2-Final.html</code></div><h3 class="gd-title">Unified Style Guide — V2</h3><p class="gd-desc">Previous design system. Superseded by V3.</p><div class="gd-footer"><span class="gd-design">13 tokens · V2 Final</span><a class="gd-cta" href="Unified-Style-Guide-V2-Final.html" target="_blank" rel="noopener noreferrer" style="background:var(--ink-soft)">Open →</a></div></div></div>
-      <div class="guide-detail-card"><div class="gd-stripe" style="background:var(--ink-soft)"></div><div class="gd-body"><div class="gd-top"><div class="gd-meta"><span class="card-type">Guide · Previous</span><div class="gd-badges"><span class="pill p-muted">Archived</span><span class="pill p-muted">Release V2</span></div></div><code class="gd-filename">Organizing_Claude_Guide_Release_V2.html</code></div><h3 class="gd-title">Organizing Claude — Release V2</h3><p class="gd-desc">Second release. Superseded by current version.</p><div class="gd-footer"><span class="gd-design">Release V2 · Superseded by current</span><a class="gd-cta" href="Organizing_Claude_Guide_Release_V2.html" target="_blank" rel="noopener noreferrer" style="background:var(--ink-soft)">Open →</a></div></div></div>
+    <div class="cards-grid cards-grid-2">
+      <a class="doc-card c-pine is-soon" href="javascript:void(0);">
+        <div class="card-type">Quality</div>
+        <h3>Minimizing Hallucinations</h3>
+        <p>Tell Claude to say "I don't know" when uncertain. Include all relevant context in every new conversation — there is no memory between sessions.</p>
+        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+      </a>
+      <a class="doc-card c-plum is-soon" href="javascript:void(0);">
+        <div class="card-type">Strategy</div>
+        <h3>Complex Task Decomposition</h3>
+        <p>When outputs miss steps or feel rushed, break the problem into a sequence of focused messages rather than one giant, overloaded prompt.</p>
+        <div class="card-footer"><span class="pill p-soon">Coming Soon</span><span class="card-arrow">→</span></div>
+      </a>
     </div>
   </section>
 
 </main>
 
+<!-- ═══════════ FOOTER ═══════════ -->
 <footer>
   <div class="footer-inner">
     <div class="footer-left">
       <h4>Claude Helper Portal</h4>
-      <p>Internal documentation &nbsp;·&nbsp; 4 published guides &nbsp;·&nbsp; Updated March 2026 &nbsp;·&nbsp; V1-20260309.018</p>
+      <p>5 published guides &nbsp;·&nbsp; Updated March 2026 &nbsp;·&nbsp; V1-20260310_027</p>
     </div>
     <div class="footer-links">
       <a href="#guides">Guides</a>
       <a href="#prompting">Prompting</a>
       <a href="#tasks">Tasks</a>
-      <a href="#troubleshooting">Quality</a>
-      <a href="#archive">Archive</a>
+      <a href="#troubleshooting">Troubleshooting</a>
     </div>
   </div>
 </footer>
 
 <script>
-  const nav    = document.getElementById('site-nav');
-  const toggle = document.getElementById('nav-toggle');
-  function closeNav() { nav.classList.remove('nav-open'); toggle.setAttribute('aria-expanded','false'); }
-  toggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('nav-open');
-    toggle.setAttribute('aria-expanded', isOpen);
+  const btn  = document.getElementById('hamburger');
+  const menu = document.getElementById('mobile-menu');
+
+  btn.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    menu.setAttribute('aria-hidden', String(!open));
+    document.body.style.overflow = open ? 'hidden' : '';
   });
-  document.addEventListener('click', e => { if (!nav.contains(e.target)) closeNav(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
 
-  try {
-    const manifest = {
-      name:"Claude Helper Portal",short_name:"Claude Portal",
-      description:"Personal AI documentation and guide library",
-      start_url:"./index.html",display:"standalone",
-      background_color:"#ffffff",theme_color:"#68a894",
-      icons:[{src:"data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#68a894"/><circle cx="50" cy="42" r="18" fill="white" opacity=".9"/><rect x="26" y="66" width="48" height="7" rx="3.5" fill="white" opacity=".7"/><rect x="32" y="78" width="36" height="7" rx="3.5" fill="white" opacity=".5"/></svg>'),sizes:"any",type:"image/svg+xml",purpose:"any maskable"}]
-    };
-    const blob = new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
-    document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
-  } catch(e) {}
-
-  if ('serviceWorker' in navigator && location.protocol === 'https:') {
-    const sw = `const CACHE='claude-portal-v1';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./'])));self.skipWaiting()});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim()});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{const clone=res.clone();caches.open(CACHE).then(c=>c.put(e.request,clone));return res})))});`;
-    try { navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{}); } catch(e) {}
+  function closeMobile() {
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
   }
+
+  menu.addEventListener('click', e => { if (e.target === menu) closeMobile(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobile(); });
 </script>
+
 </body>
 </html>
